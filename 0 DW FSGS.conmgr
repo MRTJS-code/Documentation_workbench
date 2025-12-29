@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="0 DW FSGS"
+  DTS:DTSID="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+  DTS:CreationName="OLEDB">
+  <DTS:PropertyExpression
+    DTS:Name="InitialCatalog">@[$Project::ENV_CONNECTION_0_ODS_NZ_SEC_CATALOG]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="Password">@[$Project::ENV_CONNECTION_0_ODS_NZ_SEC_PASSWORD]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="ServerName">@[$Project::ENV_CONNECTION_0_ODS_NZ_SEC_SERVER]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="UserName">@[$Project::ENV_CONNECTION_0_ODS_NZ_SEC_USERNAME]</DTS:PropertyExpression>
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=PER1CORPUATSQL1;User ID=user.ods_nz_sec;Initial Catalog=ODS_NZ_SEC;Provider=SQLNCLI11.1;Application Name=SSIS-{34FC873D-0671-4069-BE95-2B61D00A6202}0 DW FSGS;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

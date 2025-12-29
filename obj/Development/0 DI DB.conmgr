@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="0 DI DB"
+  DTS:DTSID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}"
+  DTS:CreationName="OLEDB">
+  <DTS:PropertyExpression
+    DTS:Name="InitialCatalog">@[$Project::ENV_CONNECTION_0_DI_CATALOG]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="Password">@[$Project::ENV_CONNECTION_0_DI_PASSWORD]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="ServerName">@[$Project::ENV_CONNECTION_0_DI_SERVER]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="UserName">@[$Project::ENV_CONNECTION_0_DI_USERNAME]</DTS:PropertyExpression>
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:Retain="True"
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=PER1CORPUATSQL1;User ID=system.DataIntegration;Initial Catalog=DataIntegration;Provider=SQLNCLI11.1;Application Name=SSIS-{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}0 DI DB;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARfaq4kkoU0W7QNPZhQI+WwAAAAACAAAAAAAQZgAAAAEAACAAAACFTdXtcrkqLVDJj4CmyjtXjA9ZotxPQiJE6HjsRUtqdAAAAAAOgAAAAAIAACAAAAAYqs7y7WZVR2l+XpBl3f53/4QB8z4dsD77GpbNp2ZOg5AAAAAwYcxM+mfHk8if1f8yA7JvPJDqQCK6YwmQp26NAaorUsJ343NYqKoM2q9J6Icy99iZlynbkHc4l4r2sb8rdDoJRrN64BaD+RPcJ7FpIM1cUuFpjP7NUDJYE/X11/AdUWQ+4QmMTSpLz55CHdgP4BZiVDE0mHP1JsolgsSkdmKkK8/rCA2TSoeYbTz4h2lgLn9AAAAAMXZK78oYBGQiTJV9ZQxyhFW3VXvJC0ITv0v7qtF1iVI0vuePrhINi107GRksYctVNxMH2iEbWmnN5GnEc/6fKQ==</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

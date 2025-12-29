@@ -1,0 +1,2503 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/27/2025 12:47:06 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{3B713F38-9368-43CB-A0BE-BFEF7260C6B2}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="5 Payroll Extract"
+  DTS:PackageType="5"
+  DTS:VersionBuild="48"
+  DTS:VersionGUID="{08310C35-F9EF-4999-A821-1C458B76533A}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Payroll CSV]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{3D24D08F-560E-4845-858A-EF12212DD861}"
+      DTS:ObjectName="Payroll CSV">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ENV_CONNECTION_1_CSV_DIR] + "CSV_EDA\\Payroll.csv"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="2057"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x0022_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\SSIS-Files\CSV_EDA\Payroll.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="1"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Record Type"
+              DTS:DTSID="{1AE3DA0D-5357-40FD-A176-69016CA80727}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ID Number"
+              DTS:DTSID="{23BE6485-DA7B-4F8A-A7C0-CD70D500E3E3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="133"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Costing Date"
+              DTS:DTSID="{4B33CBE0-295A-4BCB-BC22-9CDC3434ECC3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Hours Code"
+              DTS:DTSID="{5A7D1815-E15A-4FEB-ABDF-FB14E88967B5}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Hours Amount"
+              DTS:DTSID="{E23B584B-454F-4F7C-8DC0-55B6AD348469}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Hourly Rate"
+              DTS:DTSID="{3615DFB5-2307-4E5A-A59F-E3F505CE7727}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="133"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Date From"
+              DTS:DTSID="{89EE56C7-FC39-43E0-A0FB-EF32AE64EF4F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="133"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Date To"
+              DTS:DTSID="{B4A79058-06B5-451F-91EA-513EB685A7A7}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="2"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Leave Reason"
+              DTS:DTSID="{BB25E662-087F-46E8-ABF8-70B9E0E878DB}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Leave Units"
+              DTS:DTSID="{4FA75F49-FED7-4674-8F9F-8F386239A355}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="A/D Code"
+              DTS:DTSID="{3A49BBA4-0F38-4456-911D-E17601882D6C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Units"
+              DTS:DTSID="{1B7A72D3-57AA-4802-9C8B-2041DFAEC7EE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Unit Rate"
+              DTS:DTSID="{7971AD06-23C6-4D80-9044-DB283A2611CF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Account"
+              DTS:DTSID="{E926B2A8-C128-44E5-9995-460B4ADC2337}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="11"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Labour Costing 3"
+              DTS:DTSID="{085F400C-380F-4CF5-9CBC-890FFAC50496}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="User Costing 1"
+              DTS:DTSID="{288587C8-E0D3-4AE6-92A5-4DE6BAC4EB27}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="User Costing 2"
+              DTS:DTSID="{C86F16A8-3D85-4C58-8D7D-5B4A4F85C26F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Blank"
+              DTS:DTSID="{E62B7AE3-A851-4B10-82C8-F74757D8B51F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="BaseRate"
+              DTS:DTSID="{4FA8CEDE-A268-45E5-8B59-24952CA79C55}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="EMSRate"
+              DTS:DTSID="{1BFD7088-9EBA-40D8-9410-25DB29C5F86A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="SiteRate"
+              DTS:DTSID="{7514D047-5F9F-4B65-A6EE-F7779E40C426}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="5"
+              DTS:TextQualified="True"
+              DTS:ObjectName="TierRate"
+              DTS:DTSID="{9EEFE9E6-A083-49A8-98CF-3EB3C54E507B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="255"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="branchName"
+              DTS:DTSID="{F3DB93C2-9F8E-433C-9083-3908FCF9097B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="AreaRateName"
+              DTS:DTSID="{AA42CB52-B3BF-4A22-8369-00B11E5A9ACA}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="TierRateName"
+              DTS:DTSID="{443D748D-E19B-4D53-8CEB-08D24E04B365}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="255"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="locationName"
+              DTS:DTSID="{2E1894B2-A5B9-4405-B639-5CBB1BFB300C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="255"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="areaName"
+              DTS:DTSID="{723E4104-B0BA-4680-B3B3-4DA94D589976}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{32773075-5899-45C6-9B83-F4244398FE61}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="ROW_COUNT">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A6D6D6C0-0C28-4659-B7ED-637D652F221C}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="X_EMAIL">
+      <DTS:VariableValue
+        DTS:DataType="8">tony.smith@firstsecurity.co.nz</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B04C9740-792C-4468-B4DD-35277F8C6694}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="X_EVENTID">
+      <DTS:VariableValue
+        DTS:DataType="3">7470</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8C12A981-DCC2-4E52-94EE-6C9F3166B753}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="X_EXTTYPE">
+      <DTS:VariableValue
+        DTS:DataType="8">draft</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E4821A79-ABB5-4E51-A069-E65431600C60}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="X_STAGETYPE">
+      <DTS:VariableValue
+        DTS:DataType="8">standard</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Get Variables"
+      DTS:CreationName="Microsoft.ScriptTask"
+      DTS:Description="Script Task"
+      DTS:DTSID="{E357E5BA-6672-48E4-AFEB-1FD907DC0C76}"
+      DTS:ExecutableType="Microsoft.ScriptTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get Variables"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ScriptProject
+          Name="ST_b5cb1bdfe1d64062938266d95ff380bb"
+          VSTAMajorVersion="15"
+          VSTAMinorVersion="0"
+          Language="CSharp"
+          ReadOnlyVariables="User::EVENT_ID,User::STAGE_TYPE,User::EXTRACT_TYPE,User::USER_EMAIL"
+          ReadWriteVariables="User::X_EMAIL,User::X_EVENTID,User::X_EXTTYPE,User::X_STAGETYPE">
+          <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_b5cb1bdfe1d64062938266d95ff380bb")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Wilson Group")]
+[assembly: AssemblyProduct("ST_b5cb1bdfe1d64062938266d95ff380bb")]
+[assembly: AssemblyCopyright("Copyright @ Wilson Group 2025")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Resources.resx"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></ProjectItem>
+          <ProjectItem
+            Name="ST_b5cb1bdfe1d64062938266d95ff380bb.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{abb23c8e-6ab5-4bf8-ac41-a404ba2a12e3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_b5cb1bdfe1d64062938266d95ff380bb</RootNamespace>
+    <AssemblyName>ST_b5cb1bdfe1d64062938266d95ff380bb</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+         <Generator>ResXFileCodeGenerator</Generator>
+         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+             <AutoGen>True</AutoGen>
+         <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+         <Generator>SettingsSingleFileGenerator</Generator>
+         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+         <AutoGen>True</AutoGen>
+         <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+         <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask"
+                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
+                           ApplicationType="usd"
+                           Language="cs"
+                           TemplatesPath=""
+                           DebugInfoCommandLine=""
+                           DebugInfoWorkingDir=""
+                           IconImageList=""/>
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
+        </Host>
+        <ProjectClient>
+            <HostIdentifier>SSIS_ST140</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
+          <ProjectItem
+            Name="ScriptMain.cs"
+            Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
+/* The Script Task allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services control flow. 
+ * 
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script task. */
+#endregion
+
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Runtime;
+using System.Windows.Forms;
+#endregion
+
+namespace ST_b5cb1bdfe1d64062938266d95ff380bb
+{
+    /// <summary>
+    /// ScriptMain is the entry point class of the script.  Do not change the name, attributes,
+    /// or parent of this class.
+    /// </summary>
+	[Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute]
+	public partial class ScriptMain : Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+	{
+        #region Help:  Using Integration Services variables and parameters in a script
+        /* To use a variable in this script, first ensure that the variable has been added to 
+         * either the list contained in the ReadOnlyVariables property or the list contained in 
+         * the ReadWriteVariables property of this script task, according to whether or not your
+         * code needs to write to the variable.  To add the variable, save this script, close this instance of
+         * Visual Studio, and update the ReadOnlyVariables and 
+         * ReadWriteVariables properties in the Script Transformation Editor window.
+         * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+         * 
+         * Example of reading from a variable:
+         *  DateTime startTime = (DateTime) Dts.Variables["System::StartTime"].Value;
+         * 
+         * Example of writing to a variable:
+         *  Dts.Variables["User::myStringVariable"].Value = "new value";
+         * 
+         * Example of reading from a package parameter:
+         *  int batchId = (int) Dts.Variables["$Package::batchId"].Value;
+         *  
+         * Example of reading from a project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].Value;
+         * 
+         * Example of reading from a sensitive project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].GetSensitiveValue();
+         * */
+
+        #endregion
+
+        #region Help:  Firing Integration Services events from a script
+        /* This script task can fire events for logging purposes.
+         * 
+         * Example of firing an error event:
+         *  Dts.Events.FireError(18, "Process Values", "Bad value", "", 0);
+         * 
+         * Example of firing an information event:
+         *  Dts.Events.FireInformation(3, "Process Values", "Processing has started", "", 0, ref fireAgain)
+         * 
+         * Example of firing a warning event:
+         *  Dts.Events.FireWarning(14, "Process Values", "No values received for input", "", 0);
+         * */
+        #endregion
+
+        #region Help:  Using Integration Services connection managers in a script
+        /* Some types of connection managers can be used in this script task.  See the topic 
+         * "Working with Connection Managers Programatically" for details.
+         * 
+         * Example of using an ADO.Net connection manager:
+         *  object rawConnection = Dts.Connections["Sales DB"].AcquireConnection(Dts.Transaction);
+         *  SqlConnection myADONETConnection = (SqlConnection)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Sales DB"].ReleaseConnection(rawConnection);
+         *
+         * Example of using a File connection manager
+         *  object rawConnection = Dts.Connections["Prices.zip"].AcquireConnection(Dts.Transaction);
+         *  string filePath = (string)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Prices.zip"].ReleaseConnection(rawConnection);
+         * */
+        #endregion
+
+
+		/// <summary>
+        /// This method is called when this script task executes in the control flow.
+        /// Before returning from this method, set the value of Dts.TaskResult to indicate success or failure.
+        /// To open Help, press F1.
+        /// </summary>
+		public void Main()
+		{
+            bool fireBool = false;
+            try
+            {
+                Dts.Variables["User::X_EVENTID"].Value = Dts.Variables["User::EVENT_ID"].Value;
+                Dts.Variables["User::X_STAGETYPE"].Value = Dts.Variables["User::STAGE_TYPE"].Value;
+                Dts.Variables["User::X_EXTTYPE"].Value = Dts.Variables["User::EXTRACT_TYPE"].Value;
+                Dts.Variables["User::X_EMAIL"].Value = Dts.Variables["User::USER_EMAIL"].Value;
+                Dts.Events.FireInformation(3, "Success: ", Dts.Variables["User::X_EMAIL"].Value + "|" +
+                    Dts.Variables["User::X_STAGETYPE"].Value + "|" +
+                    Dts.Variables["User::X_EXTTYPE"].Value + "|" +
+                    Dts.Variables["User::X_EVENTID"].Value, "", 0, ref fireBool);
+                Dts.TaskResult = (int)ScriptResults.Success;
+            }
+            catch (Exception e)
+            {
+                Dts.Events.FireError(18, "Error storing variable: ", e.ToString(), "", 0);
+                Dts.TaskResult = (int)ScriptResults.Failure;
+            }
+        }
+
+        #region ScriptResults declaration
+        /// <summary>
+        /// This enum provides a convenient shorthand within the scope of this class for setting the
+        /// result of the script.
+        /// 
+        /// This code was generated automatically.
+        /// </summary>
+        enum ScriptResults
+        {
+            Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success,
+            Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+        };
+        #endregion
+
+	}
+}]]></ProjectItem>
+          <ProjectItem
+            Name="Project"
+            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:Language>msBuild</msb:Language>
+    <msb:CodeName>ST_b5cb1bdfe1d64062938266d95ff380bb</msb:CodeName>
+    <msb:DisplayName>ST_b5cb1bdfe1d64062938266d95ff380bb</msb:DisplayName>
+    <msb:ProjectId>{E8258488-D2FD-4916-8AC3-E98899867B4D}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="ST_b5cb1bdfe1d64062938266d95ff380bb.csproj" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+    <msb:File Include="ScriptMain.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_b5cb1bdfe1d64062938266d95ff380bb.Properties.Settings.get_Default():ST_b5cb1bdfe1d64062938266d95ff380bb.Properties.Sett" +
+    "ings")]
+
+namespace ST_b5cb1bdfe1d64062938266d95ff380bb.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Resources.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_b5cb1bdfe1d64062938266d95ff380bb.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_b5cb1bdfe1d64062938266d95ff380bb.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_b5cb1bdfe1d64062938266d95ff380bb.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace ST_b5cb1bdfe1d64062938266d95ff380bb.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ST_b5cb1bdfe1d64062938266d95ff380bb.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <BinaryItem
+            Name="ST_b5cb1bdfe1d64062938266d95ff380bb.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDANZjrmgAAAAAAAAAAOAAIiALATAAABIAAAAIAAAAAAAAbjEA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAABwxAABPAAAAAEAAAKgEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAdBEAAAAgAAAAEgAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAKgEAAAAQAAAAAYAAAAUAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAGgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABQ
+MQAAAAAAAEgAAAACAAUA3CIAAIgNAAABAAAAAAAAAGQwAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAABswCAD5AQAAAQAAERYKAigQAAAKbxEAAApyAQAAcG8SAAAK
+AigQAAAKbxEAAApyIQAAcG8SAAAKbxMAAApvFAAACgIoEAAACm8RAAAKcj8AAHBvEgAACgIoEAAA
+Cm8RAAAKcmMAAHBvEgAACm8TAAAKbxQAAAoCKBAAAApvEQAACnKFAABwbxIAAAoCKBAAAApvEQAA
+CnKlAABwbxIAAApvEwAACm8UAAAKAigQAAAKbxEAAApyywAAcG8SAAAKAigQAAAKbxEAAApy5wAA
+cG8SAAAKbxMAAApvFAAACgIoEAAACm8VAAAKGXIJAQBwHY0dAAABJRYCKBAAAApvEQAACnLLAABw
+bxIAAApvEwAACiUtBCYUKwVvFgAACqIlF3IdAQBwoiUYAigQAAAKbxEAAApyPwAAcG8SAAAKbxMA
+AAolLQQmFCsFbxYAAAqiJRlyHQEAcKIlGgIoEAAACm8RAAAKcoUAAHBvEgAACm8TAAAKJS0EJhQr
+BW8WAAAKoiUbch0BAHCiJRwCKBAAAApvEQAACnIBAABwbxIAAApvEwAACiUtBCYUKwVvFgAACqIo
+FwAACnIhAQBwFhIAbxgAAAoCKBAAAAoWbxkAAAreMwsCKBAAAApvFQAACh8SciMBAHAHbxYAAApy
+IQEAcBZvGgAACiYCKBAAAAoXbxkAAAreACoAAABBHAAAAAAAAAIAAADDAQAAxQEAADMAAAAPAAAB
+HgIoGwAACioeAigcAAAKKq5+AQAABC0eclUBAHDQAwAAAigdAAAKbx4AAApzHwAACoABAAAEfgEA
+AAQqGn4CAAAEKh4CgAIAAAQqGn4DAAAEKh4CKCAAAAoqLnMIAAAGgAMAAAQqAABCU0pCAQABAAAA
+AAAMAAAAdjQuMC4zMDMxOQAAAAAFAGwAAADsAwAAI34AAFgEAACwBQAAI1N0cmluZ3MAAAAACAoA
+AMgBAAAjVVMA0AsAABAAAAAjR1VJRAAAAOALAACoAQAAI0Jsb2IAAAAAAAAAAgAAAVcdogEJAwAA
+APoBMwAWAAABAAAAIAAAAAUAAAAGAAAACQAAAAEAAAAgAAAAAgAAABAAAAABAAAAAgAAAAMAAAAE
+AAAAAQAAAAQAAAABAAAAAQAAAAAAfwMBAAAAAAAGACUChwQGALQChwQGAHEBdAQPAPsEAAAGAJ4B
+DQQGAAgCDQQGAOkBDQQGAJsCDQQGAEUCDQQGAF4CDQQGALUBDQQGANAB7AIKAHkCLgMKAPAALgMG
+AB8EsAMGALcDsAMGAFQBdAQGAIAFsAMGADkEpwQGACkE+AMOACQBaQMOAIUBaQMOAAwB4wMGADkB
+hwQKAFcDLgMSAD0FmwASAG4AmwAKAEkELgMGAAgDsAMGALsAsAMGAHcAsAMGAKYFDQQAAAAAAQAA
+AAAAAQABAAEAEADIAzEAOQABAAEAAAAQAK4ECgVJAAEAAwAAARAARwUKBV0AAwAHAAMBAABgBQAA
+QQAEAAoAEQC8A44AEQDgAJIAEQBeAJYABgYpAJoAVoBQBZ0AVoDAAJ0AUCAAAAAAhgDOAwYAAQB0
+IgAAAACGGGcEBgABAHwiAAAAAIMYZwQGAAEAhCIAAAAAkwg1BKEAAQCwIgAAAACTCMgApgABALci
+AAAAAJMI1ACrAAEAvyIAAAAAlgiHBbEAAgDGIgAAAACGGGcEBgACAM4iAAAAAJEYbQS2AAIAAAAB
+AOYCCQBnBAEAEQBnBAYAGQBnBAoAKQBnBBAAMQBnBBAAOQBnBBAAQQBnBBAASQBnBBAAUQBnBBAA
+WQBnBBAAYQBnBBAAaQBnBAYAiQBnBAYAsQBnBBUAwQBnBAYAcQBYBSEAyQA5BSYA0QCnAysA2QDS
+AjEA2QDcAjUAyQBuBToAkQAGAz8A6QB5BUMA4QDTA0kAyQCTBQEA4QBdBFQAcQBnBAYAkQBnBAYA
+8QCJAF0A8QCiBWQAmQBnBGoAuQBnBAYACAAUAIQACAAYAIkAKQBzAPEALgALAMkALgATANIALgAb
+APEALgAjAPoALgArACMBLgAzACMBLgA7ACkBLgBDAPoALgBLADsBLgBTACMBLgBbAF4BQwBjAIkA
+SQBzAPEAYQB7AIkAYwBrAIkAGwADAAEABAADAAAAOQS6AAAA6AC/AAAAiwXEAAIABAADAAIABQAF
+AAEABgAFAAIABwAHAASAAAABAAAAmiQLYQAAAAAAADEAAAAEAAAAAAAAAAAAAAByAFUAAAAAAA4A
+AAAAAAAAAAAAAHsADwMAAAAABAAAAAAAAAAAAAAAcgCwAwAAAAAOAAAAAAAAAAAAAAB7AAoAAAAA
+AAAAAAABAAAAuAQAAAUAAgAAAAA8TW9kdWxlPgBNaWNyb3NvZnQuU3FsU2VydmVyLk1hbmFnZWRE
+VFMAdmFsdWVfXwBTVF9iNWNiMWJkZmUxZDY0MDYyOTM4MjY2ZDk1ZmYzODBiYgBtc2NvcmxpYgBk
+ZWZhdWx0SW5zdGFuY2UAVmFyaWFibGUAUnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5k
+bGUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUnVudGltZQBUeXBlAEZhaWx1cmUAZ2V0X0N1bHR1
+cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VDdWx0dXJlAFZTVEFSVFNjcmlwdE9iamVjdE1vZGVsQmFz
+ZQBBcHBsaWNhdGlvblNldHRpbmdzQmFzZQBFZGl0b3JCcm93c2FibGVTdGF0ZQBDb21waWxlckdl
+bmVyYXRlZEF0dHJpYnV0ZQBEZWJ1Z2dlck5vblVzZXJDb2RlQXR0cmlidXRlAERlYnVnZ2FibGVB
+dHRyaWJ1dGUARWRpdG9yQnJvd3NhYmxlQXR0cmlidXRlAEFzc2VtYmx5VGl0bGVBdHRyaWJ1dGUA
+QXNzZW1ibHlUcmFkZW1hcmtBdHRyaWJ1dGUAVGFyZ2V0RnJhbWV3b3JrQXR0cmlidXRlAEFzc2Vt
+Ymx5Q29uZmlndXJhdGlvbkF0dHJpYnV0ZQBBc3NlbWJseURlc2NyaXB0aW9uQXR0cmlidXRlAENv
+bXBpbGF0aW9uUmVsYXhhdGlvbnNBdHRyaWJ1dGUAQXNzZW1ibHlQcm9kdWN0QXR0cmlidXRlAEFz
+c2VtYmx5Q29weXJpZ2h0QXR0cmlidXRlAFNTSVNTY3JpcHRUYXNrRW50cnlQb2ludEF0dHJpYnV0
+ZQBBc3NlbWJseUNvbXBhbnlBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGliaWxpdHlBdHRyaWJ1dGUA
+Z2V0X1ZhbHVlAHNldF9WYWx1ZQB2YWx1ZQBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFRvU3Ry
+aW5nAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuU2NyaXB0VGFzawBNaWNyb3NvZnQuU3FsU2VydmVyLkR0
+cy5UYXNrcy5TY3JpcHRUYXNrAFNjcmlwdE9iamVjdE1vZGVsAFN5c3RlbS5Db21wb25lbnRNb2Rl
+bABTVF9iNWNiMWJkZmUxZDY0MDYyOTM4MjY2ZDk1ZmYzODBiYi5kbGwAZ2V0X0l0ZW0AU3lzdGVt
+AEVudW0AcmVzb3VyY2VNYW4AU2NyaXB0TWFpbgBGaXJlSW5mb3JtYXRpb24AU3lzdGVtLkNvbmZp
+Z3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6YXRpb24AU3lzdGVtLlJlZmxlY3Rpb24ARXhjZXB0aW9u
+AEN1bHR1cmVJbmZvAGdldF9SZXNvdXJjZU1hbmFnZXIARXZlbnRzT2JqZWN0V3JhcHBlcgBGaXJl
+RXJyb3IALmN0b3IALmNjdG9yAFN5c3RlbS5EaWFnbm9zdGljcwBTeXN0ZW0uUnVudGltZS5Db21w
+aWxlclNlcnZpY2VzAFN5c3RlbS5SZXNvdXJjZXMAU1RfYjVjYjFiZGZlMWQ2NDA2MjkzODI2NmQ5
+NWZmMzgwYmIuUHJvcGVydGllcy5SZXNvdXJjZXMucmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNU
+X2I1Y2IxYmRmZTFkNjQwNjI5MzgyNjZkOTVmZjM4MGJiLlByb3BlcnRpZXMAZ2V0X1ZhcmlhYmxl
+cwBTZXR0aW5ncwBTdWNjZXNzAGdldF9EdHMAU2NyaXB0UmVzdWx0cwBnZXRfRXZlbnRzAENvbmNh
+dABPYmplY3QAZ2V0X0RlZmF1bHQAc2V0X1Rhc2tSZXN1bHQAZ2V0X0Fzc2VtYmx5AAAAH1UAcwBl
+AHIAOgA6AFgAXwBFAFYARQBOAFQASQBEAAAdVQBzAGUAcgA6ADoARQBWAEUATgBUAF8ASQBEAAAj
+VQBzAGUAcgA6ADoAWABfAFMAVABBAEcARQBUAFkAUABFAAAhVQBzAGUAcgA6ADoAUwBUAEEARwBF
+AF8AVABZAFAARQAAH1UAcwBlAHIAOgA6AFgAXwBFAFgAVABUAFkAUABFAAAlVQBzAGUAcgA6ADoA
+RQBYAFQAUgBBAEMAVABfAFQAWQBQAEUAABtVAHMAZQByADoAOgBYAF8ARQBNAEEASQBMAAAhVQBz
+AGUAcgA6ADoAVQBTAEUAUgBfAEUATQBBAEkATAAAE1MAdQBjAGMAZQBzAHMAOgAgAAADfAAAAQAx
+RQByAHIAbwByACAAcwB0AG8AcgBpAG4AZwAgAHYAYQByAGkAYQBiAGwAZQA6ACAAAHFTAFQAXwBi
+ADUAYwBiADEAYgBkAGYAZQAxAGQANgA0ADAANgAyADkAMwA4ADIANgA2AGQAOQA1AGYAZgAzADgA
+MABiAGIALgBQAHIAbwBwAGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAABf+q9jGrho
+Toj7K3hqssF2AAQgAQEIAyAAAQUgAQEREQQgAQEOBSABARFVBQcCAhI9BCAAEmUEIAASaQUgARJt
+HAMgABwEIAEBHAQgABJxAyAADgUAAQ4dDgogBgEIDg4OCBACCCAFAggODg4IBgABEnkRfQUgABKA
+gQcgAgEOEoCBCLd6XFYZNOCJCImEXc2AgMyRBAAAAAAEAQAAAAMGEk0DBhJRAwYSEAIGCAMGERQE
+AAASTQQAABJRBQABARJRBAAAEhADAAABBAgAEk0ECAASUQQIABIQCAEACAAAAAAAHgEAAQBUAhZX
+cmFwTm9uRXhjZXB0aW9uVGhyb3dzAQgBAAIAAAAAACgBACNTVF9iNWNiMWJkZmUxZDY0MDYyOTM4
+MjY2ZDk1ZmYzODBiYgAABQEAAAAAEQEADFdpbHNvbiBHcm91cAAAIgEAHUNvcHlyaWdodCBAIFdp
+bHNvbiBHcm91cCAyMDI1AABJAQAaLk5FVEZyYW1ld29yayxWZXJzaW9uPXY0LjcBAFQOFEZyYW1l
+d29ya0Rpc3BsYXlOYW1lEi5ORVQgRnJhbWV3b3JrIDQuN7QAAADOyu++AQAAAJEAAABsU3lzdGVt
+LlJlc291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3Vs
+dHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5I1N5c3RlbS5SZXNv
+dXJjZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAAAAAAUEFEUEFEULQAAABEMQAAAAAAAAAA
+AABeMQAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUDEAAAAAAAAAAAAAAABfQ29yRGxsTWFpbgBt
+c2NvcmVlLmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAEAEAAAABgAAIAAAAAAAAAAAAAAAAAAAAEAAQAAADAAAIAAAAAAAAAAAAAAAAAAAAEAAAAA
+AEgAAABYQAAASgQAAAAAAAAAAAAASgQ0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8A
+AAAAAL0E7/4AAAEAAAABAAthmiQAAAEAC2GaJD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABE
+AAAAAQBWAGEAcgBGAGkAbABlAEkAbgBmAG8AAAAAACQABAAAAFQAcgBhAG4AcwBsAGEAdABpAG8A
+bgAAAAAAAACwBKoDAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAAIYDAAABADAAMAAw
+ADAAMAA0AGIAMAAAABoAAQABAEMAbwBtAG0AZQBuAHQAcwAAAAAAAAA6AA0AAQBDAG8AbQBwAGEA
+bgB5AE4AYQBtAGUAAAAAAFcAaQBsAHMAbwBuACAARwByAG8AdQBwAAAAAABwACQAAQBGAGkAbABl
+AEQAZQBzAGMAcgBpAHAAdABpAG8AbgAAAAAAUwBUAF8AYgA1AGMAYgAxAGIAZABmAGUAMQBkADYA
+NAAwADYAMgA5ADMAOAAyADYANgBkADkANQBmAGYAMwA4ADAAYgBiAAAAPgAPAAEARgBpAGwAZQBW
+AGUAcgBzAGkAbwBuAAAAAAAxAC4AMAAuADkAMwA3ADAALgAyADQAOAA0ADMAAAAAAHAAKAABAEkA
+bgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBUAF8AYgA1AGMAYgAxAGIAZABmAGUAMQBkADYANAAw
+ADYAMgA5ADMAOAAyADYANgBkADkANQBmAGYAMwA4ADAAYgBiAC4AZABsAGwAAABgAB4AAQBMAGUA
+ZwBhAGwAQwBvAHAAeQByAGkAZwBoAHQAAABDAG8AcAB5AHIAaQBnAGgAdAAgAEAAIABXAGkAbABz
+AG8AbgAgAEcAcgBvAHUAcAAgADIAMAAyADUAAAAqAAEAAQBMAGUAZwBhAGwAVAByAGEAZABlAG0A
+YQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABlAG4AYQBtAGUAAABT
+AFQAXwBiADUAYwBiADEAYgBkAGYAZQAxAGQANgA0ADAANgAyADkAMwA4ADIANgA2AGQAOQA1AGYA
+ZgAzADgAMABiAGIALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBhAG0AZQAAAAAAUwBU
+AF8AYgA1AGMAYgAxAGIAZABmAGUAMQBkADYANAAwADYAMgA5ADMAOAAyADYANgBkADkANQBmAGYA
+MwA4ADAAYgBiAAAAQgAPAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgA5
+ADMANwAwAC4AMgA0ADgANAAzAAAAAABGAA8AAQBBAHMAcwBlAG0AYgBsAHkAIABWAGUAcgBzAGkA
+bwBuAAAAMQAuADAALgA5ADMANwAwAC4AMgA0ADgANAAzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAADAAAAHAxAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
+        </ScriptProject>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\If Rows Returned"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:Disabled="True"
+      DTS:DTSID="{35F153AD-272D-480D-A370-9FE901E0D85E}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="If Rows Returned">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[User::ROW_COUNT] == 0</DTS:PropertyExpression>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\If Rows Returned\Build Payroll CSV"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{A1758E66-9161-4355-9408-32A33D59B29A}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Build Payroll CSV"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV"
+                  componentClassID="Microsoft.FlatFileDestination"
+                  contactInfo="Flat File Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Destination"
+                  localeId="2057"
+                  name="Payroll CSV">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether the data will overwrite or append to the destination file."
+                      name="Overwrite">true</property>
+                    <property
+                      dataType="System.Null"
+                      description="Specifies the text to write to the destination file before any data is written."
+                      expressionType="Notify"
+                      name="Header" />
+                    <property
+                      dataType="System.Boolean"
+                      description="When text qualifier is enabled, specifies whether the text qualifier in the data written to the destination file will be escaped or not."
+                      name="EscapeQualifier">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Payroll CSV]"
+                      connectionManagerRefId="Package.ConnectionManagers[Payroll CSV]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input]"
+                      hasSideEffects="true"
+                      name="Flat File Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Record Type]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="Record Type"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Record Type]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Record Type]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[ID Number]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="ID Number"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[ID Number]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[ID Number]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Costing Date]"
+                          cachedDataType="dbDate"
+                          cachedName="Costing Date"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Costing Date]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Costing Date]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Hours Code]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Hours Code"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Hours Code]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hours Code]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Hours Amount]"
+                          cachedDataType="r8"
+                          cachedName="Hours Amount"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Hours Amount]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hours Amount]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Hourly Rate]"
+                          cachedDataType="r8"
+                          cachedName="Hourly Rate"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Hourly Rate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hourly Rate]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Date From]"
+                          cachedDataType="dbDate"
+                          cachedName="Date From"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Date From]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Date From]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Date To]"
+                          cachedDataType="dbDate"
+                          cachedName="Date To"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Date To]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Date To]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Leave Reason]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="2"
+                          cachedName="Leave Reason"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Leave Reason]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Leave Reason]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Leave Units]"
+                          cachedDataType="r8"
+                          cachedName="Leave Units"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Leave Units]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Leave Units]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[A/D Code]"
+                          cachedDataType="i4"
+                          cachedName="A/D Code"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[A/D Code]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[A/D Code]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Units]"
+                          cachedDataType="i4"
+                          cachedName="Units"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Units]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Units]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Unit Rate]"
+                          cachedDataType="i4"
+                          cachedName="Unit Rate"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Unit Rate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Unit Rate]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Account]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="Account"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Account]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Account]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Labour Costing 3]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="11"
+                          cachedName="Labour Costing 3"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Labour Costing 3]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Labour Costing 3]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[User Costing 1]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="User Costing 1"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[User Costing 1]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[User Costing 1]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[User Costing 2]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="User Costing 2"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[User Costing 2]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[User Costing 2]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[Blank]"
+                          cachedDataType="i4"
+                          cachedName="Blank"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Blank]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Blank]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[BaseRate]"
+                          cachedDataType="r8"
+                          cachedName="BaseRate"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[BaseRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[BaseRate]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[EMSRate]"
+                          cachedDataType="r8"
+                          cachedName="EMSRate"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[EMSRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[EMSRate]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[SiteRate]"
+                          cachedDataType="r8"
+                          cachedName="SiteRate"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[SiteRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[SiteRate]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[TierRate]"
+                          cachedDataType="r8"
+                          cachedName="TierRate"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[TierRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[TierRate]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[branchName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="branchName"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[branchName]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[branchName]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[AreaRateName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="AreaRateName"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[AreaRateName]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[AreaRateName]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[TierRateName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="TierRateName"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[TierRateName]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[TierRateName]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[locationName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="locationName"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[locationName]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[locationName]" />
+                        <inputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].Columns[areaName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="areaName"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[areaName]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[areaName]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Record Type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Record Type" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[ID Number]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="ID Number" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Costing Date]"
+                          dataType="dbDate"
+                          name="Costing Date" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Hours Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Hours Code" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Hours Amount]"
+                          dataType="r8"
+                          name="Hours Amount" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Hourly Rate]"
+                          dataType="r8"
+                          name="Hourly Rate" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Date From]"
+                          dataType="dbDate"
+                          name="Date From" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Date To]"
+                          dataType="dbDate"
+                          name="Date To" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Leave Reason]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          name="Leave Reason" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Leave Units]"
+                          dataType="r8"
+                          name="Leave Units" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[A/D Code]"
+                          dataType="i4"
+                          name="A/D Code" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Units]"
+                          dataType="i4"
+                          name="Units" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Unit Rate]"
+                          dataType="i4"
+                          name="Unit Rate" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="Account" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Labour Costing 3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="11"
+                          name="Labour Costing 3" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[User Costing 1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="User Costing 1" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[User Costing 2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="User Costing 2" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[Blank]"
+                          dataType="i4"
+                          name="Blank" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[BaseRate]"
+                          dataType="r8"
+                          name="BaseRate" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[EMSRate]"
+                          dataType="r8"
+                          name="EMSRate" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[SiteRate]"
+                          dataType="r8"
+                          name="SiteRate" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[TierRate]"
+                          dataType="r8"
+                          name="TierRate" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[branchName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="branchName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[AreaRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="AreaRateName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[TierRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="TierRateName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[locationName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="locationName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input].ExternalColumns[areaName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="areaName" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                </component>
+                <component
+                  refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Payroll SQL"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC eda.PRECEDA_OUTPUT ?,?
+WITH RESULT SETS
+(
+  ( [Record Type] char(1),
+    [ID Number]   varchar(50),
+    [Costing Date] date,
+    [Hours Code]  varchar(4),
+    [Hours Amount] decimal(18,2),
+    [Hourly Rate]  decimal(18,4) NULL,
+    [Date From]    date NULL,
+    [Date To]      date NULL,
+    [Leave Reason] varchar(2) NULL,
+    [Leave Units]  decimal(18,4) NULL,
+    [A/D Code]     varchar(2) NULL,
+    [Units]        decimal(18,4) NULL,
+    [Unit Rate]    decimal(18,4) NULL,
+    [Account]      varchar(20),
+    [Labour Costing 3] varchar(11),
+    [User Costing 1]   varchar(10),
+    [User Costing 2]   varchar(10),
+    [Blank]            varchar(10) NULL,
+    [BaseRate] decimal(18,4) NULL,
+    [EMSRate]  decimal(18,4) NULL,
+    [SiteRate] decimal(18,4) NULL,
+    [TierRate] decimal(18,4) NULL,
+    [branchName]   varchar(100) NULL,
+    [AreaRateName] varchar(50) NULL,
+    [TierRateName] varchar(50) NULL,
+    [locationName] varchar(200) NULL,
+    [areaName]     varchar(200) NULL
+  )
+);</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping">"@eventId:Input",{B04C9740-792C-4468-B4DD-35277F8C6694};"@extType:Input",{8C12A981-DCC2-4E52-94EE-6C9F3166B753};</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Connections[OleDbConnection]"
+                      connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Record Type]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Record Type]"
+                          length="1"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Record Type]"
+                          name="Record Type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[ID Number]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[ID Number]"
+                          length="100"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[ID Number]"
+                          name="ID Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Costing Date]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Costing Date]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Costing Date]"
+                          name="Costing Date"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hours Code]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Hours Code]"
+                          length="50"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hours Code]"
+                          name="Hours Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hours Amount]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Hours Amount]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hours Amount]"
+                          name="Hours Amount"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hourly Rate]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Hourly Rate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Hourly Rate]"
+                          name="Hourly Rate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Date From]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Date From]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Date From]"
+                          name="Date From"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Date To]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Date To]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Date To]"
+                          name="Date To"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Leave Reason]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Leave Reason]"
+                          length="2"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Leave Reason]"
+                          name="Leave Reason"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Leave Units]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Leave Units]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Leave Units]"
+                          name="Leave Units"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[A/D Code]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[A/D Code]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[A/D Code]"
+                          name="A/D Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Units]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Units]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Units]"
+                          name="Units"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Unit Rate]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Unit Rate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Unit Rate]"
+                          name="Unit Rate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Account]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Account]"
+                          length="100"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Account]"
+                          name="Account"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Labour Costing 3]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Labour Costing 3]"
+                          length="11"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Labour Costing 3]"
+                          name="Labour Costing 3"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[User Costing 1]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[User Costing 1]"
+                          length="10"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[User Costing 1]"
+                          name="User Costing 1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[User Costing 2]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[User Costing 2]"
+                          length="10"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[User Costing 2]"
+                          name="User Costing 2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Blank]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Blank]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[Blank]"
+                          name="Blank"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[BaseRate]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[BaseRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[BaseRate]"
+                          name="BaseRate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[EMSRate]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[EMSRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[EMSRate]"
+                          name="EMSRate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[SiteRate]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[SiteRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[SiteRate]"
+                          name="SiteRate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[TierRate]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[TierRate]"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[TierRate]"
+                          name="TierRate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[branchName]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[branchName]"
+                          length="255"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[branchName]"
+                          name="branchName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[AreaRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[AreaRateName]"
+                          length="50"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[AreaRateName]"
+                          name="AreaRateName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[TierRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[TierRateName]"
+                          length="50"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[TierRateName]"
+                          name="TierRateName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[locationName]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[locationName]"
+                          length="255"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[locationName]"
+                          name="locationName"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[areaName]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[areaName]"
+                          length="255"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].Columns[areaName]"
+                          name="areaName"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Record Type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Record Type" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[ID Number]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="ID Number" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Costing Date]"
+                          dataType="dbDate"
+                          name="Costing Date" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Hours Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="4"
+                          name="Hours Code" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Hours Amount]"
+                          dataType="numeric"
+                          name="Hours Amount"
+                          precision="18"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Hourly Rate]"
+                          dataType="numeric"
+                          name="Hourly Rate"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Date From]"
+                          dataType="dbDate"
+                          name="Date From" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Date To]"
+                          dataType="dbDate"
+                          name="Date To" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Leave Reason]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          name="Leave Reason" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Leave Units]"
+                          dataType="numeric"
+                          name="Leave Units"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[A/D Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          name="A/D Code" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Units]"
+                          dataType="numeric"
+                          name="Units"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Unit Rate]"
+                          dataType="numeric"
+                          name="Unit Rate"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="Account" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Labour Costing 3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="11"
+                          name="Labour Costing 3" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[User Costing 1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="User Costing 1" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[User Costing 2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="User Costing 2" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[Blank]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="Blank" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[BaseRate]"
+                          dataType="numeric"
+                          name="BaseRate"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[EMSRate]"
+                          dataType="numeric"
+                          name="EMSRate"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[SiteRate]"
+                          dataType="numeric"
+                          name="SiteRate"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[TierRate]"
+                          dataType="numeric"
+                          name="TierRate"
+                          precision="18"
+                          scale="4" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[branchName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="branchName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[AreaRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="AreaRateName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[TierRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="TierRateName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[locationName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="200"
+                          name="locationName" />
+                        <externalMetadataColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output].ExternalColumns[areaName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="200"
+                          name="areaName" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Record Type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Record Type]"
+                          name="Record Type" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[ID Number]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[ID Number]"
+                          name="ID Number" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Costing Date]"
+                          dataType="dbDate"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Costing Date]"
+                          name="Costing Date" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Hours Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="4"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Hours Code]"
+                          name="Hours Code" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Hours Amount]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Hours Amount]"
+                          name="Hours Amount"
+                          precision="18"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Hourly Rate]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Hourly Rate]"
+                          name="Hourly Rate"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Date From]"
+                          dataType="dbDate"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Date From]"
+                          name="Date From" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Date To]"
+                          dataType="dbDate"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Date To]"
+                          name="Date To" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Leave Reason]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Leave Reason]"
+                          name="Leave Reason" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Leave Units]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Leave Units]"
+                          name="Leave Units"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[A/D Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[A/D Code]"
+                          name="A/D Code" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Units]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Units]"
+                          name="Units"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Unit Rate]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Unit Rate]"
+                          name="Unit Rate"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Account]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Account]"
+                          name="Account" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Labour Costing 3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="11"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Labour Costing 3]"
+                          name="Labour Costing 3" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[User Costing 1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[User Costing 1]"
+                          name="User Costing 1" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[User Costing 2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[User Costing 2]"
+                          name="User Costing 2" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Blank]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[Blank]"
+                          name="Blank" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[BaseRate]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[BaseRate]"
+                          name="BaseRate"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[EMSRate]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[EMSRate]"
+                          name="EMSRate"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[SiteRate]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[SiteRate]"
+                          name="SiteRate"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[TierRate]"
+                          dataType="numeric"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[TierRate]"
+                          name="TierRate"
+                          precision="18"
+                          scale="4" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[branchName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[branchName]"
+                          name="branchName" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[AreaRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[AreaRateName]"
+                          name="AreaRateName" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[TierRateName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[TierRateName]"
+                          name="TierRateName" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[locationName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="200"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[locationName]"
+                          name="locationName" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[areaName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="200"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[areaName]"
+                          name="areaName" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\If Rows Returned\Build Payroll CSV.Paths[OLE DB Source Output]"
+                  endId="Package\If Rows Returned\Build Payroll CSV\Payroll CSV.Inputs[Flat File Destination Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\If Rows Returned\Build Payroll CSV\Payroll SQL.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\If Rows Returned\DEP Extracted"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:Disabled="True"
+          DTS:DTSID="{0D704462-6FD5-4903-AB2F-ADD7853AC7E8}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DEP Extracted"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="Disable">@[User::X_EXTTYPE] != "EXTRACT"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}"
+              SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@eventId int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@userEmail varchar(100) = ?;&#xA;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@jsonObjLen int = 36; -- allows 5 characters above typical object size + declared variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@jsonObjMax int = CASE WHEN (2000 / @jsonObjLen) &gt; 50 THEN 50 ELSE 2000 / @jsonObjLen END; -- 2000 is max character length for the DB field storing the JSON body for Deputy&#xA;&#xA;-- Create Event to update Deputy&#xA;DECLARE @event TABLE (eventId int)&#xA;DECLARE @impeventId int&#xA;&#xA;INSERT INTO eda.ETL_EVENT (ETL_REF, ETL_RUN_CODE, EVENT_STATUS, EVENT_DATE_CREATE, EVENT_SOURCE, EVENT_INPUT, EVENT_OUTPUT, EVENT_USER_EMAIL, DATE_LAST_MODIFIED, EVENT_KICKOFF_DATE)&#xA;OUTPUT Inserted.EVENT_ID INTO @event&#xA;VALUES (&#xA;&#x9;6002,&#xA;&#x9;0,&#xA;&#x9;'NEW',&#xA;&#x9;GETDATE(),&#xA;&#x9;'Payroll Extract', -- Source of the Event&#xA;&#x9;'GENERAL RESOURCE', --DATA SOURCE options: Timesheet Paid, Employee Custom Field, General Resource, Emp Agree Migration, Timesheet Reprocess, Deputy&#xA;&#x9;'DEPUTY', -- DATA TARGET options: Preceda, Billing, Subcontractor, Deputy&#xA;&#x9;@userEmail, -- Use your own email here&#xA;&#x9;GETDATE(),&#xA;&#x9;NULL -- NULL if you want the event to process now, otherwise provide datetime it should run server time (perth - UTC + 8)&#xA;);&#xA;&#xA;SELECT @impeventId = eventId FROM @event;&#xA;&#xA;&#xA;WITH&#x9;&#x9;&#x9;&#x9;&#x9;payExtracted AS(&#xA;SELECT DISTINCT&#x9;&#x9;&#x9;t.Id timeSheetID,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ROW_NUMBER() OVER (ORDER BY t.Id) rowNum&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;eda.EXT_DEP_FULL t&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;t.MDEventId = @eventId&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.TimeApproved = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ISNULL(t.LeaveRuleId,0) NOT IN (11,27,28,29,30,31)&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.payCentre IN ('Employee Timesheets', 'Agency Timesheets')&#xA;AND &#x9;&#x9;&#x9;&#x9;&#x9;(isnull(t.timesheetHours,0) + isnull(t.phHours,0)) &gt; 0.12),&#xA;Grouped AS (&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;((rowNum - 1) / @jsonObjMax) AS grp,  -- group number, 50 rows per group&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CONCAT('{&quot;Id&quot;:', timeSheetID, ',&quot;Exported&quot;:true}') AS JsonRow&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM payExtracted&#xA;)&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;eda.IMP_DEPRESOURCE (eventId,apiType,resource,recordId,isBulk,isInsert,reqBody)&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;@impeventId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'resource',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Timesheet',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;grp,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;1,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CONCAT('[', STRING_AGG(JsonRow, ','), ']') AS JsonArray&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;Grouped&#xA;GROUP BY&#x9;&#x9;&#x9;&#x9;grp&#xA;ORDER BY&#x9;&#x9;&#x9;&#x9;grp;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::X_EVENTID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::X_EMAIL"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="129"
+                SQLTask:ParameterSize="100" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\If Rows Returned\Sch DEP Paid"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:Disabled="True"
+          DTS:DTSID="{2A9F6452-33B2-42A9-B8A1-BBE3E4D73A5E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Sch DEP Paid"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="Disable">@[User::X_EXTTYPE] != "EXTRACT"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}"
+              SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@eventId int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@userEmail varchar(100) = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@sysDate datetime = DATEADD(DAY,1,SYSDATETIME())&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@kickoffDate datetime = DATETIMEFROMPARTS(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Year(@sysDate),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Month(@sysDate),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Day(@sysDate),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;23,0,0,0&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@jsonObjLen int = 36; -- allows 5 characters above typical object size + declared variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@jsonObjMax int = 50; --CASE WHEN (2000 / @jsonObjLen) &gt; 50 THEN 50 ELSE 2000 / @jsonObjLen END; -- 2000 is max character length for the DB field storing the JSON body for Deputy&#xA;&#xA;-- Create Event to update Deputy&#xA;DECLARE @event TABLE (eventId int);&#xA;DECLARE @impeventId int = -1;&#xA;&#xA;INSERT INTO eda.ETL_EVENT (ETL_REF, ETL_RUN_CODE, EVENT_STATUS, EVENT_DATE_CREATE, EVENT_SOURCE, EVENT_INPUT, EVENT_OUTPUT, EVENT_USER_EMAIL, DATE_LAST_MODIFIED, EVENT_KICKOFF_DATE)&#xA;OUTPUT Inserted.EVENT_ID INTO @event&#xA;VALUES (&#xA;&#x9;6002,&#xA;&#x9;0,&#xA;&#x9;'NEW',&#xA;&#x9;GETDATE(),&#xA;&#x9;'Payroll Extract', -- Source of the Event&#xA;&#x9;'TIMESHEET PAID', --DATA SOURCE options: Timesheet Paid, Employee Custom Field, General Resource, Emp Agree Migration, Timesheet Reprocess, Deputy&#xA;&#x9;'DEPUTY', -- DATA TARGET options: Preceda, Billing, Subcontractor, Deputy&#xA;&#x9;@userEmail, -- Use your own email here&#xA;&#x9;GETDATE(),&#xA;&#x9;@kickoffDate -- NULL if you want the event to process now, otherwise provide datetime it should run server time (perth - UTC + 8)&#xA;);&#xA;&#xA;SELECT @impeventId = eventId FROM @event;&#xA;&#xA;&#xA;WITH&#x9;&#x9;&#x9;&#x9;&#x9;payExtracted AS(&#xA;SELECT DISTINCT&#x9;&#x9;&#x9;t.Id timeSheetID,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;p.PeriodId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ROW_NUMBER() OVER (PARTITION BY p.periodId ORDER BY p.periodId, t.Id) rowNum&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;eda.EXT_DEP_FULL t&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;eda.STG_DEP_EmpeePaycycle p ON t.PayCycleId = p.Id&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;t.MDEventId = @eventId&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.TimeApproved = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ISNULL(t.LeaveRuleId,0) NOT IN (11,27,28,29,30,31)&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.payCentre IN ('Employee Timesheets', 'Agency Timesheets')&#xA;AND &#x9;&#x9;&#x9;&#x9;&#x9;(isnull(t.timesheetHours,0) + isnull(t.phHours,0)) &gt; 0.12),&#xA;Grouped AS (&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;((rowNum - 1) / @jsonObjMax) AS grp,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;timeSheetID,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;PeriodId&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;payExtracted&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;PeriodId is NOT NULL&#xA;&#xA;&#xA;)&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;eda.IMP_DEPRESOURCE (eventId,apiType,resource,recordId,isBulk,isInsert,reqBody)&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;@impeventId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'na',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'paid',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;PeriodId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CONCAT('{&quot;TimesheetIdArray&quot;:[',STRING_AGG(timeSheetID,','),']}') JsonBody&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;Grouped&#xA;GROUP BY&#x9;&#x9;&#x9;&#x9;grp, PeriodId&#xA;ORDER BY&#x9;&#x9;&#x9;&#x9;grp, PeriodId;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::X_EVENTID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::X_EMAIL"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="129"
+                SQLTask:ParameterSize="100" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\If Rows Returned\Send Mail Task"
+          DTS:CreationName="Microsoft.SendMailTask"
+          DTS:Description="Send Mail Task"
+          DTS:DTSID="{CECD4C85-1CFE-47BE-8601-D02765C743A3}"
+          DTS:ExecutableType="Microsoft.SendMailTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Send Mail Task"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="FileAttachments">@[$Project::ENV_CONNECTION_1_CSV_DIR] + "CSV_EDA\\Payroll.csv"</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="ToLine">@[User::X_EMAIL]</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SendMailTask:SendMailTaskData
+              SendMailTask:SMTPServer="{8427DCB5-5C99-43C8-9B8D-CD2F38F9B8CD}"
+              SendMailTask:From="fsg.systems@firstsecurity.co.nz"
+              SendMailTask:To="tony.smith@firstsecurity.co.nz"
+              SendMailTask:Subject="Payroll Extract"
+              SendMailTask:MessageSource="Payroll extract attached" xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask">
+              <SendMailTask:Attachments
+                SendMailTask:FileName="C:\SSIS-Files\CSV_EDA\Payroll.csv" />
+            </SendMailTask:SendMailTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\If Rows Returned.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{F67803BC-5D8F-478F-B706-B99D8684A1A3}"
+          DTS:From="Package\If Rows Returned\Build Payroll CSV"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\If Rows Returned\Send Mail Task" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\If Rows Returned.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{787C7045-B0A8-40F1-A011-1A21CCBB569E}"
+          DTS:From="Package\If Rows Returned\Send Mail Task"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\If Rows Returned\DEP Extracted" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\If Rows Returned.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{2B1CA84E-F801-4442-AD37-0EF2A1E53D52}"
+          DTS:From="Package\If Rows Returned\DEP Extracted"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\If Rows Returned\Sch DEP Paid" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Row Count"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D94EFA0D-36E3-4275-9FD7-B2EF9914ED6D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Row Count"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@eventId int = ?;&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;count(1) rowNum&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;eda.EXT_DEP_FULL t&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;t.MDEventId = @eventId&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.TimeApproved = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Exported,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ISNULL(t.LeaveRuleId,0) NOT IN (11,27,28,29,30,31)&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.payCentre IN ('Employee Timesheets', 'Agency Timesheets')&#xA;AND &#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.lineHours,t.timesheetHours) &gt; 0.12"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::ROW_COUNT" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::X_EVENTID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{4FE666C6-D592-459B-9BCA-E3286D214DDB}"
+      DTS:From="Package\Get Variables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Row Count" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{C940ED93-9B04-4485-8329-F8B842AFD869}"
+      DTS:From="Package\Row Count"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\If Rows Returned" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Get Variables"
+          TopLeft="53,38" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\If Rows Returned\Build Payroll CSV"
+          TopLeft="27,21" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\If Rows Returned\DEP Extracted"
+          TopLeft="250,45" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\If Rows Returned\Sch DEP Paid"
+          TopLeft="248,158" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\If Rows Returned\Send Mail Task"
+          TopLeft="36,103" />
+        <EdgeLayout
+          Id="Package\If Rows Returned.PrecedenceConstraints[Constraint]"
+          TopLeft="108.75,63">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,40"
+              Start="0,0"
+              End="0,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\If Rows Returned.PrecedenceConstraints[Constraint 1]"
+          TopLeft="186,124">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="64,-58"
+              Start="0,0"
+              End="56.5,-58">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="28,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="28,0"
+                    Point2="32,0"
+                    Point3="32,-4" />
+                  <mssgle:LineSegment
+                    End="32,-54" />
+                  <mssgle:CubicBezierSegment
+                    Point1="32,-54"
+                    Point2="32,-58"
+                    Point3="36,-58" />
+                  <mssgle:LineSegment
+                    End="56.5,-58" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\If Rows Returned.PrecedenceConstraints[Constraint 2]"
+          TopLeft="321,87">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="500,407"
+          Size="500,450"
+          Id="Package\If Rows Returned"
+          TopLeft="55,116" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\Row Count"
+          TopLeft="303,37" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="194,58.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="109,0"
+              Start="0,0"
+              End="101.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="101.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="368,79">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-63,37"
+              Start="0,0"
+              End="-63,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.5"
+                    Point2="0,18.5"
+                    Point3="-4,18.5" />
+                  <mssgle:LineSegment
+                    End="-59,18.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-59,18.5"
+                    Point2="-63,18.5"
+                    Point3="-63,22.5" />
+                  <mssgle:LineSegment
+                    End="-63,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\If Rows Returned\Build Payroll CSV">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\If Rows Returned\Build Payroll CSV\Payroll SQL"
+          TopLeft="71,60" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\If Rows Returned\Build Payroll CSV\Payroll CSV"
+          TopLeft="58,190" />
+        <EdgeLayout
+          Id="Package\If Rows Returned\Build Payroll CSV.Paths[OLE DB Source Output]"
+          TopLeft="137,102">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13,88"
+              Start="0,0"
+              End="-13,80.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40"
+                    Point2="0,44"
+                    Point3="-4,44" />
+                  <mssgle:LineSegment
+                    End="-9,44" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9,44"
+                    Point2="-13,44"
+                    Point3="-13,48" />
+                  <mssgle:LineSegment
+                    End="-13,80.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\If Rows Returned\Build Payroll CSV\Payroll SQL">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

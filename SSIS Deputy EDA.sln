@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "Deputy EDA", "Deputy EDA.dtproj", "{C51C19F7-F913-471F-8CFD-7272A3353E6B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C51C19F7-F913-471F-8CFD-7272A3353E6B}.Debug|Any CPU.ActiveCfg = Development
+		{C51C19F7-F913-471F-8CFD-7272A3353E6B}.Debug|Any CPU.Build.0 = Development
+		{C51C19F7-F913-471F-8CFD-7272A3353E6B}.Development|Any CPU.ActiveCfg = Development
+		{C51C19F7-F913-471F-8CFD-7272A3353E6B}.Development|Any CPU.Build.0 = Development
+		{C51C19F7-F913-471F-8CFD-7272A3353E6B}.Release|Any CPU.ActiveCfg = Development
+		{C51C19F7-F913-471F-8CFD-7272A3353E6B}.Release|Any CPU.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4C61A48-488D-4190-8C1A-B2621A1492CB}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,3135 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/18/2024 5:48:21 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{D01AAC89-FC33-4368-B2EF-246B35D994DA}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="3081"
+  DTS:ObjectName="1 Lookup Greentree"
+  DTS:PackageType="5"
+  DTS:VersionBuild="14"
+  DTS:VersionGUID="{A7F96197-9B94-4F27-9193-C5C86E717B0D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{250A3FF4-AD89-4461-BA98-9F4E4F861457}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LKP_DATE_END">
+      <DTS:VariableValue
+        DTS:DataType="7">8/22/2025 5:55:45 PM</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Dep LKPS"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{C24F6C6F-97E3-489A-B80A-90C0DFF4EE9F}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Dep LKPS"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Dep LKPS\EDA ClientTierRate"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="EDA ClientTierRate"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_ClientTierRate]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Dep LKPS\EDA ClientTierRate.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[FK_ProductCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="15"
+                      cachedName="FK_ProductCode"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[FK_ProductCode]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_ProductCode]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[FK_SecurityGuardID]"
+                      cachedDataType="i4"
+                      cachedName="FK_SecurityGuardID"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[FK_SecurityGuardID]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_SecurityGuardID]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[FK_WorkAreaID]"
+                      cachedDataType="i4"
+                      cachedName="FK_WorkAreaID"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[FK_WorkAreaID]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_WorkAreaID]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[TierPayRate]"
+                      cachedDataType="numeric"
+                      cachedName="TierPayRate"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[TierPayRate]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[TierPayRate]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[PrecedaPayCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="2"
+                      cachedName="PrecedaPayCode"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[PrecedaPayCode]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[PrecedaPayCode]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[EffectiveFrom]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="EffectiveFrom"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveFrom]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[EffectiveFrom]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].Columns[EffectiveTo]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="EffectiveTo"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveTo]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[EffectiveTo]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="FK_ProductCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[FK_SecurityGuardID]"
+                      dataType="i4"
+                      name="FK_SecurityGuardID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[FK_WorkAreaID]"
+                      dataType="i4"
+                      name="FK_WorkAreaID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[TierPayRate]"
+                      dataType="numeric"
+                      name="TierPayRate"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="PrecedaPayCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveTo" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Dep LKPS\EDA ClientTierRate.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\EDA ClientTierRate.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\EDA ClientTierRate.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\EDA ClientTierRate.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Dep LKPS\EDA LeaveRosterHistory"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="EDA LeaveRosterHistory"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_LeaveRosterHistory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Dep LKPS\EDA LeaveRosterHistory.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[EmployeeId]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].Columns[wkDay]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="wkDay"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[wkDay]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[wkDay]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[AreaId]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].Columns[rosterCount]"
+                      cachedDataType="i4"
+                      cachedName="rosterCount"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[rosterCount]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[rosterCount]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[wkDay]"
+                      dataType="wstr"
+                      length="30"
+                      name="wkDay" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input].ExternalColumns[rosterCount]"
+                      dataType="i4"
+                      name="rosterCount" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Dep LKPS\EDA LeaveRosterHistory.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\EDA LeaveRosterHistory.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\EDA LeaveRosterHistory.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\EDA LeaveRosterHistory.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Dep LKPS\EDA SiteRates"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="EDA SiteRates"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_SiteRate]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Dep LKPS\EDA SiteRates.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[PK_WorkAreaID]"
+                      cachedDataType="i4"
+                      cachedName="PK_WorkAreaID"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[PK_WorkAreaID]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PK_WorkAreaID]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[FK_CostCentre]"
+                      cachedDataType="i4"
+                      cachedName="FK_CostCentre"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[FK_CostCentre]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_CostCentre]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[FK_ProductCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="FK_ProductCode"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[FK_ProductCode]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_ProductCode]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[PayRate]"
+                      cachedDataType="numeric"
+                      cachedName="PayRate"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[PayRate]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PayRate]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[PrecedaPayCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="2"
+                      cachedName="PrecedaPayCode"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[PrecedaPayCode]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PrecedaPayCode]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[EffectiveFrom]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="EffectiveFrom"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveFrom]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[EffectiveFrom]" />
+                    <inputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].Columns[EffectiveTo]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="EffectiveTo"
+                      externalMetadataColumnId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveTo]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[EffectiveTo]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[PK_WorkAreaID]"
+                      dataType="i4"
+                      name="PK_WorkAreaID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[FK_CostCentre]"
+                      dataType="i4"
+                      name="FK_CostCentre" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="FK_ProductCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[PayRate]"
+                      dataType="numeric"
+                      name="PayRate"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="PrecedaPayCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveTo" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Dep LKPS\EDA SiteRates.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\EDA SiteRates.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\EDA SiteRates.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\EDA SiteRates.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Dep LKPS\LKP ClientTierRate"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="LKP ClientTierRate"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_ClientTiers]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Dep LKPS\LKP ClientTierRate.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_ProductCode]"
+                      length="15"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_ProductCode]"
+                      name="FK_ProductCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_SecurityGuardID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_SecurityGuardID]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_SecurityGuardID]"
+                      name="FK_SecurityGuardID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_WorkAreaID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_WorkAreaID]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[FK_WorkAreaID]"
+                      name="FK_WorkAreaID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[TierPayRate]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[TierPayRate]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[TierPayRate]"
+                      name="TierPayRate"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[PrecedaPayCode]"
+                      length="2"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[PrecedaPayCode]"
+                      name="PrecedaPayCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveFrom]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[EffectiveFrom]"
+                      name="EffectiveFrom"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveTo]"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].Columns[EffectiveTo]"
+                      name="EffectiveTo"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[PK_ClientTierID]"
+                      dataType="i4"
+                      name="PK_ClientTierID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="FK_ProductCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_SecurityGuardID]"
+                      dataType="i4"
+                      name="FK_SecurityGuardID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_WorkAreaID]"
+                      dataType="i4"
+                      name="FK_WorkAreaID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[FK_QualityCheck]"
+                      dataType="i4"
+                      name="FK_QualityCheck" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[TierPayRate]"
+                      dataType="numeric"
+                      name="TierPayRate"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="PrecedaPayCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveTo" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output].ExternalColumns[LastRefreshed]"
+                      dataType="dbTimeStamp"
+                      name="LastRefreshed" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[FK_ProductCode]"
+                      name="FK_ProductCode" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[FK_SecurityGuardID]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[FK_SecurityGuardID]"
+                      name="FK_SecurityGuardID" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[FK_WorkAreaID]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[FK_WorkAreaID]"
+                      name="FK_WorkAreaID" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[TierPayRate]"
+                      dataType="numeric"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[TierPayRate]"
+                      name="TierPayRate"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[PrecedaPayCode]"
+                      name="PrecedaPayCode" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[EffectiveFrom]"
+                      name="EffectiveFrom" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[EffectiveTo]"
+                      name="EffectiveTo" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Dep LKPS\LKP LeaveRosterHistory"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="LKP LeaveRosterHistory"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SET DATEFIRST 1
+
+DECLARE			@endDate date = ?;
+DECLARE			@effectiveDate date = DATEADD(day,CASE DATEPART(dw,@endDate)
+					WHEN 1 THEN 0
+					ELSE 7 - DATEPART(dw,@endDate) + 1 END
+					,@endDate);
+
+SELECT					r.EmployeeId,
+						datename(dw,r.RosterDate) wkDay,
+						r.AreaId,
+						count(r.Id) rosterCount
+FROM					staging.FCT_DEP_ROSTER r
+WHERE					r.RosterDate &gt;= DATEADD(Week,-13,@effectiveDate)
+AND						r.RosterDate &lt; @effectiveDate
+AND						r.EmployeeId &gt; 0
+GROUP BY				r.EmployeeId,
+						datename(dw,r.RosterDate),
+						r.AreaId
+ORDER BY				r.EmployeeId,
+						datename(dw,r.RosterDate),
+						count(r.Id) DESC</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{250A3FF4-AD89-4461-BA98-9F4E4F861457};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Dep LKPS\LKP LeaveRosterHistory.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[EmployeeId]"
+                      name="EmployeeId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[wkDay]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[wkDay]"
+                      length="30"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[wkDay]"
+                      name="wkDay"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[AreaId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[AreaId]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[AreaId]"
+                      name="AreaId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[rosterCount]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[rosterCount]"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].Columns[rosterCount]"
+                      name="rosterCount"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[wkDay]"
+                      dataType="wstr"
+                      length="30"
+                      name="wkDay" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output].ExternalColumns[rosterCount]"
+                      dataType="i4"
+                      name="rosterCount" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[EmployeeId]"
+                      name="EmployeeId" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[wkDay]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[wkDay]"
+                      name="wkDay" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[AreaId]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[AreaId]"
+                      name="AreaId" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[rosterCount]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[rosterCount]"
+                      name="rosterCount" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Dep LKPS\LKP SiteRate"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="LKP SiteRate"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_WorkAreas]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Dep LKPS\LKP SiteRate.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PK_WorkAreaID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[PK_WorkAreaID]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PK_WorkAreaID]"
+                      name="PK_WorkAreaID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_CostCentre]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_CostCentre]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_CostCentre]"
+                      name="FK_CostCentre"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_ProductCode]"
+                      length="20"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_ProductCode]"
+                      name="FK_ProductCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PayRate]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[PayRate]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PayRate]"
+                      name="PayRate"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[PrecedaPayCode]"
+                      length="2"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[PrecedaPayCode]"
+                      name="PrecedaPayCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[WorkAreaName]"
+                      length="100"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[WorkAreaName]"
+                      name="WorkAreaName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_LocationCode]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_LocationCode]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[FK_LocationCode]"
+                      name="FK_LocationCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveFrom]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[EffectiveFrom]"
+                      name="EffectiveFrom"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveTo]"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].Columns[EffectiveTo]"
+                      name="EffectiveTo"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[PK_WorkAreaID]"
+                      dataType="i4"
+                      name="PK_WorkAreaID" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_CostCentre]"
+                      dataType="i4"
+                      name="FK_CostCentre" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="FK_ProductCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_QualityCheck]"
+                      dataType="i4"
+                      name="FK_QualityCheck" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[PayRate]"
+                      dataType="numeric"
+                      name="PayRate"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="PrecedaPayCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[LastRefreshed]"
+                      dataType="dbTimeStamp"
+                      name="LastRefreshed" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="WorkAreaName" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[FK_LocationCode]"
+                      dataType="i4"
+                      name="FK_LocationCode" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output].ExternalColumns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveTo" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[PK_WorkAreaID]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[PK_WorkAreaID]"
+                      name="PK_WorkAreaID" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[WorkAreaName]"
+                      name="WorkAreaName" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[FK_LocationCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[FK_LocationCode]"
+                      name="FK_LocationCode" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[FK_CostCentre]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[FK_CostCentre]"
+                      name="FK_CostCentre" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[FK_ProductCode]"
+                      name="FK_ProductCode" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[PayRate]"
+                      dataType="numeric"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[PayRate]"
+                      name="PayRate"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[PrecedaPayCode]"
+                      name="PrecedaPayCode" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[EffectiveFrom]"
+                      name="EffectiveFrom" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[EffectiveTo]"
+                      name="EffectiveTo" />
+                    <outputColumn
+                      refId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Dep LKPS.Paths[OLE DB Source Output]"
+              endId="Package\Dep LKPS\EDA SiteRates.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Dep LKPS\LKP SiteRate.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Dep LKPS.Paths[OLE DB Source Output1]"
+              endId="Package\Dep LKPS\EDA ClientTierRate.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Dep LKPS\LKP ClientTierRate.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Dep LKPS.Paths[OLE DB Source Output2]"
+              endId="Package\Dep LKPS\EDA LeaveRosterHistory.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Dep LKPS\LKP LeaveRosterHistory.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\GT LKPS"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{EC5176CC-BCE3-4202-9743-4153F42842BD}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="GT LKPS"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\GT LKPS\LKP Activity"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="LKP Activity"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_GT_ACTIVITY]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\GT LKPS\LKP Activity.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].Columns[activityCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="activityCode"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[activityCode]"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[activityCode]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].Columns[activityName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="activityName"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[activityName]"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[activityName]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].Columns[debitGLAccount]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="debitGLAccount"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[debitGLAccount]"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[debitGLAccount]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].Columns[creditGLAccount]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="creditGLAccount"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[creditGLAccount]"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[creditGLAccount]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[activityCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="activityCode" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[activityName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="activityName" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[debitGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="debitGLAccount" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input].ExternalColumns[creditGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="creditGLAccount" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\GT LKPS\LKP Activity.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\LKP Activity.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\LKP Activity.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\GT LKPS\LKP Activity.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\LKP Activity.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\GT LKPS\LKP GL"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="LKP GL"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_GT_GL]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\GT LKPS\LKP GL.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input].Columns[accountNo]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="32"
+                      cachedName="accountNo"
+                      externalMetadataColumnId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input].ExternalColumns[accountNo]"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].Columns[accountNo]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input].Columns[accountName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="accountName"
+                      externalMetadataColumnId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input].ExternalColumns[accountName]"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].Columns[accountName]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input].ExternalColumns[accountNo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="32"
+                      name="accountNo" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input].ExternalColumns[accountName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="accountName" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\GT LKPS\LKP GL.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\LKP GL.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\LKP GL.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\GT LKPS\LKP GL.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\LKP GL.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\GT LKPS\LKP Job"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="LKP Job"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_GT_JOB]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\GT LKPS\LKP Job.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[jobCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="jobCode"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobCode]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobCode]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[jobName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="120"
+                      cachedName="jobName"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobName]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobName]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[jobStatus]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="jobStatus"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobStatus]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobStatus]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[isClosed]"
+                      cachedDataType="bool"
+                      cachedName="isClosed"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[isClosed]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[isClosed]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[jobDrGL]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="jobDrGL"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobDrGL]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobDrGL]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[sendToPreceda]"
+                      cachedDataType="i4"
+                      cachedName="sendToPreceda"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[sendToPreceda]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[sendToPreceda]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[wageRate]"
+                      cachedDataType="r8"
+                      cachedName="wageRate"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[wageRate]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[wageRate]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[gtSource]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="gtSource"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[gtSource]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[gtSource]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[jobType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="6"
+                      cachedName="jobType"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobType]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobType]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[custCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="12"
+                      cachedName="custCode"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[custCode]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[custCode]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[custName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="custName"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[custName]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[custName]" />
+                    <inputColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].Columns[billingType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="6"
+                      cachedName="billingType"
+                      externalMetadataColumnId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[billingType]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[billingType]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="jobCode" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="120"
+                      name="jobName" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="jobStatus" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[isClosed]"
+                      dataType="bool"
+                      name="isClosed" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobDrGL]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="jobDrGL" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[sendToPreceda]"
+                      dataType="bool"
+                      name="sendToPreceda" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[wageRate]"
+                      dataType="r8"
+                      name="wageRate" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[gtSource]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="gtSource" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[jobType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="jobType" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[custCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="12"
+                      name="custCode" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[custName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="custName" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input].ExternalColumns[billingType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="billingType" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\GT LKPS\LKP Job.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\LKP Job.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\LKP Job.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\GT LKPS\LKP Job.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\LKP Job.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\GT LKPS\VGL"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="VGL"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT			a.accountNo, a.description accountName
+FROM			dbo.VGLAccount a
+INNER JOIN		dbo.StringReference s ON a.myStatus_clsno = s.oid_clsno AND a.myStatus_instid = s.oid_instid
+WHERE			s.text = 'Active'</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\GT LKPS\VGL.Connections[OleDbConnection]"
+                  connectionManagerID="{DE93751A-BC4B-4929-812E-116F703430EC}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[1 GT RPS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].Columns[accountNo]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].ExternalColumns[accountNo]"
+                      length="32"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].Columns[accountNo]"
+                      name="accountNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].Columns[accountName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].ExternalColumns[accountName]"
+                      length="50"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].Columns[accountName]"
+                      name="accountName"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].ExternalColumns[accountNo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="32"
+                      name="accountNo" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output].ExternalColumns[accountName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="accountName" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[accountNo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="32"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[accountNo]"
+                      name="accountNo" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[accountName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[accountName]"
+                      name="accountName" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VGL.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\GT LKPS\VJCActivity"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="VJCActivity"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">-- Author: Tony Smith
+-- Date: March 2023
+-- Description: Pull Greentree Activity
+SELECT		a.code activityCode,
+			a.description activityName,
+			a.debitGLAccount,
+			a.creditGLAccount
+FROM		dbo.VJCActivityCode a
+WHERE		a.type = 'Time'</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\GT LKPS\VJCActivity.Connections[OleDbConnection]"
+                  connectionManagerID="{DE93751A-BC4B-4929-812E-116F703430EC}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[1 GT RPS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[activityCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[activityCode]"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[activityCode]"
+                      name="activityCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[activityName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[activityName]"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[activityName]"
+                      name="activityName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[debitGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[debitGLAccount]"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[debitGLAccount]"
+                      name="debitGLAccount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[creditGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[creditGLAccount]"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].Columns[creditGLAccount]"
+                      name="creditGLAccount"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[activityCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="activityCode" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[activityName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="activityName" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[debitGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="debitGLAccount" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output].ExternalColumns[creditGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="creditGLAccount" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[activityCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[activityCode]"
+                      name="activityCode" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[activityName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[activityName]"
+                      name="activityName" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[debitGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[debitGLAccount]"
+                      name="debitGLAccount" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[creditGLAccount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[creditGLAccount]"
+                      name="creditGLAccount" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\GT LKPS\VJob"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="VJob"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">-- Author: Tony Smith
+-- Date: March 2023 - January 2025
+-- Description: Pull Greentree Job Code Lookup for use
+SELECT				j.code jobCode,
+					j.name jobName,
+					s.statusName jobStatus,
+					j.isClosed,
+					jt.code billingType,
+					p.glAccount jobDrGL,
+					coalesce(sp.spValue,0) sendToPreceda,
+					coalesce(jp.spValue,0) wageRate,
+					Cast('VJob' as varchar(20)) gtSource,
+					t.code jobType,
+					c.code custCode,
+					c.name custName
+FROM				dbo.VJob j
+INNER JOIN			dbo.VJCStatus s ON j.myJobStatus_clsno = s.oid_clsno AND j.myJobStatus_instid = s.oid_instid
+INNER JOIN			dbo.VProfitCentre p ON j.myProfitCentre_clsno = p.oid_clsno AND j.myProfitCentre_instid = p.oid_instid
+INNER JOIN			dbo.VJCJobType t ON j.myJCJobType_clsno = t.oid_clsno AND j.myJCJobType_instid = t.oid_instid
+INNER JOIN			dbo.VCustomer c ON j.myCustomer_clsno = c.oid_clsno AND j.myCustomer_instid = c.oid_instid
+INNER JOIN			dbo.VJCChargeType jt ON j.myJCChargeType_clsno = jt.oid_clsno AND j.myJCChargeType_instid = jt.oid_instid
+LEFT JOIN			(SELECT cast(uo.value as bit) spValue, uo.myJob_clsno, uo.myJob_instid
+					 FROM dbo.UDFObject uo INNER JOIN UDFObjectDefn uod ON uo.myObjectDefn_clsno = uod.oid_clsno AND uo.myObjectDefn_instid = uod.oid_instid 
+					 WHERE uod.name = 'Send to Preceda'
+					) sp ON j.oid_clsno = sp.myJob_clsno AND j.oid_instid = sp.myJob_instid
+LEFT JOIN			(SELECT cast(uo.value as float) spValue, uo.myJob_clsno, uo.myJob_instid
+					 FROM dbo.UDFObject uo INNER JOIN UDFObjectDefn uod ON uo.myObjectDefn_clsno = uod.oid_clsno AND uo.myObjectDefn_instid = uod.oid_instid 
+					 WHERE uod.name = 'WageRate'
+					) jp ON j.oid_clsno = jp.myJob_clsno AND j.oid_instid = jp.myJob_instid		
+UNION
+SELECT				j.code jobCode,
+					j.name jobName,
+					s.statusName jobStatus,
+					j.isClosed,
+					jt.code billingType,
+					p.glAccount jobDrGLL,
+					coalesce(sp.spValue,0) sendToPreceda,
+					coalesce(jp.spValue,0) wageRate,
+					Cast('VOverhead' as varchar(20)) gtSource,
+					t.code jobType,
+					null custCode,
+					null custName
+FROM				dbo.VOverhead j
+INNER JOIN			dbo.VJCStatus s ON j.myJobStatus_clsno = s.oid_clsno AND j.myJobStatus_instid = s.oid_instid
+INNER JOIN			dbo.VProfitCentre p ON j.myProfitCentre_clsno = p.oid_clsno AND j.myProfitCentre_instid = p.oid_instid
+INNER JOIN			dbo.VJCJobType t ON j.myJCJobType_clsno = t.oid_clsno AND j.myJCJobType_instid = t.oid_instid
+INNER JOIN			dbo.VJCChargeType jt ON j.myJCChargeType_clsno = jt.oid_clsno AND j.myJCChargeType_instid = jt.oid_instid
+LEFT JOIN			(SELECT cast(uo.value as bit) spValue, uo.myJob_clsno, uo.myJob_instid
+					 FROM dbo.UDFObject uo INNER JOIN UDFObjectDefn uod ON uo.myObjectDefn_clsno = uod.oid_clsno AND uo.myObjectDefn_instid = uod.oid_instid 
+					 WHERE uod.name = 'Send to Preceda'
+					) sp ON j.oid_clsno = sp.myJob_clsno AND j.oid_instid = sp.myJob_instid
+LEFT JOIN			(SELECT cast(uo.value as float) spValue, uo.myJob_clsno, uo.myJob_instid
+					 FROM dbo.UDFObject uo INNER JOIN UDFObjectDefn uod ON uo.myObjectDefn_clsno = uod.oid_clsno AND uo.myObjectDefn_instid = uod.oid_instid 
+					 WHERE uod.name = 'WageRate'
+					) jp ON j.oid_clsno = jp.myJob_clsno AND j.oid_instid = jp.myJob_instid</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\GT LKPS\VJob.Connections[OleDbConnection]"
+                  connectionManagerID="{DE93751A-BC4B-4929-812E-116F703430EC}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[1 GT RPS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobCode]"
+                      length="20"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobCode]"
+                      name="jobCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobName]"
+                      length="120"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobName]"
+                      name="jobName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobStatus]"
+                      length="20"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobStatus]"
+                      name="jobStatus"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[isClosed]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[isClosed]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[isClosed]"
+                      name="isClosed"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobDrGL]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobDrGL]"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobDrGL]"
+                      name="jobDrGL"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[sendToPreceda]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[sendToPreceda]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[sendToPreceda]"
+                      name="sendToPreceda"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[wageRate]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[wageRate]"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[wageRate]"
+                      name="wageRate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[gtSource]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[gtSource]"
+                      length="20"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[gtSource]"
+                      name="gtSource"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobType]"
+                      length="6"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[jobType]"
+                      name="jobType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[custCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[custCode]"
+                      length="12"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[custCode]"
+                      name="custCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[custName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[custName]"
+                      length="50"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[custName]"
+                      name="custName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[billingType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[billingType]"
+                      length="6"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].Columns[billingType]"
+                      name="billingType"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="jobCode" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="120"
+                      name="jobName" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="jobStatus" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[isClosed]"
+                      dataType="bool"
+                      name="isClosed" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobDrGL]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="jobDrGL" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[sendToPreceda]"
+                      dataType="i4"
+                      name="sendToPreceda" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[wageRate]"
+                      dataType="r8"
+                      name="wageRate" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[gtSource]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="gtSource" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[jobType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="jobType" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[custCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="12"
+                      name="custCode" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[custName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="custName" />
+                    <externalMetadataColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output].ExternalColumns[billingType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      name="billingType" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobCode]"
+                      name="jobCode" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="120"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobName]"
+                      name="jobName" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobStatus]"
+                      name="jobStatus" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[isClosed]"
+                      dataType="bool"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[isClosed]"
+                      name="isClosed" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[billingType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[billingType]"
+                      name="billingType" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobDrGL]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobDrGL]"
+                      name="jobDrGL" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[sendToPreceda]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[sendToPreceda]"
+                      name="sendToPreceda" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[wageRate]"
+                      dataType="r8"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[wageRate]"
+                      name="wageRate" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[gtSource]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[gtSource]"
+                      name="gtSource" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="6"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[jobType]"
+                      name="jobType" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[custCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="12"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[custCode]"
+                      name="custCode" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[custName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[custName]"
+                      name="custName" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\GT LKPS\VJob.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\GT LKPS.Paths[OLE DB Source Output]"
+              endId="Package\GT LKPS\LKP Job.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\GT LKPS\VJob.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\GT LKPS.Paths[OLE DB Source Output1]"
+              endId="Package\GT LKPS\LKP Activity.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\GT LKPS\VJCActivity.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\GT LKPS.Paths[OLE DB Source Output2]"
+              endId="Package\GT LKPS\LKP GL.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\GT LKPS\VGL.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\TRUNCATE LKPs"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{57a3077b-0cb6-431a-b3a7-26c455b1ab7f}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="TRUNCATE LKPs"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}"
+          SQLTask:SqlStatementSource="--TRUNCATE TABLE eda.LKP_GT_JOB;&#xA;--TRUNCATE TABLE eda.LKP_GT_ACTIVITY;&#xA;--TRUNCATE TABLE eda.LKP_GT_GL;&#xA;TRUNCATE TABLE eda.LKP_ClientTierRate;&#xA;TRUNCATE TABLE eda.LKP_SiteRate;&#xA;TRUNCATE TABLE eda.LKP_LeaveRosterHistory;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{E043EE1E-F7BB-4A9B-8F7A-0A6CE386263C}"
+      DTS:From="Package\TRUNCATE LKPs"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\GT LKPS" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{74DF3D51-7060-44B2-A2C3-0322E361FE84}"
+      DTS:From="Package\TRUNCATE LKPs"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Dep LKPS" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="124,42"
+          Id="Package\Dep LKPS"
+          TopLeft="322,153" />
+        <NodeLayout
+          Size="118.666666666667,42"
+          Id="Package\GT LKPS"
+          TopLeft="119,149" />
+        <NodeLayout
+          Size="168,42"
+          Id="Package\TRUNCATE LKPs"
+          TopLeft="104,44" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="161.333333333333,86">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="17.1666666666667,63"
+              Start="0,0"
+              End="17.1666666666667,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5566037735849" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.5566037735849"
+                    Point2="0,25.5566037735849"
+                    Point3="4,25.5566037735849" />
+                  <mssgle:LineSegment
+                    End="13.1666666666667,25.5566037735849" />
+                  <mssgle:CubicBezierSegment
+                    Point1="13.1666666666667,25.5566037735849"
+                    Point2="17.1666666666667,25.5566037735849"
+                    Point3="17.1666666666667,29.5566037735849" />
+                  <mssgle:LineSegment
+                    End="17.1666666666667,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="214.666666666667,86">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="169.333333333333,67"
+              Start="0,0"
+              End="169.333333333333,59.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.1792452830189" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.1792452830189"
+                    Point2="0,27.1792452830189"
+                    Point3="4,27.1792452830189" />
+                  <mssgle:LineSegment
+                    End="165.333333333333,27.1792452830189" />
+                  <mssgle:CubicBezierSegment
+                    Point1="165.333333333333,27.1792452830189"
+                    Point2="169.333333333333,27.1792452830189"
+                    Point3="169.333333333333,31.1792452830189" />
+                  <mssgle:LineSegment
+                    End="169.333333333333,59.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Dep LKPS">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Dep LKPS\EDA SiteRates"
+          TopLeft="66,149" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Dep LKPS\LKP ClientTierRate"
+          TopLeft="280,50" />
+        <NodeLayout
+          Size="138.666666666667,42"
+          Id="Package\Dep LKPS\LKP SiteRate"
+          TopLeft="64,42" />
+        <NodeLayout
+          Size="168,42"
+          Id="Package\Dep LKPS\EDA ClientTierRate"
+          TopLeft="298,162" />
+        <NodeLayout
+          Size="190,42"
+          Id="Package\Dep LKPS\LKP LeaveRosterHistory"
+          TopLeft="562,51" />
+        <EdgeLayout
+          Id="Package\Dep LKPS.Paths[OLE DB Source Output]"
+          TopLeft="136.25,84">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65"
+              Start="0,0"
+              End="0,57.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Dep LKPS.Paths[OLE DB Source Output1]"
+          TopLeft="363,92">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="19,70"
+              Start="0,0"
+              End="19,62.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31"
+                    Point2="0,35"
+                    Point3="4,35" />
+                  <mssgle:LineSegment
+                    End="15,35" />
+                  <mssgle:CubicBezierSegment
+                    Point1="15,35"
+                    Point2="19,35"
+                    Point3="19,39" />
+                  <mssgle:LineSegment
+                    End="19,62.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="193.333333333334,42.6666666666667"
+          Id="Package\Dep LKPS\EDA LeaveRosterHistory"
+          TopLeft="553.124975273386,168.349991972447" />
+        <EdgeLayout
+          Id="Package\Dep LKPS.Paths[OLE DB Source Output2]"
+          TopLeft="653.395820970026,93">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,75.3499919724467"
+              Start="0,0"
+              End="0,67.8499919724467">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,67.8499919724467" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Dep LKPS\EDA SiteRates">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Dep LKPS\LKP LeaveRosterHistory">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Dep LKPS\EDA ClientTierRate">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Dep LKPS\LKP ClientTierRate">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Dep LKPS\LKP SiteRate">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\GT LKPS">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="116,42"
+          Id="Package\GT LKPS\LKP Job"
+          TopLeft="78,147" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\GT LKPS\LKP GL"
+          TopLeft="553,160" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\GT LKPS\VJCActivity"
+          TopLeft="296,49" />
+        <NodeLayout
+          Size="98,42"
+          Id="Package\GT LKPS\VGL"
+          TopLeft="529,67" />
+        <NodeLayout
+          Size="134,42"
+          Id="Package\GT LKPS\LKP Activity"
+          TopLeft="286,149" />
+        <NodeLayout
+          Size="101,42"
+          Id="Package\GT LKPS\VJob"
+          TopLeft="106,45" />
+        <EdgeLayout
+          Id="Package\GT LKPS.Paths[OLE DB Source Output]"
+          TopLeft="156.5,87">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-20.5,60"
+              Start="0,0"
+              End="-20.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-16.5,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-16.5,30"
+                    Point2="-20.5,30"
+                    Point3="-20.5,34" />
+                  <mssgle:LineSegment
+                    End="-20.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\GT LKPS.Paths[OLE DB Source Output2]"
+          TopLeft="578,109">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="31,51"
+              Start="0,0"
+              End="31,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.5"
+                    Point2="0,25.5"
+                    Point3="4,25.5" />
+                  <mssgle:LineSegment
+                    End="27,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="27,25.5"
+                    Point2="31,25.5"
+                    Point3="31,29.5" />
+                  <mssgle:LineSegment
+                    End="31,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\GT LKPS.Paths[OLE DB Source Output1]"
+          TopLeft="361,91">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-8,58"
+              Start="0,0"
+              End="-8,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25"
+                    Point2="0,29"
+                    Point3="-4,29" />
+                  <mssgle:LineSegment
+                    End="-4,29" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-4,29"
+                    Point2="-8,29"
+                    Point3="-8,33" />
+                  <mssgle:LineSegment
+                    End="-8,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\GT LKPS\LKP Job">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\GT LKPS\LKP GL">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\GT LKPS\VJCActivity">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\GT LKPS\VGL">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\GT LKPS\LKP Activity">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\GT LKPS\VJob">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Dep LKPS\EDA LeaveRosterHistory">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="1 ETL Framework"
+  DTS:DTSID="{AD03389B-C916-4247-AB57-B9E36F985BF5}"
+  DTS:CreationName="OLEDB">
+  <DTS:PropertyExpression
+    DTS:Name="InitialCatalog">@[$Project::ENV_CONNECTION_0_ETL_CATALOG]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="Password">@[$Project::ENV_CONNECTION_0_ETL_PASSWORD]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="ServerName">@[$Project::ENV_CONNECTION_0_ETL_SERVER]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="UserName">@[$Project::ENV_CONNECTION_0_ETL_USERNAME]</DTS:PropertyExpression>
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=PER1CORPDEVSQL1;User ID=system.ETLFramework;Initial Catalog=ETLFramework;Provider=SQLNCLI11.1;Auto Translate=False;Application Name=SSIS-{AD03389B-C916-4247-AB57-B9E36F985BF5}1 ETL Framework;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARfaq4kkoU0W7QNPZhQI+WwAAAAACAAAAAAAQZgAAAAEAACAAAAApsJfG5BuwS0kSEBQfmkblYrKUvOhPgxuPMtlbFmX/8wAAAAAOgAAAAAIAACAAAAAbCHJ7N/szBHxZagS+fQzRqLTatcDAqsmk59o5J39UCXAAAADXVEoXKjg2xaw/kO2llZwUCxOAlTmKRiYQ5sZnbuX/SnHSxmCF92Kx90VFPASGhDSi1mRpqtkT5omXWC0S55oHDor/F0oEBA5CI07GtFq97Q0Di+BdXBcGCtc6zRq5dgb6KutUmRpr+dfy0UwH4d9WQAAAAIOgbSbgMqNvBXW6zY0qcIcOxmj7nLhsxHl9ANbkMg9PHGvP6j1NaJNZSNaf9GIlby9SEilmXbeBn2zohdBQgW4=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
