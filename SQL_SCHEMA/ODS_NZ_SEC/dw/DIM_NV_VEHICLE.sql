@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dw].[DIM_NV_VEHICLE] (
+    [SK_DIM_VEHICLE]      INT              IDENTITY (1, 1) NOT NULL,
+    [PK_VEHICLEUNIQUEID]  UNIQUEIDENTIFIER NULL,
+    [P_VEHICLENAME]       VARCHAR (50)     NULL,
+    [P_ISUNAUTHORISED]    BIT              NULL,
+    [P_ISPRIVATE]         BIT              NULL,
+    [MD_DATELASTMODIFIED] DATETIME         NULL,
+    [MD_ETLJOB]           BIGINT           NULL,
+    [MD_ETLEXECUTION]     BIGINT           NULL,
+    [MD_ETLRUN]           BIGINT           NULL,
+    PRIMARY KEY CLUSTERED ([SK_DIM_VEHICLE] ASC)
+);
+

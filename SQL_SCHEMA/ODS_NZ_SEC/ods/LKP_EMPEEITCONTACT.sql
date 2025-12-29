@@ -1,0 +1,7 @@
+﻿CREATE TABLE [ods].[LKP_EMPEEITCONTACT] (
+    [type] NVARCHAR (255) NULL,
+    [info] NVARCHAR (255) NULL,
+    [note] NVARCHAR (255) NULL,
+    [gtId] VARCHAR (34)   NULL
+);
+

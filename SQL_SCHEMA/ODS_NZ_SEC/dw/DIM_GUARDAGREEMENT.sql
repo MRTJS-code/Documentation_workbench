@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dw].[DIM_GUARDAGREEMENT] (
+    [PK_DeputyId]          BIGINT        NOT NULL,
+    [FK_DIM_SECURITYGUARD] BIGINT        NULL,
+    [FK_DIM_EMPLOYEE]      BIGINT        NULL,
+    [FK_DIM_CONTRACTOR]    BIGINT        NULL,
+    [AgreeGuardId]         BIGINT        NULL,
+    [AgreePayrollId]       VARCHAR (100) NULL,
+    [AgreeStartDate]       DATE          NULL,
+    [AgreeEndDate]         DATE          NULL,
+    [AgreePayCentre]       VARCHAR (100) NULL,
+    [AgreeContract]        VARCHAR (100) NULL,
+    [AgreeEmpBasis]        VARCHAR (100) NULL,
+    [AgreeEmpCategory]     VARCHAR (100) NULL,
+    [AgreeEmpStatus]       VARCHAR (100) NULL,
+    [AgreeEmpCondition]    VARCHAR (100) NULL,
+    [AgreeActive]          BIT           NULL,
+    [MD_CreateDate]        DATETIME      NULL,
+    [MD_ModifiedDate]      DATETIME      NULL,
+    [MD_ETLJobCode]        INT           NULL,
+    [MD_ETLRunCode]        BIGINT        NULL,
+    [MD_ETLRun]            BIGINT        NULL,
+    [MD_ModifiedUser]      VARCHAR (100) NULL,
+    [FK_QA_QUALITYHEADER]  BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([PK_DeputyId] ASC)
+);
+

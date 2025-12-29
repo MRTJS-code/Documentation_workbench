@@ -1,0 +1,2 @@
+﻿CREATE USER [WILSON\Jason.Mak] FOR LOGIN [WILSON\Jason.Mak];
+

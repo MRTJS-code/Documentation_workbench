@@ -1,0 +1,572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>ODS_NZ_SEC</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{07b945c0-5b9a-4ecc-aa01-bdb75e85ef97}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>ODS_NZ_SEC</RootNamespace>
+    <AssemblyName>ODS_NZ_SEC</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchema</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="ods\" />
+    <Folder Include="dw\" />
+    <Folder Include="staging\" />
+    <Folder Include="dbo\" />
+    <Folder Include="lookup\" />
+    <Folder Include="agg\" />
+    <Folder Include="qa\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY25_A6F6_Final.sql" />
+    <Build Include="ods\STG_WS_DESPATCH.sql" />
+    <Build Include="dw\DIM_GUARDAVAILABILITY.sql" />
+    <Build Include="staging\STG_IT_STAFF_UNIT.sql" />
+    <Build Include="ods\STG_WS_DESPATCH_MISSED.sql" />
+    <Build Include="staging\STG_IT_STAFF_WRKGRP.sql" />
+    <Build Include="ods\STG_WS_EMPLOYEE.sql" />
+    <Build Include="ods\LKP_GT_PROFITCENTRE.sql" />
+    <Build Include="dw\DIM_AVAILSCHEDULE.sql" />
+    <Build Include="ods\STG_WS_MONITOR.sql" />
+    <Build Include="ods\STG_WS_PATSERVICETYPE.sql" />
+    <Build Include="dw\DIM_AREA.sql" />
+    <Build Include="ods\STG_WS_PERMPATROL.sql" />
+    <Build Include="ods\STG_GLTRANS.sql" />
+    <Build Include="ods\STG_WS_PPCOMPLETED.sql" />
+    <Build Include="dw\DIM_AREAPAY.sql" />
+    <Build Include="staging\STG_IT_STAFF_CONTACT.sql" />
+    <Build Include="ods\STG_WS_SUBCONTRACTOR.sql" />
+    <Build Include="ods\DIM_JOB2.sql" />
+    <Build Include="dw\DIM_CUSTOMER.sql" />
+    <Build Include="staging\STG_IT_STAFF_RANK.sql" />
+    <Build Include="ods\STG_WS_SUBURB.sql" />
+    <Build Include="dw\DIM_PAYRULE.sql" />
+    <Build Include="staging\STG_IT_STAFF_DATES.sql" />
+    <Build Include="ods\LKP_REVIEW.sql" />
+    <Build Include="ods\STG_WS_ZONE.sql" />
+    <Build Include="staging\STG_IT_STAFF_ATTRIBUTE.sql" />
+    <Build Include="dw\DIM_AGREEMENTPAYRULE.sql" />
+    <Build Include="ods\APP_IT_UNASSIGNED.sql" />
+    <Build Include="staging\STG_IT_STAFF.sql" />
+    <Build Include="dw\DIM_DESPATCH_ZONE.sql" />
+    <Build Include="dw\DIM_CONTACT.sql" />
+    <Build Include="dw\DIM_IT_STAFF_DATES.sql" />
+    <Build Include="dw\DIM_ADDRESS.sql" />
+    <Build Include="dbo\BKP_DEV_DIM_ZONE.sql" />
+    <Build Include="ods\DEP_Timesheet.sql" />
+    <Build Include="dw\FACT_LH_ISSUE_DETAILS.sql" />
+    <Build Include="lookup\GT_CON_PAYCODE.sql" />
+    <Build Include="dw\DIM_CLIENTLOCATION.sql" />
+    <Build Include="staging\STG_JOB_PRICE.sql" />
+    <Build Include="dbo\ITDebug.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY23_A9F3_Final.sql" />
+    <Build Include="ods\DIM_GT_COA.sql" />
+    <Build Include="dw\DIM_PATROL_SETUP.sql" />
+    <Build Include="dw\DIM_GUARDAGREEHIST.sql" />
+    <Build Include="ods\IT_Roster_Fail.sql" />
+    <Build Include="dw\DIM_JOB_PRICE.sql" />
+    <Build Include="agg\FCT_Payroll_reporting.sql" />
+    <Build Include="dw\FACT_LH_EXCEPTION.sql" />
+    <Build Include="staging\CON_PAYCODE.sql" />
+    <Build Include="staging\NV_DRIVER.sql" />
+    <Build Include="ods\DEV_Staff_Head_Count.sql" />
+    <Build Include="dw\DIM_DEPOT.sql" />
+    <Build Include="agg\FCT_HSE_Incidents.sql" />
+    <Build Include="ods\DEV_Staff_Tenure.sql" />
+    <Build Include="dw\CON_PAYCODE.sql" />
+    <Build Include="ods\LKP_EMPEECOA.sql" />
+    <Build Include="ods\LKP_PROFITCENTRE.sql" />
+    <Build Include="lookup\GT_DAILY_PERIOD.sql" />
+    <Build Include="ods\DIM_GT_GL.sql" />
+    <Build Include="dw\FACT_GHS_ACTIVITIES.sql" />
+    <Build Include="staging\STG_GT_JOB.sql" />
+    <Build Include="agg\GT_GLTRANS.sql" />
+    <Build Include="ods\BKP_FCT_GLBUDGET_NEW.sql" />
+    <Build Include="ods\DEP_LocationRegister.sql" />
+    <Build Include="staging\WS_Despatch.sql" />
+    <Build Include="dw\FACT_LH_AUDIT_DETAILS.sql" />
+    <Build Include="agg\SG_Roster.sql" />
+    <Build Include="agg\Default_Zone_Job.sql" />
+    <Build Include="agg\FCT_GL_Transactions_reporting.sql" />
+    <Build Include="dw\FACT_DESPATCH.sql" />
+    <Build Include="dw\FACT_PAYROLL.sql" />
+    <Build Include="agg\PATROLS_COUNT.sql" />
+    <Build Include="agg\Staff_Aggregates.sql" />
+    <Build Include="dw\FACT_LH_TASK.sql" />
+    <Build Include="dw\DIM_LEAVEREASON.sql" />
+    <Build Include="ods\FCT_GLTRANS.sql" />
+    <Build Include="staging\DEV_WS_PATROLS.sql" />
+    <Build Include="ods\LKP_GT_JOB.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY23_A6F6_FinalV1.sql" />
+    <Build Include="ods\_WS_GT_DESPATCH_INVOICE.sql" />
+    <Build Include="lookup\DIM_Suburb_Zone.sql" />
+    <Build Include="ods\STG_GT_JOB.sql" />
+    <Build Include="dw\FACT_GHS_ACTIVITIES_ALERT.sql" />
+    <Build Include="dw\FACT_ROSTER.sql" />
+    <Build Include="ods\DEP_WorkAreaRegister.sql" />
+    <Build Include="dw\FACT_LH_SHIFT.sql" />
+    <Build Include="dw\FACT_LH_ISSUE.sql" />
+    <Build Include="dw\DIM_GHS_ORGANISATIONS.sql" />
+    <Build Include="ods\LKP_GT_GL.sql" />
+    <Build Include="dw\DIM_EMPLOYEE.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY24_A6F6_Final.sql" />
+    <Build Include="dw\FACT_LH_EVENT.sql" />
+    <Build Include="staging\AGG_FATIGUE.sql" />
+    <Build Include="staging\STG_GT_EMPEE.sql" />
+    <Build Include="ods\BKP_FCT_FORECAST_NEW_FY24_A6F6_Final.sql" />
+    <Build Include="ods\DIM_BRANCH.sql" />
+    <Build Include="ods\DIM_ITS_ATTRIBUTE.sql" />
+    <Build Include="dw\FACT_LH_AUDIT.sql" />
+    <Build Include="dw\CON_EMPLOYEE.sql" />
+    <Build Include="ods\DIM_GT_ACTIVITY.sql" />
+    <Build Include="dw\DIM_EMPLOYEE_PAY.sql" />
+    <Build Include="ods\DEP_EmployeeRegister.sql" />
+    <Build Include="ods\DIM_GT_PERIOD.sql" />
+    <Build Include="ods\DIM_AX_COA.sql" />
+    <Build Include="agg\FCT_Roster_reporting.sql" />
+    <Build Include="ods\STG_WS_CLIENTCONTACT.sql" />
+    <Build Include="lookup\Client_TEMP.sql" />
+    <Build Include="agg\Staff_Head_Count.sql" />
+    <Build Include="ods\DEP_Roster.sql" />
+    <Build Include="agg\Staff_Tenure.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY24_A3F9_Final.sql" />
+    <Build Include="ods\LKP_GT_SUPPLIER.sql" />
+    <Build Include="dw\BKP_DIM_DATE2.sql" />
+    <Build Include="ods\DEP_RosterHistory.sql" />
+    <Build Include="staging\DEP_AGREEHISTORY.sql" />
+    <Build Include="dw\DIM_JOB.sql" />
+    <Build Include="staging\STG_SECURITY_GUARD_LICENCE.sql" />
+    <Build Include="ods\LKP_GT_ORG_GRP.sql" />
+    <Build Include="lookup\DEP_DEPOTBRANCH.sql" />
+    <Build Include="dw\FACT_NV_ACTIVITY.sql" />
+    <Build Include="ods\DIM_JOB.sql" />
+    <Build Include="staging\GHS_USERS_TEAMS.sql" />
+    <Build Include="ods\LKP_GT_HRPayGL.sql" />
+    <Build Include="staging\DEP_EmployeeBranchLocation.sql" />
+    <Build Include="dw\DIM_COST_ACTIVITY.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET.sql" />
+    <Build Include="staging\GHS_USERS_ORGANISATIONS.sql" />
+    <Build Include="ods\LKP_GT_HRPayJC.sql" />
+    <Build Include="dw\DIM_SECURITYGUARD.sql" />
+    <Build Include="dbo\DIMREGION.sql" />
+    <Build Include="ods\FCT_PAYROLL.sql" />
+    <Build Include="lookup\GHS_ORG_CSV.sql" />
+    <Build Include="ods\LKP_GT_CUSTOMER_OLD.sql" />
+    <Build Include="staging\STG_IT_BRANCH.sql" />
+    <Build Include="dw\DIM_GHS_USERS_TEAMS.sql" />
+    <Build Include="staging\GT_Payroll.sql" />
+    <Build Include="dw\DIM_NV_AREA.sql" />
+    <Build Include="staging\GHS_TEAMS.sql" />
+    <Build Include="staging\GHS_ORGANISATIONS.sql" />
+    <Build Include="dw\DIM_NV_VEHICLE.sql" />
+    <Build Include="staging\GHS_USERS.sql" />
+    <Build Include="ods\LKP_ST_LINE.sql" />
+    <Build Include="ods\LKP_GT_HRPay.sql" />
+    <Build Include="dw\DIM_NV_DRIVER.sql" />
+    <Build Include="dw\DIM_EMPEE.sql" />
+    <Build Include="ods\ITQA_LOC_ERRORS.sql" />
+    <Build Include="dw\DIM_NV_LOCATION.sql" />
+    <Build Include="ods\LKP_ST_HEAD.sql" />
+    <Build Include="ods\LKP_GT_HRTransTypePay.sql" />
+    <Build Include="ods\STG_GT_SUPPLIER.sql" />
+    <Build Include="dw\DIM_BRANCH.sql" />
+    <Build Include="ods\DIM_GT_TRANSTYPE.sql" />
+    <Build Include="dw\DIM_IT_ACTIVITY.sql" />
+    <Build Include="ods\tmp_period_check.sql" />
+    <Build Include="ods\STG_GT_STARJC.sql" />
+    <Build Include="ods\STG_STAFF.sql" />
+    <Build Include="staging\DEP_EmployeeAgreement.sql" />
+    <Build Include="ods\FCT_WS_MISSEDPATROLS.sql" />
+    <Build Include="agg\GT_AVRATE.sql" />
+    <Build Include="dw\DIM_IT_CUSTOMER.sql" />
+    <Build Include="ods\LKP_ST_HEADEND.sql" />
+    <Build Include="dw\DIM_IT_LEAVE.sql" />
+    <Build Include="dw\DIM_IT_STAFF_BRANCH.sql" />
+    <Build Include="dw\DIM_GHS_USERS_ORGANISATIONS.sql" />
+    <Build Include="ods\LKP_IT_BRANCH.sql" />
+    <Build Include="dw\DIM_IT_LOC_ATTRIBUTE.sql" />
+    <Build Include="staging\DEP_Payrules.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY23BUD_V1HL.sql" />
+    <Build Include="staging\DEP_LeaveRules.sql" />
+    <Build Include="ods\LKP_GT_PERIOD.sql" />
+    <Build Include="staging\DEP_Timesheet.sql" />
+    <Build Include="ods\LKP_IT_BRANCH2.sql" />
+    <Build Include="staging\STG_GT_GLACCOUNT.sql" />
+    <Build Include="dw\FACT_TIMESHEET.sql" />
+    <Build Include="dw\DIM_IT_STAFF_ATTRIBUTE.sql" />
+    <Build Include="lookup\DEP_LeaveCostTracker.sql" />
+    <Build Include="staging\LH_TASK.sql" />
+    <Build Include="ods\BKP_FCT_FORECAST_NEW_FY22_A9F3_Final.sql" />
+    <Build Include="ods\DIM_DATE.sql" />
+    <Build Include="staging\DEP_LeaveCostTracker.sql" />
+    <Build Include="ods\BKP_FCT_GLBUDGET_NEW_UptoFY22.sql" />
+    <Build Include="ods\DIM_EMPEE.sql" />
+    <Build Include="dw\DIM_IT_STAFF_CONTACT.sql" />
+    <Build Include="ods\TimeAggError.sql" />
+    <Build Include="staging\GHS_ACTIVITIES.sql" />
+    <Build Include="ods\BKP_FCT_FORECAST_NEW_FY23_A9F3_Final.sql" />
+    <Build Include="dw\DIM_GUARDAGREEMENT.sql" />
+    <Build Include="dw\DIM_IT_STAFF_RANK.sql" />
+    <Build Include="staging\WS_AR_RESPONSE.sql" />
+    <Build Include="dw\DIM_IT_STAFF_UNIT.sql" />
+    <Build Include="dw\DIM_GT_GL.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY25_A9F3_Base.sql" />
+    <Build Include="dw\DIM_BUSINESS.sql" />
+    <Build Include="dw\DIM_IT_STAFF_WRKGRP.sql" />
+    <Build Include="dw\DIM_LH_AREA.sql" />
+    <Build Include="dw\DIM_JOB_old.sql" />
+    <Build Include="staging\NV_ACTIVITY.sql" />
+    <Build Include="ods\STG_VAX.sql" />
+    <Build Include="ods\aaaOrigDIM_AX_CC.sql" />
+    <Build Include="dw\DIM_LH_LOCATION.sql" />
+    <Build Include="dw\DIM_PROFITCENTRE.sql" />
+    <Build Include="staging\AX_COA.sql" />
+    <Build Include="dw\FACT_IT_TRACKTAG.sql" />
+    <Build Include="staging\DEP_EmployeeWorkplace.sql" />
+    <Build Include="dw\DIM_LH_ROLE.sql" />
+    <Build Include="staging\IT_REM_ATTRIBUTE.sql" />
+    <Build Include="ods\STG_ROSTER.sql" />
+    <Build Include="staging\IT_ADD_ATTRIBUTE.sql" />
+    <Build Include="dw\DIM_GT_COA.sql" />
+    <Build Include="ods\DIM_INTIMESTAFF.sql" />
+    <Build Include="staging\IT_ATT_ERROR.sql" />
+    <Build Include="ods\STG_GT_EMPEE.sql" />
+    <Build Include="staging\PR_PAYROLL_EXCEPTION.sql" />
+    <Build Include="staging\STG_GT_ACTIVITY.sql" />
+    <Build Include="ods\DEP_EmployeeRegister_test.sql" />
+    <Build Include="ods\LKP_GT_ACTIVITY.sql" />
+    <Build Include="ods\DIM_ITS_CUBE.sql" />
+    <Build Include="staging\STG_GT_EMPEERATES.sql" />
+    <Build Include="ods\LKP_IT_MANLEAVE.sql" />
+    <Build Include="ods\LKP_GT_JOB_GROUP.sql" />
+    <Build Include="ods\STG_IT_TRACKTAG.sql" />
+    <Build Include="staging\DEP_Location.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY25_A9F3_Final.sql" />
+    <Build Include="ods\FCT_IT_TRACKTAG.sql" />
+    <Build Include="staging\STG_GT_ORGANISATION.sql" />
+    <Build Include="agg\DIM_Staff_Full.sql" />
+    <Build Include="staging\STG_GT_PROFITCENTRE.sql" />
+    <Build Include="ods\FCT_GLBUDGET.sql" />
+    <Build Include="dw\DIM_GT_TRANSTYPE.sql" />
+    <Build Include="lookup\LKP_ADDRESS.sql" />
+    <Build Include="staging\STG_IT_AUDITASSIGNDATA.sql" />
+    <Build Include="staging\DEP_CompanyPeriod.sql" />
+    <Build Include="staging\LH_BLOB_LKP.sql" />
+    <Build Include="dw\FACT_LH_TASK_DETAILS.sql" />
+    <Build Include="ods\LKP_GT_CUSTOMER.sql" />
+    <Build Include="ods\STG_GT_CUSTOMER.sql" />
+    <Build Include="staging\STG_IT_AUDITASSIGNTAGS.sql" />
+    <Build Include="dw\DIM_SECURITY_GUARD_LICENCE.sql" />
+    <Build Include="staging\DIM_PR_PAYCODE.sql" />
+    <Build Include="staging\STG_IT_LOC_ATTRIBUTE.sql" />
+    <Build Include="staging\DEP_Roster.sql" />
+    <Build Include="dw\DIM_AX_COA.sql" />
+    <Build Include="staging\DEP_Employee.sql" />
+    <Build Include="ods\LKP_IT_BUSINESS.sql" />
+    <Build Include="ods\STG_ORGANISATION.sql" />
+    <Build Include="ods\DIM_GROUP_CATEGORY.sql" />
+    <Build Include="ods\DIM_ORGANISATION.sql" />
+    <Build Include="staging\FCT_DEP_ROSTER.sql" />
+    <Build Include="lookup\GTAX_COA_Map.sql" />
+    <Build Include="lookup\Zone_Job_Match.sql" />
+    <Build Include="staging\STG_IT_STAFF_BRANCH.sql" />
+    <Build Include="staging\DEP_AreaTraining.sql" />
+    <Build Include="lookup\GT_ACTIVE_PERIOD.sql" />
+    <Build Include="lookup\WSR_Depot_DIM_BRANCH.sql" />
+    <Build Include="dbo\sysssislog.sql" />
+    <Build Include="staging\PR_FACT_PAYROLL.sql" />
+    <Build Include="staging\DEP_TrainingModule.sql" />
+    <Build Include="agg\DIM_Jobs_agg.sql" />
+    <Build Include="ods\STG_AR_RESPONSE.sql" />
+    <Build Include="staging\GT_PERIOD.sql" />
+    <Build Include="ods\LKP_GT_GLTRANS.sql" />
+    <Build Include="staging\WS_DespatchZone.sql" />
+    <Build Include="ods\DIM_PROFITCENTRE.sql" />
+    <Build Include="dbo\DIM_Zone.sql" />
+    <Build Include="staging\LH_AREA.sql" />
+    <Build Include="ods\FCT_AR_RESPONSE.sql" />
+    <Build Include="staging\DIM_PR_LEAVEREASON.sql" />
+    <Build Include="agg\FCT_WS_Patrols.sql" />
+    <Build Include="staging\WS_DespatchDepot.sql" />
+    <Build Include="lookup\Dim_Zone_Suburb_Lkp.sql" />
+    <Build Include="staging\LH_EVENT.sql" />
+    <Build Include="staging\WS_Suburb.sql" />
+    <Build Include="dbo\DEV_ERROR_Rows.sql" />
+    <Build Include="staging\WS_State.sql" />
+    <Build Include="staging\DEP_EmployeePaycycle.sql" />
+    <Build Include="lookup\PR_CON_PAYCODE.sql" />
+    <Build Include="staging\WS_SecurityGuard.sql" />
+    <Build Include="lookup\IS_ALLINCIDENTS.sql" />
+    <Build Include="staging\PUBLIC_HOLIDAY.sql" />
+    <Build Include="staging\WS_MonitorStation.sql" />
+    <Build Include="staging\GHS_ACTIVITIES_ALERT.sql" />
+    <Build Include="staging\LH_EXCEPTION.sql" />
+    <Build Include="staging\DIM_DEPEMPLOYEEWORKPLACE.sql" />
+    <Build Include="dw\DIM_GT_PERIOD.sql" />
+    <Build Include="lookup\MAP_BODYPART.sql" />
+    <Build Include="staging\PUBLIC_HOLIDAY_DATES.sql" />
+    <Build Include="lookup\WSR_DespatchType_DIM_BUSINESS.sql" />
+    <Build Include="ods\BKP_FCT_FORECAST_NEW_FY23_A3F9_Final.sql" />
+    <Build Include="staging\WS_PermPatrols.sql" />
+    <Build Include="ods\FCT_GLBUDGET_NEW.sql" />
+    <Build Include="ods\BKP_FCT_FORECAST_NEW_FY23_A6F6_Final.sql" />
+    <Build Include="agg\DIM_GT_AX_COA.sql" />
+    <Build Include="staging\GT_GLTRANS.sql" />
+    <Build Include="ods\LKP_ADDRESS.sql" />
+    <Build Include="dw\FACT_GLTRANS.sql" />
+    <Build Include="dw\DIM_DATE.sql" />
+    <Build Include="agg\Staff_Weekly_Hours.sql" />
+    <Build Include="staging\WS_DespatchType.sql" />
+    <Build Include="ods\DIM_STAFF.sql" />
+    <Build Include="agg\Patrols_Time_Aggregate.sql" />
+    <Build Include="lookup\MAP_SCATTER.sql" />
+    <Build Include="staging\LH_BLOB_SKIP.sql" />
+    <Build Include="staging\NV_ACTIVITY_TEST.sql" />
+    <Build Include="lookup\IS_BRANCH.sql" />
+    <Build Include="staging\PR_PAYCODE_CLASS.sql" />
+    <Build Include="ods\LKP_GT_PERIODSUMM.sql" />
+    <Build Include="staging\GT_FACT_PAYROLL.sql" />
+    <Build Include="staging\DEP_LeaveLine.sql" />
+    <Build Include="staging\NV_SENSORY.sql" />
+    <Build Include="agg\Branch_Scorecard.sql" />
+    <Build Include="dw\DIM_DESPATCH_TYPE.sql" />
+    <Build Include="staging\FCT_DEP_TIMESHEET.sql" />
+    <Build Include="staging\DEP_Leave.sql" />
+    <Build Include="ods\LKP_GT_GL_ERROR.sql" />
+    <Build Include="ods\FCT_ROSTER.sql" />
+    <Build Include="staging\LH_AUDIT.sql" />
+    <Build Include="staging\GT_DIM_PAYCODE.sql" />
+    <Build Include="staging\FCT_DEP_LEAVE.sql" />
+    <Build Include="ods\DIM_AX_CC.sql" />
+    <Build Include="ods\FCT_FORECAST.sql" />
+    <Build Include="lookup\BR_TRAVELEST.sql" />
+    <Build Include="dw\DIM_PAYCODE_CLASS.sql" />
+    <Build Include="dw\DIM_PUBLIC_HOLIDAY.sql" />
+    <Build Include="staging\FCT_DEP_LEAVELINE.sql" />
+    <Build Include="lookup\PAY_CALCFILTER.sql" />
+    <Build Include="ods\ITQA_STAFF_REGISTER.sql" />
+    <Build Include="ods\PBI_NCR_DESPATCH.sql" />
+    <Build Include="dw\DIM_PUBLIC_HOLIDAY_DATES.sql" />
+    <Build Include="dw\BKP_DIM_DATE.sql" />
+    <Build Include="ods\ITQA_STAFF_ERROR.sql" />
+    <Build Include="ods\PBI_ACM_DESPATCH.sql" />
+    <Build Include="dbo\STAGING_DRAFTBUDGET.sql" />
+    <Build Include="dw\BKP_DIM_PUBLIC_HOLIDAY.sql" />
+    <Build Include="ods\ITQA_LOC_REGISTER.sql" />
+    <Build Include="staging\LH_USER.sql" />
+    <Build Include="lookup\FACT_PAYROLL_OVERRIDE.sql" />
+    <Build Include="dw\BKP_DIM_PUBLIC_HOLIDAY_DATES.sql" />
+    <Build Include="staging\LH_ROLE.sql" />
+    <Build Include="dw\DIM_STATE.sql" />
+    <Build Include="ods\LKP_GT_GLJNL.sql" />
+    <Build Include="dw\BKP_DIM_DEPOT.sql" />
+    <Build Include="staging\LH_LOCATION.sql" />
+    <Build Include="dw\DIM_PAYCODE.sql" />
+    <Build Include="staging\DEP_Area.sql" />
+    <Build Include="ods\LKP_GT_BRANCH.sql" />
+    <Build Include="dbo\SQLFileAudit.sql" />
+    <Build Include="ods\LKP_GT_VJCSALESLINE.sql" />
+    <Build Include="dw\BKP_DIM_SECURITYGUARD.sql" />
+    <Build Include="staging\DEP_EmployeeTraining.sql" />
+    <Build Include="dw\FACT_DRAFTBUDGET.sql" />
+    <Build Include="dw\BKP_FACT_ROSTER.sql" />
+    <Build Include="staging\LH_ISSUE.sql" />
+    <Build Include="ods\STG_WS_ALARMDOCKET.sql" />
+    <Build Include="ods\STG_DRAFTBUDGET.sql" />
+    <Build Include="dw\DIM_LH_USER_BKP.sql" />
+    <Build Include="dw\DIM_SUBURB.sql" />
+    <Build Include="ods\LKP_GT_JWCAC.sql" />
+    <Build Include="dw\DIM_LEAVETYPE.sql" />
+    <Build Include="staging\LH_SHIFT.sql" />
+    <Build Include="dw\DIM_LH_USER.sql" />
+    <Build Include="ods\LKP_GT_VJCCOSTLINE.sql" />
+    <Build Include="ods\STG_INTIMESTAFF.sql" />
+    <Build Include="dw\DIM_GHS_USERS.sql" />
+    <Build Include="ods\LKP_GT_SOURCETRNS.sql" />
+    <Build Include="staging\BRANCH_DYNAMIC.sql" />
+    <Build Include="dw\DIM_GHS_TEAMS.sql" />
+    <Build Include="staging\LKP_IT_ROSTERDETAIL.sql" />
+    <Build Include="dw\FACT_LEAVELINE.sql" />
+    <Build Include="staging\LKP_IT_ROSTERHEAD.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY24_A6F6_Base.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY23_A9F3_Base.sql" />
+    <Build Include="staging\STG_SUBCONTRACTOR.sql" />
+    <Build Include="ods\FCT_DRAFTBUDGET.sql" />
+    <Build Include="dw\FACT_BUDGET.sql" />
+    <Build Include="dw\DIM_MONITOR_CENTRE.sql" />
+    <Build Include="dbo\DIM_Zone_Job_Match.sql" />
+    <Build Include="dw\DIM_SUBCONTRACTOR.sql" />
+    <Build Include="dw\FACT_LEAVEREQUEST.sql" />
+    <Build Include="staging\LKP_IT_TRACKTAG.sql" />
+    <Build Include="staging\LH_BLOB_LKP_BKP.sql" />
+    <Build Include="lookup\PR_Payslip.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY25BUD_Final.sql" />
+    <Build Include="dw\DIM_IT_LOCSUBBRANCH.sql" />
+    <Build Include="staging\STG_IT_ROSTERHEAD.sql" />
+    <Build Include="staging\STG_ODS_GT_JOB.sql" />
+    <Build Include="staging\GHS_ACTIVITIES_STATISTIC.sql" />
+    <Build Include="ods\LKP_GT_CodeUnion.sql" />
+    <Build Include="ods\DEP_Webhookjson.sql" />
+    <Build Include="staging\STG_IT_ROSTERDETAIL.sql" />
+    <Build Include="ods\ITQA_LOC_RITM.sql" />
+    <Build Include="staging\WS_Client.sql" />
+    <Build Include="ods\FCT_FORECAST_NEW.sql" />
+    <Build Include="dw\DIM_TRAINING.sql" />
+    <Build Include="ods\STG_WS_BUREAU.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY23_A6F6_Base.sql" />
+    <Build Include="ods\STG_IT_TimeAttend.sql" />
+    <Build Include="ods\STG_WS_CLIENT.sql" />
+    <Build Include="dw\FACT_FORECAST.sql" />
+    <Build Include="dw\DIM_TRAININGGUARD.sql" />
+    <Build Include="ods\DIM_BUSINESS.sql" />
+    <Build Include="ods\BKP_FCT_GLBUDGET_NEW_V2.sql" />
+    <Build Include="lookup\DEP_BRANCHPH.sql" />
+    <Build Include="ods\STG_WS_CLIENTTYPE.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY25_A3F9_Final.sql" />
+    <Build Include="ods\LKP_EMPEEITCONTACT.sql" />
+    <Build Include="ods\STG_WS_CONTACT.sql" />
+    <Build Include="ods\STG_GT_EMPEERATES.sql" />
+    <Build Include="staging\DIM_PR_EMPLOYEE.sql" />
+    <Build Include="dw\DIM_TRAININGAREA.sql" />
+    <Build Include="ods\BKP_FCT_DRAFTBUDGET_FY25_A6F6_Base.sql" />
+    <Build Include="ods\STG_WS_DESPATCHTYPE.sql" />
+    <Build Include="dw\DIM_ORGANISATION.sql" />
+    <Build Include="staging\GHS_USERS_BKP.sql" />
+    <Build Include="dbo\vw_NPS_Data.sql" />
+    <Build Include="dw\FACT_CHP_PAYROLL.sql" />
+    <Build Include="ods\SUMMARY_DRAFTBUDGET.sql" />
+    <Build Include="dw\REP_EMPEE_PAY.sql" />
+    <Build Include="ods\SUMMARY_GLTRANS.sql" />
+    <Build Include="staging\proc_stage_ODS_GT_Job.sql" />
+    <Build Include="dw\proc_dim_Job.sql" />
+    <Build Include="dw\proc_dim_SubContractor.sql" />
+    <Build Include="ods\HO_ROSTER_EXTRACT.sql" />
+    <Build Include="dw\proc_dim_Job_Price.sql" />
+    <Build Include="ods\UPDATE_DRAFT_FORECAST.sql" />
+    <Build Include="ods\gt_auditTransactionExtract.sql" />
+    <Build Include="ods\BUILD_BASE_REFORECAST.sql" />
+    <Build Include="dw\proc_dim_date_bi.sql" />
+    <Build Include="ods\DIM_STAFF_STATUSTYPE.sql" />
+    <Build Include="dw\proc_dim_ax_coa.sql" />
+    <Build Include="dw\proc_dims_gt_gl_coa.sql" />
+    <Build Include="dbo\sp_ssis_addlogentry.sql" />
+    <Build Include="dw\proc_dim_CostActivity.sql" />
+    <Build Include="dw\proc_dim_Empee.sql" />
+    <Build Include="dw\proc_dim_gt_period.sql" />
+    <Build Include="dw\proc_fact_gt_gltrans.sql" />
+    <Build Include="dw\proc_dim_Organisation.sql" />
+    <Build Include="dw\proc_dim_ProfitCentre.sql" />
+    <Build Include="dw\TRUNCATE_FCT_DRAFTBUDGET.sql" />
+    <Build Include="staging\proc_stage_GT_Job.sql" />
+    <Build Include="ods\TRUNCATE_FCT_DRAFTBUDGET.sql" />
+    <Build Include="dw\BUILD_BASE_DRAFTBUDGET.sql" />
+    <Build Include="agg.sql" />
+    <Build Include="dw.sql" />
+    <Build Include="lookup.sql" />
+    <Build Include="ods.sql" />
+    <Build Include="staging.sql" />
+    <Build Include="qa.sql" />
+    <Build Include="lookup\DEP_BillingCycle.sql" />
+    <Build Include="lookup\D365_CostCentres.sql" />
+    <Build Include="lookup\DEP_Location.sql" />
+    <Build Include="lookup\D365_Customers.sql" />
+    <Build Include="lookup\D365_Products.sql" />
+    <Build Include="lookup\D365_TradeAgreements.sql" />
+    <Build Include="qa\QualityHeader.sql" />
+    <Build Include="qa\QualityType.sql" />
+    <Build Include="qa\QualityDetail.sql" />
+    <Build Include="qa\QualityNotify.sql" />
+    <Build Include="staging\DEP_Period_Close_Status.sql" />
+    <Build Include="qa\QualityDwhError.sql" />
+    <Build Include="lookup\PERIOD_CLOSE.sql" />
+    <Build Include="lookup\GTJC_D365CC_Map.sql" />
+    <Build Include="lookup\GTAR_D365AR_Map.sql" />
+    <Build Include="lookup\DEP_WorkAreas.sql" />
+    <Build Include="lookup\DEP_RateCard.sql" />
+    <Build Include="lookup\DEP_LeaveRosterTracker.sql" />
+    <Build Include="lookup\DEP_ClientTier.sql" />
+    <Build Include="lookup\DEP_APP_AreaLocation.sql" />
+    <Build Include="WILSON_wade.wilson.sql" />
+    <Build Include="WILSON_tony.smith.sql" />
+    <Build Include="WILSON_Pakitoa.Tereaumani.sql" />
+    <Build Include="WILSON_Nilesh.Pancha.sql" />
+    <Build Include="WILSON_Moumita.Chatterjee.sql" />
+    <Build Include="WILSON_michael.eid.sql" />
+    <Build Include="WILSON_Max.Chilmeran.sql" />
+    <Build Include="WILSON_Jason.Mak.sql" />
+    <Build Include="WILSON_gemma.manaois.sql" />
+    <Build Include="WILSON_Garyl.LinWenYing.sql" />
+    <Build Include="user.ods_nz_sec.sql" />
+    <Build Include="system.OperationalDataStore_Read.sql" />
+    <Build Include="system.OperationalDataStore.sql" />
+    <Build Include="RoleMemberships.sql" />
+    <Build Include="qa\ProcessQualityIssues.sql" />
+    <Build Include="dw\proc_fact_LH_Task.sql" />
+    <Build Include="dw\proc_fact_LH_Shift.sql" />
+    <Build Include="dw\proc_fact_LH_Issue.sql" />
+    <Build Include="dw\proc_fact_LH_Exception.sql" />
+    <Build Include="dw\proc_fact_LH_Event.sql" />
+    <Build Include="dw\proc_fact_LH_Audit.sql" />
+    <Build Include="dw\proc_fact_GHS_Activities_Alerts.sql" />
+    <Build Include="dw\proc_fact_GHS_Activities.sql" />
+    <Build Include="dw\PROC_DIM_GHS_USERS_TEAMS.sql" />
+    <Build Include="dw\PROC_DIM_GHS_USERS_ORGANISATIONS.sql" />
+    <Build Include="dw\PROC_DIM_GHS_USERS.sql" />
+    <Build Include="dw\PROC_DIM_GHS_TEAMS.sql" />
+    <Build Include="dw\PROC_DIM_GHS_ORGANISATIONS.sql" />
+    <Build Include="dw\MERGE_BUDGETTABLES.sql" />
+    <Build Include="qa\QualityIssueCapture.sql" />
+    <Build Include="pf_FACT_GLTRANS_PostingDateN1.sql" />
+    <Build Include="pf_FACT_GLTRANS_PostingDateN.sql" />
+    <Build Include="pf_FACT_GLTRANS_PostingDate.sql" />
+  </ItemGroup>
+</Project>

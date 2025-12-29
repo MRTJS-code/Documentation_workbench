@@ -1,0 +1,3 @@
+﻿CREATE USER [System.EDAApp] FOR LOGIN [System.EDAApp]
+    WITH DEFAULT_SCHEMA = [eda];
+

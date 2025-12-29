@@ -1,0 +1,25 @@
+﻿CREATE TABLE [staging].[STG_GT_EMPEE] (
+    [Oid_clsno]           INT             NOT NULL,
+    [Oid_instid]          BIGINT          NOT NULL,
+    [empid]               INT             NOT NULL,
+    [staffid]             BIGINT          NULL,
+    [firstname]           NVARCHAR (50)   NULL,
+    [surname]             NVARCHAR (50)   NULL,
+    [fullname]            NVARCHAR (75)   NULL,
+    [gender]              VARCHAR (1)     NULL,
+    [email]               VARCHAR (MAX)   NULL,
+    [homePhone]           VARCHAR (50)    NULL,
+    [businessPhone]       VARCHAR (50)    NULL,
+    [mobile]              VARCHAR (50)    NULL,
+    [isInactive]          BIT             NULL,
+    [startDate]           DATE            NULL,
+    [nextAnniversaryDate] DATE            NULL,
+    [terminationDate]     DATE            NULL,
+    [payGroup]            VARCHAR (31)    NULL,
+    [branchCode]          VARCHAR (7)     NULL,
+    [defaultPayCode]      VARCHAR (10)    NULL,
+    [baseHourRate]        NUMERIC (14, 4) NULL,
+    [hrBasis]             VARCHAR (61)    NULL,
+    [hrType]              VARCHAR (61)    NULL
+);
+

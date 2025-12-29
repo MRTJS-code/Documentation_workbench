@@ -1,0 +1,25 @@
+﻿CREATE TABLE [ods].[DIM_EMPEE] (
+    [gtId]                VARCHAR (34)    NOT NULL,
+    [empid]               INT             NOT NULL,
+    [staffid]             BIGINT          NULL,
+    [firstname]           NVARCHAR (31)   NULL,
+    [surname]             NVARCHAR (31)   NULL,
+    [fullname]            NVARCHAR (63)   NULL,
+    [gender]              VARCHAR (31)    NULL,
+    [email]               VARCHAR (MAX)   NULL,
+    [homePhone]           VARCHAR (51)    NULL,
+    [businessPhone]       VARCHAR (51)    NULL,
+    [mobile]              VARCHAR (51)    NULL,
+    [isInactive]          BIT             NULL,
+    [startDate]           DATE            NULL,
+    [nextAnniversaryDate] DATE            NULL,
+    [terminationDate]     DATE            NULL,
+    [payGroup]            VARCHAR (31)    NULL,
+    [branchCode]          VARCHAR (7)     NULL,
+    [defaultPayCode]      VARCHAR (9)     NULL,
+    [baseHourRate]        NUMERIC (14, 4) NULL,
+    [hrBasis]             VARCHAR (61)    NULL,
+    [hrType]              VARCHAR (61)    NULL,
+    PRIMARY KEY CLUSTERED ([gtId] ASC)
+);
+

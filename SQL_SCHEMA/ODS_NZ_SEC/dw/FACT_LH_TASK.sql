@@ -1,0 +1,24 @@
+﻿CREATE TABLE [dw].[FACT_LH_TASK] (
+    [SK_FACT_TASK]        BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_TASK_ID]          VARCHAR (255) NULL,
+    [FK_SK_AREA]          BIGINT        NULL,
+    [FK_SK_AREA_LOCATION] BIGINT        NULL,
+    [FK_SK_CREATED_AT]    BIGINT        NULL,
+    [FK_SK_UPDATED_AT]    BIGINT        NULL,
+    [FK_SK_USER]          BIGINT        NULL,
+    [FK_SK_ROLE]          BIGINT        NULL,
+    [P_TASK_TITLE]        VARCHAR (255) NULL,
+    [P_TEMPLATE_ID]       VARCHAR (255) NULL,
+    [P_TEMPLATE_NAME]     VARCHAR (255) NULL,
+    [P_FORM_GROUP_LABEL]  VARCHAR (255) NULL,
+    [P_REVISION_NUMBER]   BIGINT        NULL,
+    [P_CREATED_AT]        DATETIME      NULL,
+    [P_UPDATED_AT]        DATETIME      NULL,
+    [MD_FILENAME]         VARCHAR (255) NULL,
+    [MD_DATELASTMODIFIED] DATETIME      NULL,
+    [MD_ETLJOB]           BIGINT        NULL,
+    [MD_ETLEXECUTION]     BIGINT        NULL,
+    [MD_ETLRUN]           BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([SK_FACT_TASK] ASC)
+);
+

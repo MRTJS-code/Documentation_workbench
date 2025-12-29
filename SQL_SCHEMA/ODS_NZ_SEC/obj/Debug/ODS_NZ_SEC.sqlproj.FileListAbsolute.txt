@@ -1,0 +1,10 @@
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\bin\Debug\ODS_NZ_SEC.dacpac
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\ODS_NZ_SEC.sqlproj.AssemblyReference.cache
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\Model.xml
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\refactor.xml
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\postdeploy.sql
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\predeploy.sql
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\ODS_NZ_SEC.dll
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\obj\Debug\ODS_NZ_SEC.pdb
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\bin\Debug\ODS_NZ_SEC.dll
+C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\bin\Debug\ODS_NZ_SEC.pdb

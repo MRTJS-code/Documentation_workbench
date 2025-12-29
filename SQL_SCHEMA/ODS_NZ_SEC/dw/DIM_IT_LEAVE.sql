@@ -1,0 +1,16 @@
+﻿CREATE TABLE [dw].[DIM_IT_LEAVE] (
+    [SK_DIM_IT_Leave]   BIGINT        IDENTITY (1, 1) NOT NULL,
+    [P_Leave_Name]      VARCHAR (255) NOT NULL,
+    [P_Leave_Code]      VARCHAR (255) NULL,
+    [P_Leave_Shortname] VARCHAR (255) NULL,
+    [P_Exclude_Flag]    VARCHAR (1)   NULL,
+    [MD_DATE_CREATED]   DATE          NULL,
+    [MD_DATE_MODIFIED]  DATE          NULL,
+    [MD_JOB_CODE]       INT           NULL,
+    [MD_RUN_CODE]       BIGINT        NULL,
+    [MD_PACK_NAME]      VARCHAR (70)  NULL,
+    [MD_MODIFIED_USER]  VARCHAR (100) NULL,
+    [MD_LOGICAL_DELETE] SMALLINT      NULL,
+    CONSTRAINT [PK_DIM_IT_LEAVE] PRIMARY KEY CLUSTERED ([SK_DIM_IT_Leave] ASC)
+);
+

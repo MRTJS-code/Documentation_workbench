@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dw].[DIM_PAYRULE] (
+    [PK_DeputyId]         BIGINT        NOT NULL,
+    [PayName]             VARCHAR (100) NOT NULL,
+    [PayExported]         BIT           NULL,
+    [PayType]             VARCHAR (100) NULL,
+    [PayBy]               VARCHAR (100) NULL,
+    [PaySalAmt]           FLOAT (53)    NULL,
+    [PayHrAmt]            FLOAT (53)    NULL,
+    [PayMultipler]        BIT           NULL,
+    [PayMultiValue]       FLOAT (53)    NULL,
+    [PayMinType]          VARCHAR (100) NULL,
+    [PayMaxType]          VARCHAR (100) NULL,
+    [PayMinVal]           FLOAT (53)    NULL,
+    [PayMaxValue]         FLOAT (53)    NULL,
+    [PayMinShiftLen]      FLOAT (53)    NULL,
+    [PayMaxShiftLen]      FLOAT (53)    NULL,
+    [PayExportCode]       VARCHAR (100) NULL,
+    [PayRateType]         VARCHAR (100) NULL,
+    [MD_CreateDate]       DATETIME      NULL,
+    [MD_ModifiedDate]     DATETIME      NULL,
+    [MD_ETLJobCode]       INT           NULL,
+    [MD_ETLRunCode]       BIGINT        NULL,
+    [MD_ETLRun]           BIGINT        NULL,
+    [MD_ModifiedUser]     VARCHAR (100) NULL,
+    [FK_QA_QUALITYHEADER] BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([PK_DeputyId] ASC)
+);
+

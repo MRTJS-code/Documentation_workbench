@@ -1,0 +1,25 @@
+﻿CREATE TABLE [staging].[GT_FACT_PAYROLL] (
+    [SourceSys]       VARCHAR (9)     NOT NULL,
+    [payClsNo]        INT             NOT NULL,
+    [payInstId]       BIGINT          NOT NULL,
+    [GtEmployeeId]    VARCHAR (12)    NULL,
+    [jobClsNo]        INT             NULL,
+    [jobInstId]       BIGINT          NULL,
+    [PayCodeClsNo]    INT             NULL,
+    [PayCodeInstId]   BIGINT          NULL,
+    [VaClsNo]         INT             NOT NULL,
+    [VaInstId]        BIGINT          NOT NULL,
+    [BranchCode]      VARCHAR (2)     NULL,
+    [BusinessCode]    VARCHAR (2)     NULL,
+    [PayslipId]       VARCHAR (20)    NULL,
+    [PostingDate]     DATE            NULL,
+    [CostingDate]     DATE            NULL,
+    [BatchRef]        INT             NULL,
+    [PayrunGroup]     VARCHAR (2)     NOT NULL,
+    [ItAssignmentRef] TEXT            NULL,
+    [Notes]           TEXT            NULL,
+    [Qty]             DECIMAL (12, 4) NULL,
+    [ratePay]         DECIMAL (14, 4) NULL,
+    [amountJC]        DECIMAL (12, 2) NULL
+);
+

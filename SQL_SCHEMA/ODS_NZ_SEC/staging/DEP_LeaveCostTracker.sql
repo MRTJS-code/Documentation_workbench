@@ -1,0 +1,7 @@
+﻿CREATE TABLE [staging].[DEP_LeaveCostTracker] (
+    [LEAVE_ID]  INT          NULL,
+    [ROSTER_ID] INT          NULL,
+    [JOBCODE]   VARCHAR (50) NULL,
+    [COSTPERHR] FLOAT (53)   NULL
+);
+

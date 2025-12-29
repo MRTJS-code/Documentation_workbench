@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dw].[DIM_IT_ACTIVITY] (
+    [SK_DIM_IT_Activity] BIGINT        IDENTITY (1, 1) NOT NULL,
+    [P_Activity_name]    VARCHAR (255) NOT NULL,
+    [MD_DATE_CREATED]    DATE          NULL,
+    [MD_DATE_MODIFIED]   DATE          NULL,
+    [MD_JOB_CODE]        INT           NULL,
+    [MD_RUN_CODE]        BIGINT        NULL,
+    [MD_PACK_NAME]       VARCHAR (70)  NULL,
+    [MD_MODIFIED_USER]   VARCHAR (100) NULL,
+    [MD_LOGICAL_DELETE]  SMALLINT      NULL,
+    CONSTRAINT [PK_DIM_IT_ACTIVITY] PRIMARY KEY CLUSTERED ([SK_DIM_IT_Activity] ASC)
+);
+

@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dw].[DIM_PATROL_SETUP] (
+    [SK_DIM_PATROL_SETUP]        BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_DW_Source_System]        VARCHAR (50)  NOT NULL,
+    [PK_WS_Perm_Patrol_Id]       INT           NULL,
+    [FK_DIM_CUSTOMER]            BIGINT        NULL,
+    [FK_DIM_DESPATCH_ZONE]       INT           NULL,
+    [P_Patrol_Type]              VARCHAR (9)   NULL,
+    [P_Patrol_Status]            VARCHAR (8)   NULL,
+    [P_Patrol_Service_Type]      VARCHAR (32)  NULL,
+    [P_Patrol_Charge_Type]       VARCHAR (11)  NULL,
+    [P_Patrol_Price_Type]        VARCHAR (14)  NULL,
+    [P_Patrol_Name]              VARCHAR (128) NULL,
+    [P_Patrol_Comments]          VARCHAR (MAX) NULL,
+    [P_PO_Number]                VARCHAR (128) NULL,
+    [P_Weekly_Perm_Patrol_Count] INT           NULL,
+    [P_Last_Despatch_Date]       DATETIME      NULL,
+    [P_Never_Charge]             BIT           NULL,
+    [MD_DATE_MODIFIED]           DATETIME      NULL,
+    [MD_JOB_CODE]                INT           NULL,
+    [MD_RUN_CODE]                BIGINT        NULL,
+    [MD_ETL_RUN]                 INT           NULL,
+    [MD_LOGICAL_DELETE]          BIT           NULL,
+    PRIMARY KEY CLUSTERED ([SK_DIM_PATROL_SETUP] ASC)
+);
+

@@ -1,0 +1,9 @@
+﻿CREATE TABLE [eda].[LKP_PUBLICHOLIDAY] (
+    [PH_ID]        INT          IDENTITY (1, 1) NOT NULL,
+    [PH_NAME]      VARCHAR (50) NULL,
+    [PH_DATE]      DATE         NOT NULL,
+    [PH_ALTDATE]   DATE         NULL,
+    [PH_BRANCHREF] VARCHAR (20) NULL,
+    PRIMARY KEY CLUSTERED ([PH_ID] ASC)
+);
+

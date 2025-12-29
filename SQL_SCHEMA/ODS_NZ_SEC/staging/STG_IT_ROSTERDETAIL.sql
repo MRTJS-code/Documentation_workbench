@@ -1,0 +1,26 @@
+﻿CREATE TABLE [staging].[STG_IT_ROSTERDETAIL] (
+    [assignmentId]      BIGINT           NULL,
+    [start]             DATETIME         NULL,
+    [end]               DATETIME         NULL,
+    [tsHours]           NUMERIC (28, 10) NULL,
+    [enteredHours]      NUMERIC (28, 10) NULL,
+    [customerName]      NVARCHAR (255)   NULL,
+    [customerRef]       NVARCHAR (255)   NULL,
+    [customerCode]      NVARCHAR (255)   NULL,
+    [locationName]      NVARCHAR (255)   NULL,
+    [locationShortName] NVARCHAR (255)   NULL,
+    [locationRef]       NVARCHAR (255)   NULL,
+    [locationCode]      NVARCHAR (255)   NULL,
+    [subLocationName]   NVARCHAR (255)   NULL,
+    [subLocationRef]    NVARCHAR (255)   NULL,
+    [subLocationCode]   NVARCHAR (255)   NULL,
+    [leaveName]         NVARCHAR (255)   NULL,
+    [leaveShortName]    NVARCHAR (255)   NULL,
+    [leaveCode]         NVARCHAR (255)   NULL,
+    [payLeaveName]      NVARCHAR (255)   NULL,
+    [activityName]      NVARCHAR (255)   NULL,
+    [activityCode]      NVARCHAR (255)   NULL,
+    [hoursModifierCode] NVARCHAR (255)   NULL,
+    [premiumHoursType]  NVARCHAR (255)   NULL
+);
+

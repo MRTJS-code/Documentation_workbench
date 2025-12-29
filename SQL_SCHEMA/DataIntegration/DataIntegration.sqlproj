@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>DataIntegration</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{2bda6df1-f93f-480e-831f-703e4a025ed4}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>DataIntegration</RootNamespace>
+    <AssemblyName>DataIntegration</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchema</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="eda\" />
+    <Folder Include="sen\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="eda\IMP_DEPEMPEECUSTOM.sql" />
+    <Build Include="eda\STG_DEP_LOCATION.sql" />
+    <Build Include="eda\LKP_PUBLICHOLIDAY.sql" />
+    <Build Include="eda\IMP_DEPTIMESHEETFIX.sql" />
+    <Build Include="eda\STG_DEP_LEAVERULE.sql" />
+    <Build Include="eda\STG_DEPTIMESHEET.sql" />
+    <Build Include="eda\EXT_DEP_FULL.sql" />
+    <Build Include="eda\STG_DEP_LEAVEREQUESTS.sql" />
+    <Build Include="eda\STG_DEP_TIMESHEETLINE.sql" />
+    <Build Include="eda\STG_DEP_PAYRULES.sql" />
+    <Build Include="eda\STG_GT_JOB.sql" />
+    <Build Include="eda\STG_TIMESHEET.sql" />
+    <Build Include="eda\EXT_IT_BILLLEGACY.sql" />
+    <Build Include="eda\STG_DEPTIMESHEETLINEBKP.sql" />
+    <Build Include="eda\APP_MDA_PERMISSION.sql" />
+    <Build Include="eda\EXT_IT_ROSTERFULL.sql" />
+    <Build Include="eda\STG_GT_ACTIVITY.sql" />
+    <Build Include="eda\LKP_IT_STAFFERROR.sql" />
+    <Build Include="eda\STG_DEPTIMESHEETBKP.sql" />
+    <Build Include="eda\EXT_PR_PAYLINES.sql" />
+    <Build Include="eda\EXT_PR_PAYERROR.sql" />
+    <Build Include="eda\LKP_PR_ACCOUNTCODE.sql" />
+    <Build Include="eda\LKP_PR_PAYCODE.sql" />
+    <Build Include="eda\LKP_PR_DEPTCODES.sql" />
+    <Build Include="eda\LKP_PR_LEAVEREASON.sql" />
+    <Build Include="eda\LKP_GT_ACTIVITY.sql" />
+    <Build Include="eda\LKP_PR_LABOURCOSTCODE1.sql" />
+    <Build Include="eda\LKP_PR_LABOURCOSTCODE2.sql" />
+    <Build Include="eda\EXT_IT_PAYLEGACY.sql" />
+    <Build Include="eda\LKP_IT_STAFFREGISTER.sql" />
+    <Build Include="eda\ETL_EVENT_VARIABLES.sql" />
+    <Build Include="eda\STG_ASSIGNTAGKEYVALUE.sql" />
+    <Build Include="eda\EXT_PR_TIMESHEETS.sql" />
+    <Build Include="eda\STG_ASSIGNASSETS.sql" />
+    <Build Include="eda\STG_ASSIGNHEAD.sql" />
+    <Build Include="eda\LKP_WorkingDay.sql" />
+    <Build Include="eda\STG_ASSIGNROW.sql" />
+    <Build Include="eda\STG_ASSIGNROWPAY.sql" />
+    <Build Include="eda\STG_ASSIGNTAGS.sql" />
+    <Build Include="eda\LKP_IT_LOCREGERROR.sql" />
+    <Build Include="eda\STG_EMPEEATTRIBUTE.sql" />
+    <Build Include="eda\STG_EMPEEBRANCH.sql" />
+    <Build Include="eda\STG_EMPEECONTACT.sql" />
+    <Build Include="eda\STG_DEP_ROSTER.sql" />
+    <Build Include="eda\STG_EMPEEDATA.sql" />
+    <Build Include="eda\ETL_EVENT.sql" />
+    <Build Include="eda\STG_EMPEEDATES.sql" />
+    <Build Include="eda\STG_EMPEERANK.sql" />
+    <Build Include="eda\LKP_GT_JOBERROR.sql" />
+    <Build Include="eda\STG_EMPEEUNIT.sql" />
+    <Build Include="eda\STG_EMPEEWORKGROUP.sql" />
+    <Build Include="eda\STG_LOCATIONATT.sql" />
+    <Build Include="eda\EXT_PR_ACCOUNT.sql" />
+    <Build Include="eda\STG_DEP_EMPLOYEE.sql" />
+    <Build Include="eda\IMP_DEPRESOURCE.sql" />
+    <Build Include="eda\IMP_DEPEMPAGMIGRATE.sql" />
+    <Build Include="eda\LKP_IT_LOCREGISTER.sql" />
+    <Build Include="eda\OLE DB Destination.sql" />
+    <Build Include="eda\LKP_GT_JOB.sql" />
+    <Build Include="eda\IMP_DEPLEAVE.sql" />
+    <Build Include="eda\LKP_GT_GL.sql" />
+    <Build Include="eda\APP_CONFIG.sql" />
+    <Build Include="eda\ERR_DEPLEAVE.sql" />
+    <Build Include="sen\LKP_PR_EMPLOYEE.sql" />
+    <Build Include="eda\LKP_PHTRACKER.sql" />
+    <Build Include="eda\BKP_PHTRACKER.sql" />
+    <Build Include="eda\ETL_EVENT_RECENT.sql" />
+    <Build Include="eda\LKP_IT_STAFFREGFULL.sql" />
+    <Build Include="eda\LKP_IT_LOCREGFULL.sql" />
+    <Build Include="eda\LKP_IT_LOCERRAPP.sql" />
+    <Build Include="eda\UPDATE_EVENT_STATUS.sql" />
+    <Build Include="eda\PRECEDA_OUTPUT.sql" />
+    <Build Include="eda.sql" />
+    <Build Include="sen.sql" />
+    <Build Include="eda\STG_UNAPPROVEDTS.sql" />
+    <Build Include="eda\LKP_DEP_WorkArea.sql" />
+    <Build Include="eda\LKP_DEP_RateCard.sql" />
+    <Build Include="eda\LKP_DEP_Location.sql" />
+    <Build Include="eda\LKP_DEP_ClientTier.sql" />
+    <Build Include="sen\LKP_EMPLOYEE.sql" />
+    <Build Include="eda\STG_DEP_EmpeePaycycle.sql" />
+    <Build Include="eda\STG_DEP_AREA.sql" />
+    <Build Include="eda\LKP_SiteRate.sql" />
+    <Build Include="eda\LKP_LeaveRosterHistory.sql" />
+    <Build Include="eda\LKP_DEP_LeaveRosterTracker.sql" />
+    <Build Include="eda\LKP_DEP_LeaveArea.sql" />
+    <Build Include="eda\LKP_ClientTierRate.sql" />
+    <Build Include="WILSON_Stefan.Rodrigues.sql" />
+    <Build Include="WILSON_Jueying.Wang.sql" />
+    <Build Include="WILSON_Hari.Tallam.sql" />
+    <Build Include="system.ETLFramework.sql" />
+    <Build Include="System.EDAApp.sql" />
+    <Build Include="system.DataWarehouse.sql" />
+    <Build Include="system.DataIntegration_Read.sql" />
+    <Build Include="system.DataIntegration.sql" />
+    <Build Include="RoleMemberships.sql" />
+    <Build Include="lookup.sql" />
+  </ItemGroup>
+</Project>

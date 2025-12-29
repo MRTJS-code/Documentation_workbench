@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dw].[DIM_LH_USER] (
+    [SK_DIM_LH_USER]          BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_APP_USER_ID]          VARCHAR (MAX) NULL,
+    [FK_USERNAME]             VARCHAR (255) NULL,
+    [FK_SK_DIM_EMPLOYEE]      BIGINT        NULL,
+    [P_FIRSTNAME]             VARCHAR (255) NULL,
+    [P_LASTNAME]              VARCHAR (255) NULL,
+    [P_LOGGEDIN]              DATETIME      NULL,
+    [P_LOGGEDOUT]             DATETIME      NULL,
+    [P_USER_ROLE]             VARCHAR (255) NULL,
+    [P_USER_ID]               VARCHAR (255) NULL,
+    [P_USER_EMAIL]            VARCHAR (255) NULL,
+    [P_REVISIONNUMBER]        BIGINT        NULL,
+    [P_USER_CREATED_AT]       DATETIME      NULL,
+    [P_USER_UPDATED_AT]       DATETIME      NULL,
+    [MD_FILENAME]             VARCHAR (255) NULL,
+    [MD_DATELASTMODIFIED]     DATETIME      NULL,
+    [MD_ETLJOB]               BIGINT        NULL,
+    [MD_ETLEXECUTION]         BIGINT        NULL,
+    [MD_ETLRUN]               BIGINT        NULL,
+    [FK_SK_DIM_BRANCH]        BIGINT        NULL,
+    [FK_SK_DIM_SECURITYGUARD] BIGINT        NULL,
+    [P_USER_ID_REF]           VARCHAR (255) NULL,
+    PRIMARY KEY CLUSTERED ([SK_DIM_LH_USER] ASC)
+);
+

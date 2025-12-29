@@ -1,0 +1,7 @@
+﻿CREATE TABLE [eda].[LKP_IT_LOCREGERROR] (
+    [id]            INT           IDENTITY (1, 1) NOT NULL,
+    [LOC_REFERENCE] VARCHAR (7)   NULL,
+    [COMMENT]       VARCHAR (250) NULL,
+    PRIMARY KEY CLUSTERED ([id] ASC)
+);
+

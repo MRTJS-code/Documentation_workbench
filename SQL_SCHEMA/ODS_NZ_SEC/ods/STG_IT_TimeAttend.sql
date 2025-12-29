@@ -1,0 +1,26 @@
+﻿CREATE TABLE [ods].[STG_IT_TimeAttend] (
+    [employeeRefId]      VARCHAR (50) NULL,
+    [employeeName]       VARCHAR (50) NULL,
+    [assignmentId]       VARCHAR (50) NULL,
+    [branchRef]          VARCHAR (50) NULL,
+    [scheduledStartTime] VARCHAR (50) NULL,
+    [scheduledEndtime]   VARCHAR (50) NULL,
+    [actualStartTime]    VARCHAR (50) NULL,
+    [actualEndtime]      VARCHAR (50) NULL,
+    [customerRef]        VARCHAR (50) NULL,
+    [customerName]       VARCHAR (50) NULL,
+    [locationRef]        VARCHAR (50) NULL,
+    [locationName]       VARCHAR (50) NULL,
+    [subLocationRef]     VARCHAR (50) NULL,
+    [subLocationName]    VARCHAR (50) NULL,
+    [payType]            VARCHAR (50) NULL,
+    [payHours]           VARCHAR (50) NULL,
+    [payRate]            VARCHAR (50) NULL,
+    [leaveJob]           VARCHAR (50) NULL,
+    [leaveType]          VARCHAR (50) NULL,
+    [premiumType]        VARCHAR (50) NULL,
+    [premiumHrsMod]      VARCHAR (50) NULL,
+    [billHours]          VARCHAR (50) NULL,
+    [billRate]           VARCHAR (50) NULL
+);
+

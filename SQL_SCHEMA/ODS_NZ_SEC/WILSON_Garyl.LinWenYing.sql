@@ -1,0 +1,3 @@
+﻿CREATE USER [WILSON\Garyl.LinWenYing] FOR LOGIN [WILSON\Garyl.LinWenYing]
+    WITH DEFAULT_SCHEMA = [ods];
+

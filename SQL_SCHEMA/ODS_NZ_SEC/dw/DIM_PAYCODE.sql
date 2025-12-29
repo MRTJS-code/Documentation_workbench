@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dw].[DIM_PAYCODE] (
+    [SK_DIM_Paycode]       INT           IDENTITY (1, 1) NOT NULL,
+    [PK_PR_Code]           VARCHAR (10)  NULL,
+    [PK_PR_Code_Type]      VARCHAR (1)   NULL,
+    [PK_GT_Code]           VARCHAR (9)   NULL,
+    [PK_GT_Clsno]          INT           NULL,
+    [PK_GT_Instid]         INT           NULL,
+    [PK_DW_Source_System]  VARCHAR (50)  NOT NULL,
+    [FK_CON_Paycode]       INT           NOT NULL,
+    [P_Desc]               VARCHAR (100) NULL,
+    [P_ShortDesc]          VARCHAR (50)  NULL,
+    [FK_DIM_Paycode_Class] INT           NULL,
+    [P_IncHrsInLeaveAcr]   BIT           NULL,
+    [P_IncludeInAWE]       BIT           NULL,
+    [P_IncludeInOWP]       BIT           NULL,
+    [P_IncludeInADP]       BIT           NULL,
+    [MD_DATE_MODIFIED]     DATETIME      NULL,
+    [MD_JOB_CODE]          INT           NULL,
+    [MD_RUN_CODE]          BIGINT        NULL,
+    [MD_ETL_RUN]           INT           NULL,
+    [MD_LOGICAL_DELETE]    BIT           NULL,
+    PRIMARY KEY CLUSTERED ([SK_DIM_Paycode] ASC),
+    CONSTRAINT [FK_DIM_PAYCODE_CON_PAYCODE] FOREIGN KEY ([FK_CON_Paycode]) REFERENCES [dw].[CON_PAYCODE] ([SK_CON_Paycode]),
+    CONSTRAINT [FK_DIM_PAYCODE_DIM_PAYCODE_CLASS] FOREIGN KEY ([FK_DIM_Paycode_Class]) REFERENCES [dw].[DIM_PAYCODE_CLASS] ([SK_DIM_PAYCODE_CLASS])
+);
+
