@@ -4,18 +4,18 @@
 - For each routed package, sample `SqlStatementSource` tasks to capture table/proc touchpoints; rely on `/SQL_SCHEMA` definitions for authoritative schemas.
 - Map the lifecycle: event creation → polling/filtering → staging → transform → outbound (CSV/API) → completion/error handling, noting statuses and data stores.
 - Summarize tables from `/SQL_SCHEMA/DataIntegration/eda` and relate them to package actions; explicitly mark anything inferred as assumptions/gaps.
-- Incorporate ETL Framework context (see `/ETL_Documentation`): job metadata in `metadata.CTL_*`, run cadence, dependency handling, and how `ETL_VAR_*`/`ETL_CUS_*` parameters are injected at runtime.
+- Incorporate ETL Framework context (see `/ETL_Documentation`): job metadata in `metadata.CTL_*`, run cadence, dependency handling, how `ETL_VAR_*`/`ETL_CUS_*` parameters are injected at runtime, and how `ERR_MAX_FAIL`/`ERR_PRIOR_FAIL_COUNT` drive OnError retry vs error.
 
 ## What Worked Well
 - `rg` + targeted `Select-String` around `SqlStatementSource` and `ObjectName` quickly exposed routing and status updates.
 - `/SQL_SCHEMA/DataIntegration/eda` files provided definitive table definitions and views (no guessing on columns).
 - `/BCP SQL Scripts/BCP EDA Event Loader.sql` clarified expected `ETL_EVENT_VARIABLES` codes without digging through script components.
-- New `/ETL_Documentation` Word docs summarize the Wilson Group ETL Framework run lifecycle, metadata tables, and deployment guidance (SQL Agent cadence, CTL_RUN, CTL_JOB_CONFIG/VARIABLES/DEPENDENCIES).
+- New `/ETL_Documentation` Word docs summarize the Wilson Group ETL Framework run lifecycle, metadata tables, and deployment guidance (SQL Agent cadence, CTL_RUN, CTL_JOB_CONFIG/VARIABLES/DEPENDENCIES, ERR_MAX_FAIL/ERR_PRIOR_FAIL_COUNT behavior).
 
 ## Gotchas in This Repo
 - Packages like `2 Stage Deputy.dtsx` and the Deputy API posting packages embed logic not visible in SQL (HTTP calls, script components); behavior still inferred from payload tables.
 - OnError handler variables (`ERR_FAIL_STATUS`, etc.) lack documented values; final status on failure is uncertain.
-- `Resource Check` is disabled for most flows, so completion may occur without verifying `IMP_DEPRESOURCE` responses.
+- `Resource Check` future enhancement is planned to decouple large Deputy import batches; current flow completes without that gate.
 - Connection strings include server/user defaults; must be overridden in secured environments.
 
 ## How to Improve Future Runs

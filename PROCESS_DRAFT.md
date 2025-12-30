@@ -7,13 +7,13 @@
    - Call `eda.UPDATE_EVENT_STATUS` → `Extracting from Deputy`; run `2 Stage Deputy.dtsx` to populate `eda.STG_*`.  
    - Call `eda.UPDATE_EVENT_STATUS` → `Processing Deputy Data`; run `4 Full Extract Build.dtsx` (and `1 Lookup Greentree.dtsx`) to build `eda.EXT_DEP_FULL`, `eda.LKP_WorkingDay`, related lookup tables.  
    - **Outbound CSV/queue** based on `EVENT_OUTPUT`:  
-     - `BILLING` → `5 Billing Extract.dtsx` writes JSON payloads to `eda.IMP_DEPRESOURCE` (Timesheet invoiced).  
-     - `PAYROLL` → `5 Payroll Extract.dtsx` writes export/paid payloads to `eda.IMP_DEPRESOURCE`.  
+     - `BILLING` → `5 Billing Extract.dtsx` generates/emails billing CSV and writes invoice payloads to `eda.IMP_DEPRESOURCE`.  
+     - `PAYROLL` → `5 Payroll Extract.dtsx` generates/emails payroll CSV and writes export/paid payloads to `eda.IMP_DEPRESOURCE`.  
      - `SUBCONTRACTOR` → `5 Subcontractor Extract.dtsx` (package handles subcontractor output).
 5) **Upload path (EVENT_OUTPUT = DEPUTY)**:  
    - Call `eda.UPDATE_EVENT_STATUS` → `Importing to Deputy`.  
    - Run the package matching `EVENT_INPUT`: `9 Agreement Migration` (IMP_DEPEMPAGMIGRATE), `9 Employee Custom` (IMP_DEPEMPEECUSTOM), `9 Deputy Resource Post` (IMP_DEPRESOURCE), `9 Leave Import` (IMP_DEPLEAVE), `9 Timesheet Paid` (IMP_DEPRESOURCE with STG_UNAPPROVEDTS filter), or `9 Timesheet Process` (IMP_DEPTIMESHEETFIX).
-6) **Completion**: `FinishStatus` is set (default `Completed`; `Resource Check` can set based on outstanding `IMP_DEPRESOURCE.responseMsg` but is disabled for non-resource events). `eda.UPDATE_EVENT_STATUS` writes final status, end date, execution id.
+6) **Completion**: `FinishStatus` is set (default `Completed`). `eda.UPDATE_EVENT_STATUS` writes final status, end date, execution id.
 7) **Error handler**: On any task failure, optional rollback SQL, metadata lookup, and `Write to ETL_EVENT` append `EVENT_COMMENT` and set status (driven by variables `ERR_FAIL_STATUS`, etc.); optional SMTP email is present but disabled by default.
 
 ## Mermaid Flow
@@ -69,9 +69,8 @@ flowchart TD
 - `EXTRACT_STAGETYPE`, `EXTRACT_TYPE`, `EXTRACT_FROM/TO` (from `ETL_EVENT_VARIABLES`) influence extract scope inside staging/full extract logic.
 
 ## Error / Retry Paths
-- Any task failure triggers the OnError sequence: optional data rollback SQL, metadata lookup, error comment build, update `eda.ETL_EVENT`, optional SMTP email (disabled).
-- Retries rely on changing `EVENT_STATUS` back to `RETRY` or `NEW`; no automatic backoff/max-attempt logic is present.
-- `Resource Check` (disabled except for GENERAL RESOURCE / TIMESHEET PAID) can adjust `FinishStatus` based on pending `IMP_DEPRESOURCE` rows with `responseMsg IS NULL`.
+- Any task failure triggers the OnError sequence: rollback SQL runs, metadata lookup, error comment build, update `eda.ETL_EVENT`, optional SMTP email (disabled).
+- Retry vs error is driven by ETL Framework job config (`ERR_MAX_FAIL`, `ERR_PRIOR_FAIL_COUNT`); the handler sets `EVENT_STATUS` to `RETRY` when thresholds allow, otherwise `ERROR`.
 
 ## Where to Verify Execution
 - Event state: `eda.ETL_EVENT` (`EVENT_STATUS`, `EVENT_DATE_START/END`, `EVENT_COMMENT`, `EVENT_EXECUTION_ID`).
