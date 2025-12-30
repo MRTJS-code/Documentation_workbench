@@ -22,8 +22,8 @@ flowchart TD
   B --> C{Foreach event}
   C --> D[Load ETL_EVENT_VARIABLES -> package vars]
   D --> E{EVENT_INPUT/OUTPUT}
-  E -->|EVENT_INPUT=DEPUTY| F[Update status 'Extracting from Deputy' \n Run 2 Stage Deputy]
-  F --> G[Update status 'Processing Deputy Data'\nRun 1 Lookup Greentree + 4 Full Extract Build]
+  E -->|EVENT_INPUT=DEPUTY| F[Update status 'Extracting from Deputy'<br/>Run 2 Stage Deputy]
+  F --> G[Update status 'Processing Deputy Data'<br/>Run 1 Lookup Greentree + 4 Full Extract Build]
   G --> H{EVENT_OUTPUT}
   H -->|BILLING| I[5 Billing Extract -> IMP_DEPRESOURCE payloads]
   H -->|PAYROLL| J[5 Payroll Extract -> IMP_DEPRESOURCE payloads]
