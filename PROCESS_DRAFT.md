@@ -1,6 +1,6 @@
 ## End-to-End Flow (EDA)
 0) **ETL Framework job** (SQL Agent, ~2-minute cadence) creates a run instance (RUN_CODE), checks `metadata.CTL_JOB_CONFIG` for job code 6002, resolves dependencies/parameters, and executes `0 Job Plan.dtsx`.
-1) **External trigger** inserts an event into `eda.ETL_EVENT` (ETL_REF=6002) with `EVENT_STATUS='NEW'` (optionally `EVENT_KICKOFF_DATE`) and any required rows in `eda.ETL_EVENT_VARIABLES` (e.g., `EXTRACT_FROM/TO`, `EXTRACT_STAGETYPE`, `EXTRACT_TYPE`).
+1) **External trigger** inserts an event into `eda.ETL_EVENT` (ETL_REF=6002) with `EVENT_STATUS='NEW'` (optionally `EVENT_KICKOFF_DATE`) and any required rows in `eda.ETL_EVENT_VARIABLES` (e.g., `EXTRACT_FROM/TO`, `EXTRACT_STAGETYPE`, `EXTRACT_TYPE`).  Typically this will be the Extract Power App or events created automatically from other SSIS packages / Fabric Pipelines.
 2) **0 Job Plan.dtsx** starts: updates future-dated `NEW` events to `WAIT`, then selects events with status `NEW/RETRY/WAIT` and kickoff time <= current time into an ADO recordset.
 3) **Per-event loop** binds `EVENT_ID`, `EVENT_INPUT`, `EVENT_OUTPUT`, and `EVENT_USER_EMAIL`; a data flow reads `eda.ETL_EVENT_VARIABLES` and pushes values into package variables (date range, extract type, stage type, etc.).
 4) **Extract path (EVENT_INPUT = DEPUTY)**:  
@@ -65,11 +65,11 @@ flowchart TD
 ## Decision Points & Routing
 - `EVENT_OUTPUT` drives extract CSVs vs. Deputy uploads.
 - `EVENT_INPUT` within uploads selects a single downstream package; disable expressions prevent unrelated packages from firing.
-- `EVENT_KICKOFF_DATE` dictates when a `NEW` event moves to active processing.
-- `EXTRACT_STAGETYPE`, `EXTRACT_TYPE`, `EXTRACT_FROM/TO` (from `ETL_EVENT_VARIABLES`) influence extract scope inside staging/full extract logic.
+- `EVENT_KICKOFF_DATE` dictates when a `NEW` event moves to active processing.  If no date is provied the event moves to acive processing immediately.
+- `EXTRACT_STAGETYPE`, `EXTRACT_TYPE`, `EXTRACT_FROM/TO` (from `ETL_EVENT_VARIABLES`) influence extract scope inside staging/full extract logic.  The EDA ETL_EVENT_VARIABLES can be customised so may have different names in other processors.
 
 ## Error / Retry Paths
-- Any task failure triggers the OnError sequence: rollback SQL runs, metadata lookup, error comment build, update `eda.ETL_EVENT`, optional SMTP email (disabled).
+- Any task failure triggers the OnError sequence: rollback SQL runs, metadata lookup, error comment build, update `eda.ETL_EVENT`, optional SMTP email (only sent when run reaches an `ERROR` status).
 - Retry vs error is driven by ETL Framework job config (`ERR_MAX_FAIL`, `ERR_PRIOR_FAIL_COUNT`); the handler sets `EVENT_STATUS` to `RETRY` when thresholds allow, otherwise `ERROR`.
 
 ## Where to Verify Execution
@@ -79,3 +79,4 @@ flowchart TD
 - Deputy payload queues: `eda.IMP_DEPRESOURCE.responseMsg`, `eda.IMP_DEPEMPEECUSTOM.processOutcome`, `eda.IMP_DEPEMPAGMIGRATE.errorMsg`, `eda.IMP_DEPTIMESHEETFIX.respMessage`, `eda.IMP_DEPLEAVE`.
 - Filters for paid events: `eda.STG_UNAPPROVEDTS` used by `9 Timesheet Paid`.
 - SSIS logs / catalog reports if deployed to SSISDB; ETLFramework metadata tables for job history if integrated.
+- Note data lifetime is limited in `eda` schema tables.
