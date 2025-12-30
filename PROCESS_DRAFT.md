@@ -46,7 +46,7 @@ flowchart TD
   M5 --> N
   M6 --> N
   N --> O[Event complete; EVENT_STATUS updated; EVENT_DATE_END set]
-  C -->|On error| P[OnError handler -> Write to ETL_EVENT (status/comment)]
+  C -->|On error| P[OnError handler writes ETL_EVENT status/comment]
 ```
 
 ## ETL_EVENT Status Lifecycle
