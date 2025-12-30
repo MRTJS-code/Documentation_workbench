@@ -32,3 +32,35 @@
 - [ ] Note any new status values introduced in `eda.UPDATE_EVENT_STATUS` or OnError handler.
 - [ ] Review `/ETL_Documentation` for updates to the ETL Framework lifecycle or deployment standards.
 - [ ] Check for any wider EDA changes, such as planned enhancements for event decoupling, introduction of an event handler run and any other event processors added to the wider architecture
+
+## Reusable Prompt Template (parameterize items in braces)
+```
+You are documenting an SSIS project {ProjectName} located at {RepoPath}.
+Sources:
+- SSIS packages (*.dtsx) and project files (dtproj/params).
+- SQL schemas under {SqlSchemaPath}.
+- ETL Framework docs under {EtfDocsPath} (CTL_JOB_CONFIG, CTL_JOB_CONFIG_VARIABLES, CTL_JOB_CONFIG_DEPENDENCIES, CTL_RUN, retry variables ERR_MAX_FAIL/ERR_PRIOR_FAIL_COUNT).
+
+Goals:
+1) Map packages → tasks → SQL touchpoints.
+2) Explain end-to-end flow from event creation to completion/error (include triggers, filters, status transitions, retries, logging).
+3) Summarize DB objects used (tables/views/procs) with roles.
+4) Note assumptions/gaps clearly (no invention).
+
+Steps:
+- Scan repo tree; identify packages, connection managers, project/ package parameters, environments.
+- Read orchestrator package(s) to capture variables, precedence, event handlers, status updates, and routing rules.
+- For each package, capture key Execute SQL/Script/Data Flow tasks and referenced DB objects (quote exact names).
+- Cross-reference SQL definitions in {SqlSchemaPath}; do not invent columns.
+- Incorporate ETL Framework behavior (poll cadence, dependencies, parameter injection, retry thresholds).
+
+Deliverables:
+- Technical README (purpose, prerequisites, deployment, connections, DB dependencies, package inventory, operational notes, troubleshooting, assumptions/gaps).
+- Process draft (step-by-step flow, Mermaid diagram, status matrix, decision points, error/retry paths, verification points).
+- Enhancements list (category, current behavior, risk, suggestion, effort, notes).
+- Repo README (short summary, structure, generated docs, how to rerun).
+
+Constraints:
+- Use only repo contents; mark anything inferred as “Inferred” with evidence.
+- Preserve ASCII; keep responses concise and structured.
+```
