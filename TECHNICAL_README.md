@@ -36,54 +36,52 @@
 | `eda.ETL_EVENT_RECENT` (view) | Convenience view joining recent events to key variables. |
 | `eda.UPDATE_EVENT_STATUS` (proc) | Central status updater; writes status, execution id, start/end dates based on current state. |
 | `eda.EXT_DEP_FULL` | Full extract fact table built in `4 Full Extract Build`; source for billing/payroll/subcontractor outputs. |
-| `eda.IMP_DEPRESOURCE` | Deputy API payload queue; populated by billing/payroll/general-resource packages; processed by `9 Deputy Resource Post` / `9 Timesheet Paid`. |
-| `eda.IMP_DEPEMPEECUSTOM`, `eda.IMP_DEPEMPAGMIGRATE`, `eda.IMP_DEPTIMESHEETFIX`, `eda.IMP_DEPLEAVE` | Payload tables for specific Deputy actions (custom fields, agreement migration, timesheet fixes, leave import). |
+| `eda.IMP_DEPRESOURCE` | Deputy API payload queue; populated by billing and payroll extract packages; processed by `9 Deputy Resource Post` / `9 Timesheet Paid`. |
+| `eda.IMP_DEPEMPEECUSTOM`, `eda.IMP_DEPEMPAGMIGRATE`, `eda.IMP_DEPTIMESHEETFIX`, `eda.IMP_DEPLEAVE` | Legacy payload tables for specific Deputy actions (custom fields, agreement migration, timesheet fixes, leave import). |
 | `eda.STG_UNAPPROVEDTS` | Filter list used by `9 Timesheet Paid` to remove unapproved timesheets before posting. |
 | Staging tables `eda.STG_DEP_*`, `STG_DEPTIMESHEET*`, `STG_ASSIGN*`, etc. | Populated by `2 Stage Deputy` with raw Deputy data; inputs to the full extract and downstream transformations. |
 | Lookup tables `eda.LKP_DEP_*`, `eda.LKP_WorkingDay`, `eda.LKP_PHTRACKER` | Built/refreshed during staging and full-extract steps to support rate, area, and PH logic. |
 | DW lookups (schema `dw`, `lookup` in `ODS_NZ_SEC`) | Referenced by `4 Full Extract Build` for working-day calculations and public holiday mapping. |
 
 ## ETL Framework Metadata (ETLFramework database)
-- The enterprise **ETL Framework** (SSIS package `ETL Framework.dtsx`, scheduled via SQL Agent) runs about every 2 minutes on-premises and orchestrates all jobs.
+- The enterprise **ETL Framework** (SSIS package `ETL Framework.dtsx`, scheduled via SQL Agent) runs about every 1 minute on-premises and orchestrates all jobs.
 - Run lifecycle: creates a CTL_RUN “run instance” (RUN_CODE), enumerates `metadata.CTL_JOB_CONFIG` rows whose `JOB_DATE_KICK_OFF` ≤ current time, honors `JOB_STATUS` (READY / IN PROGRESS / WAITING / FAILED), resolves dependencies in `metadata.CTL_JOB_CONFIG_DEPENDENCIES`, pulls parameters from `metadata.CTL_JOB_CONFIG_VARIABLES`, starts the job, then closes the run.
 - Key tables:
   - `metadata.CTL_JOB_CONFIG`: Job definitions (status, kickoff, interval mode, ETL project/package names, delta flags, exclusion windows).
   - `metadata.CTL_JOB_CONFIG_VARIABLES`: Parameters per job; ETL Framework injects `ETL_VAR_*` / `ETL_CUS_*` into packages at runtime.
   - `metadata.CTL_JOB_CONFIG_DEPENDENCIES`: SUCCESSIVE/DATA dependencies between jobs.
   - `metadata.CTL_RUN`, `metadata.CTL_JOB_RUN`, `metadata.CTL_JOB_RUN_LAST`: Run history and latest run state.
+- **EDA Error Handler** uses the job config from the **ETL Framework** to determine ERR_MAX_FAIL and ERR_PRIOR_FAIL_COUNT variables, which then determine if an errored event requires a 'RETRY' status or an 'ERROR' status.
 
 ## Package Inventory
 - **0 Job Plan.dtsx (master/orchestrator)**: Polls `eda.ETL_EVENT` (ETL_REF=6002) for `NEW/RETRY/WAIT` events with kickoff time ≤ now; loads `ETL_EVENT_VARIABLES`; routes per event type/output; updates statuses via `eda.UPDATE_EVENT_STATUS`; handles errors with custom script + ETL_EVENT update.
 - **2 Stage Deputy.dtsx**: Extracts Deputy source data into staging tables `eda.STG_DEP_*`, `STG_ASSIGN*`, etc.
-- **1 Lookup Greentree.dtsx**: Builds Greentree lookups referenced by later transformations.
-- **4 Full Extract Build.dtsx**: Transforms staging into `eda.EXT_DEP_FULL`, `eda.LKP_WorkingDay`, PH tracking; heavy SQL using DW (`ODS_NZ_SEC`) and project params `ETL_CUS_WEEKS`/`ETL_CUS_MIN_DAYS`.
-- **5 Billing Extract.dtsx**: Creates a new `eda.ETL_EVENT` targeting Deputy (output DEPUTY, input GENERAL RESOURCE) and inserts invoice JSON batches into `eda.IMP_DEPRESOURCE` from `eda.EXT_DEP_FULL` (filters PayApproved, product codes `SG%`/`RBSG%`).
-- **5 Payroll Extract.dtsx**: Two SQL tasks—(a) mark exported timesheets via `IMP_DEPRESOURCE` (output DEPUTY, input GENERAL RESOURCE); (b) queue paid events per pay period (input TIMESHEET PAID) with grouped `TimesheetIdArray` payloads.
-- **5 Subcontractor Extract.dtsx**: Disabled unless EVENT_OUTPUT=`SUBCONTRACTOR`; produces subcontractor CSV/payloads.
+- **1 Lookup Greentree.dtsx**: Builds lookups referenced by later transformations from the data warehouse.  Note Greentree is a dormant system and this package will be renamed at a later stage. 
+- **4 Full Extract Build.dtsx**: Transforms staging into `eda.EXT_DEP_FULL`, `eda.LKP_WorkingDay`, PH tracking; heavy SQL using DW (`ODS_NZ_SEC`) and project params `ETL_CUS_WEEKS`/`ETL_CUS_MIN_DAYS` to manage "otherwise working day" calculation for NZ Public Holiday handling.
+- **5 Billing Extract.dtsx**: Generates and emails a billing csv extract for D365 then creates a new event into `eda.ETL_EVENT` targeting Deputy (output DEPUTY, input GENERAL RESOURCE) and inserts invoice JSON batches into `eda.IMP_DEPRESOURCE` from `eda.EXT_DEP_FULL` (filters PayApproved, product codes `SG%`/`RBSG%`).
+- **5 Payroll Extract.dtsx**: Generates and emails a payroll cv extract then Creates two new events—(a) mark exported timesheets via `IMP_DEPRESOURCE` (output DEPUTY, input GENERAL RESOURCE); (b) queue paid events per pay period (input TIMESHEET PAID) with grouped `TimesheetIdArray` payloads.
+- **5 Subcontractor Extract.dtsx**: Disabled unless EVENT_OUTPUT=`SUBCONTRACTOR`; produces and emails subcontractor CSV/payloads.
 - **9 Deputy Resource Post.dtsx**: Posts `eda.IMP_DEPRESOURCE` batches to Deputy; cleans staging rows (e.g., delete eventId = -100, update staged eventId).
 - **9 Agreement Migration.dtsx**, **9 Employee Custom.dtsx**, **9 Leave Import.dtsx**, **9 Timesheet Paid.dtsx**, **9 Timesheet Process.dtsx**: Execute Deputy API operations using respective IMP_* tables; `9 Timesheet Paid` adjusts `IMP_DEPRESOURCE` payloads excluding `eda.STG_UNAPPROVEDTS`.
 - **3 Register Updates.dtsx**, **9 Employee Workplace.dtsx**, etc.: Ancillary packages referenced by the orchestrator for specific event inputs.
 
 ## Operational Notes
-- Trigger: External process (or scripts in `/BCP SQL Scripts`) inserts into `eda.ETL_EVENT`; `0 Job Plan` is executed by the ETL Framework SQL Agent job (every ~2 minutes) using job metadata (job code 6002) from `metadata.CTL_JOB_CONFIG`.
+- Trigger: External process (or scripts in `/BCP SQL Scripts`) inserts into `eda.ETL_EVENT`; `0 Job Plan` is executed by the ETL Framework SQL Agent job (every ~1 minute) using job metadata (job code 6002) from `metadata.CTL_JOB_CONFIG`.
 - Looping/filtering: `0 Job Plan` updates future-dated `NEW` events to `WAIT`, then selects ETL_REF=6002 where status in (`NEW`,`RETRY`,`WAIT`) and `EVENT_KICKOFF_DATE` ≤ current run time.
 - Routing: `EVENT_INPUT` drives staging/extract vs. upload package selection; `EVENT_OUTPUT` controls whether CSV extracts or Deputy API uploads run.
 - Status progression (per `eda.UPDATE_EVENT_STATUS` calls): `NEW/RETRY/WAIT` → `Extracting from Deputy` → `Processing Deputy Data` → (optional) `Importing to Deputy` → `Completed` (or retry/error via handler). `EVENT_EXECUTION_ID`, `EVENT_DATE_START/END`, `EVENT_COMMENT` are set by the proc and OnError handler.
 - Idempotency/locking: Status flags gate processing; no explicit row-level locks beyond status checks—coordinate concurrent runners carefully.
-- Concurrency/backoff: Not defined in packages; retries rely on resetting `EVENT_STATUS` to `RETRY`.
+- Concurrency/backoff: Retries are handled by the Error event handler within `0 Job Plan` and are based on underlying ETL job config.  If the ETL job will retry, the error handler sets `EVENT_STATUS` to `RETRY`.  Otherwise `EVENT_STATUS` is set to `ERROR`.
 - Logging: Primary logging via `eda.ETL_EVENT` fields; `eda.IMP_DEPRESOURCE.responseMsg` captures Deputy responses; `event_comment` appended on errors.
-- Typical run cadence: ETL Framework job every ~2 minutes; per-event runtime depends on Deputy API and extract sizes (not specified in repo).
+- Typical run cadence: ETL Framework job every ~1 minute; per-event runtime depends on Deputy API and extract sizes (not specified in repo).
 
 ## Troubleshooting Tips
 - No events picked up: Confirm `eda.ETL_EVENT` has ETL_REF=6002 with status `NEW/RETRY/WAIT` and kickoff ≤ current time; ensure `ENV_CONNECTION_*` parameters point to correct DB.
 - Stuck in `WAIT`: Kickoff date in future; adjust `EVENT_KICKOFF_DATE` or wait for scheduled time.
-- Failed Deputy uploads: Check `eda.IMP_DEPRESOURCE.responseMsg`, `eda.IMP_DEPEMPEECUSTOM.processOutcome`, and Deputy API logs; `Resource Check` is currently disabled by expression for non-resource events.
+- Failed Deputy uploads: Check `eda.IMP_DEPRESOURCE.responseMsg`, `eda.IMP_DEPEMPEECUSTOM.processOutcome`, and Deputy API logs.
 - CSV extracts disabled unexpectedly: Package disable expressions compare `EVENT_OUTPUT` to `BILLING`/`PAYROLL`/`SUBCONTRACTOR`; ensure event values match exactly.
 - Public holiday/working-day issues: Validate `eda.LKP_WorkingDay`, `eda.LKP_PHTRACKER`, and DW lookups in `ODS_NZ_SEC`.
 
 ## Assumptions / Gaps / Questions to Confirm
 - Deputy upload packages (API calls, retry policies, and response handling) are inferred from payload tables; exact HTTP behavior is inside the DTSX components and not explicit in SQL.
 - `2 Stage Deputy.dtsx` internals are not fully documented here; assumed to populate all `eda.STG_*` tables from Deputy APIs.
-- OnError handler relies on variables such as `ERR_FAIL_STATUS`, `ERR_MAX_FAIL`; expected values/usage are not documented—confirm desired failure status (`Retry` vs `Error`) and rollback SQL in `Data Roll Back`.
-- No explicit dead-letter or max-attempt logic is present; determine operational policy for repeated failures.
-- ETL Framework fills `ETL_VAR_*`/`ETL_CUS_*` from `metadata.CTL_JOB_CONFIG_VARIABLES` at runtime; confirm per-environment values for job code 6002.
