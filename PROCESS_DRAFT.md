@@ -1,6 +1,7 @@
 ## End-to-End Flow (EDA)
+0) **ETL Framework job** (SQL Agent, ~2-minute cadence) creates a run instance (RUN_CODE), checks `metadata.CTL_JOB_CONFIG` for job code 6002, resolves dependencies/parameters, and executes `0 Job Plan.dtsx`.
 1) **External trigger** inserts an event into `eda.ETL_EVENT` (ETL_REF=6002) with `EVENT_STATUS='NEW'` (optionally `EVENT_KICKOFF_DATE`) and any required rows in `eda.ETL_EVENT_VARIABLES` (e.g., `EXTRACT_FROM/TO`, `EXTRACT_STAGETYPE`, `EXTRACT_TYPE`).
-2) **0 Job Plan.dtsx** starts: updates future-dated `NEW` events to `WAIT`, then selects events with status `NEW/RETRY/WAIT` and kickoff ≤ current time into an ADO recordset.
+2) **0 Job Plan.dtsx** starts: updates future-dated `NEW` events to `WAIT`, then selects events with status `NEW/RETRY/WAIT` and kickoff time <= current time into an ADO recordset.
 3) **Per-event loop** binds `EVENT_ID`, `EVENT_INPUT`, `EVENT_OUTPUT`, and `EVENT_USER_EMAIL`; a data flow reads `eda.ETL_EVENT_VARIABLES` and pushes values into package variables (date range, extract type, stage type, etc.).
 4) **Extract path (EVENT_INPUT = DEPUTY)**:  
    - Call `eda.UPDATE_EVENT_STATUS` → `Extracting from Deputy`; run `2 Stage Deputy.dtsx` to populate `eda.STG_*`.  

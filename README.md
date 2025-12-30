@@ -13,6 +13,7 @@ Repo structure highlights:
 - `/SQL_SCHEMA` contains the `DataIntegration` database project with all `eda` tables/views/procs and DW lookup dependencies; `/ODS_NZ_SEC` holds related DW/staging definitions.
 - `/BCP SQL Scripts` includes helper SQL for seeding `eda.ETL_EVENT` and payload tables.
 - `/ETL Deploy Script` registers job code 6002 in the ETLFramework metadata.
+- `/ETL_Documentation` holds Wilson Group ETL Framework background (run lifecycle, metadata tables, deployment guidance for the on-prem SQL Agent–scheduled framework).
 
 Re-run the documentation process:
 1) Scan the repo tree (packages, `Project.params`, connection managers, `/SQL_SCHEMA`).

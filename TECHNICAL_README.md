@@ -1,6 +1,6 @@
 ## Purpose and Scope
 - SSIS project **Deputy EDA** (solution `SSIS Deputy EDA.sln`, project `Deputy EDA.dtproj`) implements an event-driven integration between Deputy data and downstream targets (Deputy APIs, billing, payroll, subcontractor extracts).
-- Orchestration is centered on **eda.ETL_EVENT** records (ETL_REF = 6002) stored in the **DataIntegration** database; each event drives staged extraction, transformation, and outbound actions.
+- Orchestration is centered on **eda.ETL_EVENT** records (ETL_REF = 6002) in the **DataIntegration** database; each event drives staging, transformation, and outbound actions.
 
 ## Prerequisites
 - SQL Server with OLE DB connectivity to:
@@ -9,24 +9,24 @@
   - `ODS_NZ_SEC` (project connection `0 DW FSGS`) for DW lookups used in extract logic.
 - SSIS runtime (SQL Server 2017 project level) with permissions to deploy and run packages.
 - SMTP relay reachable for optional error notifications (connection manager `0 SMTP Server`).
-- Deputy API access (URL/token configured via project parameters) and local file system path for CSVs (`ENV_CONNECTION_1_CSV_DIR`).
+- Deputy API access (URL/token via project parameters) and local file system path for CSVs (`ENV_CONNECTION_1_CSV_DIR`).
 
 ## Deploying the SSIS Project
 - Build `Deputy EDA.dtproj` and deploy the resulting `.ispac` (e.g., `bin/Development/Deputy EDA.ispac`) to the SSIS catalog.
 - Register environment variables/parameters:
   - Database endpoints and credentials (`ENV_CONNECTION_0_*` for DI/ETL/ODS).
   - Deputy API URL/token (`ENV_CONNECTION_1_DEP_URL`, `ENV_CONNECTION_1_DEP_TOKEN`) and CSV directory.
-  - Scheduling variables used by the ETL framework (`ETL_VAR_*`, `ETL_CUS_WEEKS`, `ETL_CUS_MIN_DAYS`).
-- Ensure SQL objects in `SQL_SCHEMA/DataIntegration/eda` are deployed to the `DataIntegration` database (tables, views, and proc listed below).
-- Optional: apply ETLFramework metadata from `ETL Deploy Script/ETL EDA Deputy Processor.sql` to register job code **6002**.
+  - Scheduling/logic parameters (`ETL_VAR_*`, `ETL_CUS_WEEKS`, `ETL_CUS_MIN_DAYS`).
+- Deploy SQL objects in `SQL_SCHEMA/DataIntegration/eda` to the `DataIntegration` database.
+- Apply ETL Framework metadata (job code **6002**) using `/ETL Deploy Script/ETL EDA Deputy Processor.sql` so the framework can schedule the package.
 
 ## Connection / Configuration Strategy
 - Connection managers use expressions bound to project parameters:
   - `0 DI DB` → `DataIntegration` (system.DataIntegration).
   - `1 ETL Framework` → `ETLFramework` (system.ETLFramework).
   - `0 DW FSGS` → `ODS_NZ_SEC` (user.ods_nz_sec).
-  - `0 SMTP Server` → `SMTP.wilson.com` (non-SSL, no Windows auth).
-- Project parameters hold runtime context (execution/run codes, date ranges, framework flag), Deputy API details, and CSV settings. Package parameters are primarily CSV metadata for extract packages.
+  - `0 SMTP Server` → `SMTP.wilson.com` (non-SSL).
+- Project parameters carry runtime context (execution/run codes, date ranges, framework flag), Deputy API details, and CSV settings. Package parameters are primarily CSV metadata for extract packages.
 
 ## Database Dependencies (DataIntegration unless noted)
 | Object | Purpose / Usage |
@@ -43,6 +43,15 @@
 | Lookup tables `eda.LKP_DEP_*`, `eda.LKP_WorkingDay`, `eda.LKP_PHTRACKER` | Built/refreshed during staging and full-extract steps to support rate, area, and PH logic. |
 | DW lookups (schema `dw`, `lookup` in `ODS_NZ_SEC`) | Referenced by `4 Full Extract Build` for working-day calculations and public holiday mapping. |
 
+## ETL Framework Metadata (ETLFramework database)
+- The enterprise **ETL Framework** (SSIS package `ETL Framework.dtsx`, scheduled via SQL Agent) runs about every 2 minutes on-premises and orchestrates all jobs.
+- Run lifecycle: creates a CTL_RUN “run instance” (RUN_CODE), enumerates `metadata.CTL_JOB_CONFIG` rows whose `JOB_DATE_KICK_OFF` ≤ current time, honors `JOB_STATUS` (READY / IN PROGRESS / WAITING / FAILED), resolves dependencies in `metadata.CTL_JOB_CONFIG_DEPENDENCIES`, pulls parameters from `metadata.CTL_JOB_CONFIG_VARIABLES`, starts the job, then closes the run.
+- Key tables:
+  - `metadata.CTL_JOB_CONFIG`: Job definitions (status, kickoff, interval mode, ETL project/package names, delta flags, exclusion windows).
+  - `metadata.CTL_JOB_CONFIG_VARIABLES`: Parameters per job; ETL Framework injects `ETL_VAR_*` / `ETL_CUS_*` into packages at runtime.
+  - `metadata.CTL_JOB_CONFIG_DEPENDENCIES`: SUCCESSIVE/DATA dependencies between jobs.
+  - `metadata.CTL_RUN`, `metadata.CTL_JOB_RUN`, `metadata.CTL_JOB_RUN_LAST`: Run history and latest run state.
+
 ## Package Inventory
 - **0 Job Plan.dtsx (master/orchestrator)**: Polls `eda.ETL_EVENT` (ETL_REF=6002) for `NEW/RETRY/WAIT` events with kickoff time ≤ now; loads `ETL_EVENT_VARIABLES`; routes per event type/output; updates statuses via `eda.UPDATE_EVENT_STATUS`; handles errors with custom script + ETL_EVENT update.
 - **2 Stage Deputy.dtsx**: Extracts Deputy source data into staging tables `eda.STG_DEP_*`, `STG_ASSIGN*`, etc.
@@ -50,20 +59,20 @@
 - **4 Full Extract Build.dtsx**: Transforms staging into `eda.EXT_DEP_FULL`, `eda.LKP_WorkingDay`, PH tracking; heavy SQL using DW (`ODS_NZ_SEC`) and project params `ETL_CUS_WEEKS`/`ETL_CUS_MIN_DAYS`.
 - **5 Billing Extract.dtsx**: Creates a new `eda.ETL_EVENT` targeting Deputy (output DEPUTY, input GENERAL RESOURCE) and inserts invoice JSON batches into `eda.IMP_DEPRESOURCE` from `eda.EXT_DEP_FULL` (filters PayApproved, product codes `SG%`/`RBSG%`).
 - **5 Payroll Extract.dtsx**: Two SQL tasks—(a) mark exported timesheets via `IMP_DEPRESOURCE` (output DEPUTY, input GENERAL RESOURCE); (b) queue paid events per pay period (input TIMESHEET PAID) with grouped `TimesheetIdArray` payloads.
-- **5 Subcontractor Extract.dtsx**: Disabled unless EVENT_OUTPUT=`SUBCONTRACTOR`; produces subcontractor CSV/payloads (details in package).
+- **5 Subcontractor Extract.dtsx**: Disabled unless EVENT_OUTPUT=`SUBCONTRACTOR`; produces subcontractor CSV/payloads.
 - **9 Deputy Resource Post.dtsx**: Posts `eda.IMP_DEPRESOURCE` batches to Deputy; cleans staging rows (e.g., delete eventId = -100, update staged eventId).
 - **9 Agreement Migration.dtsx**, **9 Employee Custom.dtsx**, **9 Leave Import.dtsx**, **9 Timesheet Paid.dtsx**, **9 Timesheet Process.dtsx**: Execute Deputy API operations using respective IMP_* tables; `9 Timesheet Paid` adjusts `IMP_DEPRESOURCE` payloads excluding `eda.STG_UNAPPROVEDTS`.
-- **3 Register Updates.dtsx**, **9 Employee Workplace.dtsx**, **9 Deputy Resource Post.dtsx**, etc.: Ancillary packages referenced by the orchestrator for specific event inputs.
+- **3 Register Updates.dtsx**, **9 Employee Workplace.dtsx**, etc.: Ancillary packages referenced by the orchestrator for specific event inputs.
 
 ## Operational Notes
-- Trigger: External process (or scripts in `/BCP SQL Scripts`) inserts into `eda.ETL_EVENT`; `0 Job Plan` polls minutely per ETLFramework config (job code 6002).
+- Trigger: External process (or scripts in `/BCP SQL Scripts`) inserts into `eda.ETL_EVENT`; `0 Job Plan` is executed by the ETL Framework SQL Agent job (every ~2 minutes) using job metadata (job code 6002) from `metadata.CTL_JOB_CONFIG`.
 - Looping/filtering: `0 Job Plan` updates future-dated `NEW` events to `WAIT`, then selects ETL_REF=6002 where status in (`NEW`,`RETRY`,`WAIT`) and `EVENT_KICKOFF_DATE` ≤ current run time.
 - Routing: `EVENT_INPUT` drives staging/extract vs. upload package selection; `EVENT_OUTPUT` controls whether CSV extracts or Deputy API uploads run.
-- Status progression (per `eda.UPDATE_EVENT_STATUS` calls): `NEW/RETRY/WAIT` → `Extracting from Deputy` → `Processing Deputy Data` → (optional) Deputy upload status `Importing to Deputy` → `Completed` (or retry/error via handler). `EVENT_EXECUTION_ID`, `EVENT_DATE_START/END`, `EVENT_COMMENT` are set by the proc and OnError handler.
+- Status progression (per `eda.UPDATE_EVENT_STATUS` calls): `NEW/RETRY/WAIT` → `Extracting from Deputy` → `Processing Deputy Data` → (optional) `Importing to Deputy` → `Completed` (or retry/error via handler). `EVENT_EXECUTION_ID`, `EVENT_DATE_START/END`, `EVENT_COMMENT` are set by the proc and OnError handler.
 - Idempotency/locking: Status flags gate processing; no explicit row-level locks beyond status checks—coordinate concurrent runners carefully.
 - Concurrency/backoff: Not defined in packages; retries rely on resetting `EVENT_STATUS` to `RETRY`.
 - Logging: Primary logging via `eda.ETL_EVENT` fields; `eda.IMP_DEPRESOURCE.responseMsg` captures Deputy responses; `event_comment` appended on errors.
-- Typical run cadence: Configured for minutely polling; run times depend on Deputy API and extract sizes (not specified in repo).
+- Typical run cadence: ETL Framework job every ~2 minutes; per-event runtime depends on Deputy API and extract sizes (not specified in repo).
 
 ## Troubleshooting Tips
 - No events picked up: Confirm `eda.ETL_EVENT` has ETL_REF=6002 with status `NEW/RETRY/WAIT` and kickoff ≤ current time; ensure `ENV_CONNECTION_*` parameters point to correct DB.
@@ -77,4 +86,4 @@
 - `2 Stage Deputy.dtsx` internals are not fully documented here; assumed to populate all `eda.STG_*` tables from Deputy APIs.
 - OnError handler relies on variables such as `ERR_FAIL_STATUS`, `ERR_MAX_FAIL`; expected values/usage are not documented—confirm desired failure status (`Retry` vs `Error`) and rollback SQL in `Data Roll Back`.
 - No explicit dead-letter or max-attempt logic is present; determine operational policy for repeated failures.
-- Run-time scheduling parameters (ETL_VAR_EXECUTION_ID, ETL_VAR_RUN_CODE/DATE) need to be set by the calling framework; defaults in `Project.params` may require override per environment.
+- ETL Framework fills `ETL_VAR_*`/`ETL_CUS_*` from `metadata.CTL_JOB_CONFIG_VARIABLES` at runtime; confirm per-environment values for job code 6002.
