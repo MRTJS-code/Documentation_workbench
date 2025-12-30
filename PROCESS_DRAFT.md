@@ -30,12 +30,12 @@ flowchart TD
   H -->|SUBCONTRACTOR| K[5 Subcontractor Extract]
   E -->|EVENT_OUTPUT=DEPUTY| L[Update status 'Importing to Deputy']
   L --> M{EVENT_INPUT}
-  M --> M1[9 Agreement Migration (IMP_DEPEMPAGMIGRATE)]
-  M --> M2[9 Employee Custom (IMP_DEPEMPEECUSTOM)]
-  M --> M3[9 Deputy Resource Post (IMP_DEPRESOURCE)]
-  M --> M4[9 Leave Import (IMP_DEPLEAVE)]
-  M --> M5[9 Timesheet Paid (IMP_DEPRESOURCE + STG_UNAPPROVEDTS)]
-  M --> M6[9 Timesheet Process (IMP_DEPTIMESHEETFIX)]
+  M --> M1[9 Agreement Migration / IMP_DEPEMPAGMIGRATE]
+  M --> M2[9 Employee Custom / IMP_DEPEMPEECUSTOM]
+  M --> M3[9 Deputy Resource Post / IMP_DEPRESOURCE]
+  M --> M4[9 Leave Import / IMP_DEPLEAVE]
+  M --> M5[9 Timesheet Paid / IMP_DEPRESOURCE + STG_UNAPPROVEDTS]
+  M --> M6[9 Timesheet Process / IMP_DEPTIMESHEETFIX]
   I --> N[FinishStatus -> UPDATE_EVENT_STATUS Completed]
   J --> N
   K --> N
