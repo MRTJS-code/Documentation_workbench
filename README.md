@@ -1,4 +1,4 @@
-# Documentation Workbench
+# Deputy EDA Event Processor
 
 This repository contains the exported SSIS solution **Deputy EDA** alongside SQL schema definitions used to run an event-driven integration between Deputy data, billing/payroll/subcontractor extracts, and Deputy API updates.
 
