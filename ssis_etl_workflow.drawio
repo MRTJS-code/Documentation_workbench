@@ -1,0 +1,295 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36" version="29.2.9">
+  <diagram name="SSIS Workflow" id="0">
+    <mxGraphModel dx="2377" dy="1238" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;labelPosition=center;verticalLabelPosition=top;align=left;verticalAlign=bottom;labelBackgroundColor=none;" value="SSIS EDA Handler Job Code 6000" vertex="1">
+          <mxGeometry height="640" width="800" x="25" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-59" edge="1" parent="1" source="3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="u5a60xSDOJqQgDnzP_za-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Every 1 minute" vertex="1">
+          <mxGeometry height="60" width="130" x="45" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-40" edge="1" parent="1" source="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Event Status =&amp;nbsp;&lt;br&gt;WAIT" vertex="1">
+          <mxGeometry height="80" width="160" x="235" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Scheduled date &lt; system datetime?" vertex="1">
+          <mxGeometry height="80" width="190" x="435" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Update event status to NEW" vertex="1">
+          <mxGeometry height="60" width="180" x="625" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="No action" vertex="1">
+          <mxGeometry height="60" width="120" x="685" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Event Status =&amp;nbsp;&lt;br&gt;NEW, RETRY" vertex="1">
+          <mxGeometry height="90" width="190" x="220" y="345" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-43" edge="1" parent="1" source="9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-44" connectable="0" parent="u5a60xSDOJqQgDnzP_za-43" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.4494" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Scheduled date is null or &lt; system datetime?" vertex="1">
+          <mxGeometry height="90" width="200" x="435" y="345" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-48" edge="1" parent="1" source="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-49" connectable="0" parent="u5a60xSDOJqQgDnzP_za-48" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Ready,&lt;br&gt;kickoff &amp;lt; now" vertex="1">
+          <mxGeometry relative="1" x="0.2321" y="1" as="geometry">
+            <mxPoint x="-31" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-50" edge="1" parent="1" source="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-51" connectable="0" parent="u5a60xSDOJqQgDnzP_za-50" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="In Progress" vertex="1">
+          <mxGeometry relative="1" x="0.1718" y="-3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-52" edge="1" parent="1" source="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-53" connectable="0" parent="u5a60xSDOJqQgDnzP_za-52" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Ready,&lt;br&gt;kickoff &amp;gt; now" vertex="1">
+          <mxGeometry relative="1" x="-0.1265" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-54" edge="1" parent="1" source="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-47">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="575" />
+              <mxPoint x="505" y="575" />
+              <mxPoint x="505" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-55" connectable="0" parent="u5a60xSDOJqQgDnzP_za-54" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Other&lt;br&gt;Status" vertex="1">
+          <mxGeometry relative="1" x="0.1873" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Check processor ETL job status" vertex="1">
+          <mxGeometry height="60" width="200" x="315" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Update Config&lt;br&gt;Daily -&amp;gt; Minutely&lt;br&gt;kickoff -&amp;gt; system datetime" vertex="1">
+          <mxGeometry height="70" width="180" x="635" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Update event status to ERROR" vertex="1">
+          <mxGeometry height="50" width="220" x="35" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=left;labelPosition=center;verticalLabelPosition=top;verticalAlign=bottom;" value="SSIS EDA Maintenance Job Code 6001" vertex="1">
+          <mxGeometry height="400" width="800" x="25" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-41" connectable="0" parent="23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.6734" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" target="7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-39" connectable="0" parent="24" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.2471" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" target="9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-45" connectable="0" parent="27" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.0036" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="31" edge="1" parent="1" source="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" target="14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-46" connectable="0" parent="31" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Error" vertex="1">
+          <mxGeometry relative="1" x="0.0314" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-42" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Update event status to WAIT" vertex="1">
+          <mxGeometry height="60" width="120" x="685" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="No action" vertex="1">
+          <mxGeometry height="60" width="120" x="355" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-60" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-61" connectable="0" parent="u5a60xSDOJqQgDnzP_za-60" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.4541" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-63" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="u5a60xSDOJqQgDnzP_za-66">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="495" y="79.99999999999977" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-64" connectable="0" parent="u5a60xSDOJqQgDnzP_za-63" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.1953" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-58" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Events to Process?" vertex="1">
+          <mxGeometry height="80" width="160" x="235" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-66" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="No action" vertex="1">
+          <mxGeometry height="60" width="120" x="685" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-69" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-68">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-73" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-74" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="180" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-80" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="u5a60xSDOJqQgDnzP_za-79">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-83" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="u5a60xSDOJqQgDnzP_za-82">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-67" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Daily at midnight" vertex="1">
+          <mxGeometry height="60" width="130" x="40" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-71" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-68" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="u5a60xSDOJqQgDnzP_za-70">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-75" connectable="0" parent="u5a60xSDOJqQgDnzP_za-71" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.0857" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-68" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="10 Jan?" vertex="1">
+          <mxGeometry height="80" width="160" x="220" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-70" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Cleanse eda.LKP_PHTRACKER" vertex="1">
+          <mxGeometry height="60" width="180" x="450" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-77" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="u5a60xSDOJqQgDnzP_za-76">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-78" connectable="0" parent="u5a60xSDOJqQgDnzP_za-77" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.0585" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-74" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Processor&lt;br&gt;Active?" vertex="1">
+          <mxGeometry height="80" width="160" x="220" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-76" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Extend Processor kickoff by 1 day" vertex="1">
+          <mxGeometry height="60" width="180" x="450" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-85" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-79" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-81">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-79" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Event Table records&lt;br&gt;&amp;gt;28 days old" vertex="1">
+          <mxGeometry height="80" width="160" x="220" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-81" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Purge Records" vertex="1">
+          <mxGeometry height="60" width="180" x="450" y="938" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-84" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-82" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-81">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-86" connectable="0" parent="u5a60xSDOJqQgDnzP_za-84" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="0.6076" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-82" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Extract / Import table&lt;br&gt;records &amp;gt;4 days old" vertex="1">
+          <mxGeometry height="80" width="160" x="220" y="974" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-87" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;labelPosition=center;verticalLabelPosition=top;align=left;verticalAlign=bottom;labelBackgroundColor=none;" value="All Process SSIS Jobs" vertex="1">
+          <mxGeometry height="380" width="640" x="860" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-88" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Scheduled Run" vertex="1">
+          <mxGeometry height="60" width="130" x="890" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-92" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-91">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-93" connectable="0" parent="u5a60xSDOJqQgDnzP_za-92" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="No" vertex="1">
+          <mxGeometry relative="1" x="-0.1733" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-95" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-94">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-96" connectable="0" parent="u5a60xSDOJqQgDnzP_za-95" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.115" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-89" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Event Status =&amp;nbsp;&lt;br&gt;NEW, RETRY&lt;br&gt;Found?" vertex="1">
+          <mxGeometry height="90" width="190" x="1070" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-90" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.063;entryY=0.498;entryDx=0;entryDy=0;entryPerimeter=0;" target="u5a60xSDOJqQgDnzP_za-89">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-91" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Update ETL Job Config&lt;br&gt;Minutely -&amp;gt; Daily&lt;br&gt;kickoff = 1am today" vertex="1">
+          <mxGeometry height="60" width="170" x="1310" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-98" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-94" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="u5a60xSDOJqQgDnzP_za-97">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-94" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" value="Process Events" vertex="1">
+          <mxGeometry height="60" width="120" x="1105" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-100" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="u5a60xSDOJqQgDnzP_za-99">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-101" connectable="0" parent="u5a60xSDOJqQgDnzP_za-100" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Error" vertex="1">
+          <mxGeometry relative="1" x="-0.0948" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-103" edge="1" parent="1" source="u5a60xSDOJqQgDnzP_za-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="u5a60xSDOJqQgDnzP_za-102">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-104" connectable="0" parent="u5a60xSDOJqQgDnzP_za-103" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Success" vertex="1">
+          <mxGeometry relative="1" x="0.0259" as="geometry">
+            <mxPoint x="11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-97" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Process Outcome" vertex="1">
+          <mxGeometry height="90" width="190" x="1070" y="295" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-99" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Event Status =&amp;nbsp; RETRY or ERROR based on ETL Status" vertex="1">
+          <mxGeometry height="60" width="120" x="1332" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="u5a60xSDOJqQgDnzP_za-102" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Event Status&lt;br&gt;= Completed" vertex="1">
+          <mxGeometry height="70" width="140" x="871" y="305" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
