@@ -1,0 +1,994 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/6/2022 3:42:11 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AKL2LPTP11282"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{174B5209-4441-437F-B589-8AB8F11D2FB8}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1010.2"
+  DTS:LocaleID="5129"
+  DTS:ObjectName="0 Job Plan"
+  DTS:PackageType="5"
+  DTS:VersionBuild="25"
+  DTS:VersionGUID="{30A7EDB3-0258-4AF1-A4DB-BEA685585184}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\0 Job"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{6b89b30f-d8ff-4616-b40a-65ec421de61b}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="0 Job">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\1 Lookup Tables"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:DelayValidation="True"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{20d32954-a73a-4e57-9ccc-3bb46c475103}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="1 Lookup Tables">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\1 Lookup Tables\Deputy Branch Public Holiday"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{2BC5F040-0015-4AA0-8292-E9CE174C2D2A}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Branch Public Holiday"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:PropertyExpression
+                DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] == "DELTA"</DTS:PropertyExpression>
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>1 Lookup Updates.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\2 Staging Tables"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:DelayValidation="True"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{2c63ca7a-bda3-45dc-a123-5af3763c25c0}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="2 Staging Tables">
+          <DTS:Variables>
+            <DTS:Variable
+              DTS:CreationName=""
+              DTS:DTSID="{021b6c33-c54f-482c-ad28-153ac1ac1ade}"
+              DTS:IncludeInDebugDump="6789"
+              DTS:Namespace="STAGING"
+              DTS:ObjectName="Counter">
+              <DTS:VariableValue
+                DTS:DataType="3">0</DTS:VariableValue>
+            </DTS:Variable>
+          </DTS:Variables>
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\2 Staging Tables\Deputy Employee"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{D6397848-7547-483E-90D1-B0CCB7FA698B}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Employee"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:PropertyExpression
+                DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] == "DELTA"</DTS:PropertyExpression>
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>2 Stage Deputy Employee.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\2 Staging Tables\Deputy Leave"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{ACD2BCD4-A082-4183-8DAD-EF44CDB6BF1C}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Leave"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>2 Stage Deputy Leave.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\2 Staging Tables\Deputy Loc Area"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{18863E3D-78D8-4E17-9101-6DFF008A9539}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Loc Area"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:PropertyExpression
+                DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] == "DELTA"</DTS:PropertyExpression>
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>2 Stage Deputy Loc Area.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\2 Staging Tables\Deputy Roster"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{6EA81525-32FE-4FE5-89D3-87E60CDF8249}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Roster"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>2 Stage Deputy Roster.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\2 Staging Tables\Deputy Timesheet"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{7845B738-133B-44E8-A1CB-0874F619DA30}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Timesheet"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>2 Stage Deputy Timesheet.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{4F20B0B0-BFFD-4069-9870-C71D2E4E5FE6}"
+              DTS:From="Package\0 Job\2 Staging Tables\Deputy Employee"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\0 Job\2 Staging Tables\Deputy Loc Area" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint 1]"
+              DTS:CreationName=""
+              DTS:DTSID="{2387BAD8-B2A3-4734-BCC1-A7E09773328C}"
+              DTS:From="Package\0 Job\2 Staging Tables\Deputy Loc Area"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 1"
+              DTS:To="Package\0 Job\2 Staging Tables\Deputy Leave" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint 2]"
+              DTS:CreationName=""
+              DTS:DTSID="{91F83FDE-5B32-4152-82E9-301ADDEE4501}"
+              DTS:From="Package\0 Job\2 Staging Tables\Deputy Leave"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 2"
+              DTS:To="Package\0 Job\2 Staging Tables\Deputy Roster" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint 3]"
+              DTS:CreationName=""
+              DTS:DTSID="{7BFD274F-39F2-4CCE-95D9-645142E0E730}"
+              DTS:From="Package\0 Job\2 Staging Tables\Deputy Roster"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 3"
+              DTS:To="Package\0 Job\2 Staging Tables\Deputy Timesheet" />
+          </DTS:PrecedenceConstraints>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\3 Dimension Tables"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:DelayValidation="True"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{4f40bcec-73c0-4ba6-b5ad-4675ccf097ba}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="3 Dimension Tables">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\3 Dimension Tables\Deputy Dimensions"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{9B3708A9-68A1-4939-A343-989B31461142}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Dimensions"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:PropertyExpression
+                DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] == "DELTA"</DTS:PropertyExpression>
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>3 Deputy Dimensions.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\4 Factual Tables"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{52a160dc-bceb-4ca9-8304-740de0de389a}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="4 Factual Tables">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\4 Factual Tables\Deputy Facts"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{433A6466-6BA5-48D0-A538-41F234F934DD}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Deputy Facts"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>4 Deputy Facts.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\0 Job\4 Factual Tables\Quality Assurance"
+              DTS:CreationName="Microsoft.ExecutePackageTask"
+              DTS:Description="Execute Package Task"
+              DTS:DTSID="{11DA0D9C-1C35-470D-9788-B0A1F08432EF}"
+              DTS:ExecutableType="Microsoft.ExecutePackageTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Quality Assurance"
+              DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <ExecutePackageTask>
+                  <UseProjectReference>True</UseProjectReference>
+                  <PackageName>5 Quality Assurance Builds.dtsx</PackageName>
+                </ExecutePackageTask>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\0 Job\4 Factual Tables.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{46E8991E-9409-44ED-AF24-FE216115AD56}"
+              DTS:From="Package\0 Job\4 Factual Tables\Deputy Facts"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\0 Job\4 Factual Tables\Quality Assurance" />
+          </DTS:PrecedenceConstraints>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\5 Aggregate Tables"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{657639fe-eb8d-464d-9300-79296d0e2f41}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="5 Aggregate Tables">
+          <DTS:Variables />
+          <DTS:Executables />
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\6 Conformed Tables"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{9f9fc2d9-02c1-4c95-8ebc-8f67a21326dd}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="6 Conformed Tables">
+          <DTS:Variables />
+          <DTS:Executables />
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\0 Job\7 Semantic Layer"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{5205499e-e3e4-4158-8f42-15104c7c49a3}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="7 Semantic Layer">
+          <DTS:Variables>
+            <DTS:Variable
+              DTS:CreationName=""
+              DTS:DTSID="{33984761-731d-4165-8d5a-8556f14c1d59}"
+              DTS:IncludeInDebugDump="6789"
+              DTS:Namespace="SEMANTIC_LAYER"
+              DTS:ObjectName="COUNTNEWRECORD">
+              <DTS:VariableValue
+                DTS:DataType="3">0</DTS:VariableValue>
+            </DTS:Variable>
+          </DTS:Variables>
+          <DTS:Executables />
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\0 Job.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{62b97c5e-9eed-42e5-9b14-f029038cfbbb}"
+          DTS:From="Package\0 Job\2 Staging Tables"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\0 Job\3 Dimension Tables" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\0 Job.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{f6082582-9cdd-4e0c-a962-226a32068406}"
+          DTS:From="Package\0 Job\1 Lookup Tables"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\0 Job\2 Staging Tables" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\0 Job.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{4b300559-facf-4436-9b93-ef2751a542d7}"
+          DTS:From="Package\0 Job\4 Factual Tables"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\0 Job\5 Aggregate Tables" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\0 Job.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{12cbad8d-2077-44de-b6e1-ac8a16dbd4a2}"
+          DTS:From="Package\0 Job\5 Aggregate Tables"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\0 Job\6 Conformed Tables" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\0 Job.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{5ebdf200-9e3d-4445-aca2-249acc219f16}"
+          DTS:From="Package\0 Job\3 Dimension Tables"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\0 Job\4 Factual Tables" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\0 Job.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{38541312-9e05-4621-8f18-e0661f5f717d}"
+          DTS:From="Package\0 Job\6 Conformed Tables"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\0 Job\7 Semantic Layer" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\9 DW Post Tasks"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{8aaa9839-503d-489a-afac-270fd3657b93}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="9 DW Post Tasks">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\9 DW Post Tasks\EDA Transfers"
+          DTS:CreationName="Microsoft.ExecutePackageTask"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{902A943D-9AA7-465C-AD63-EC7CC34BFDD6}"
+          DTS:ExecutableType="Microsoft.ExecutePackageTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="EDA Transfers"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] != "FIXED"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>9 EDA Data Copies.dtsx</PackageName>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\9 DW Post Tasks\Table Transfers"
+          DTS:CreationName="Microsoft.ExecutePackageTask"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{E0769351-F772-4FE1-8BB6-0DDF68CCDD3C}"
+          DTS:ExecutableType="Microsoft.ExecutePackageTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Table Transfers"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] != "FIXED"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>9 BCP Data Copies.dtsx</PackageName>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\9 DW Pre Tasks"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:DelayValidation="True"
+      DTS:Description="Sequence Container"
+      DTS:Disabled="True"
+      DTS:DTSID="{770dd844-f00e-4a11-a1a6-5935e3e093e5}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="9 DW Pre Tasks">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_IS_FRAMEWORK_FLAG]==false? true: false</DTS:PropertyExpression>
+      <DTS:Executables />
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{11f517af-f300-4cfc-b24b-7ed4c9c6cfb3}"
+      DTS:From="Package\9 DW Pre Tasks"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\0 Job" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{6b1145e6-a46e-4a68-9ed8-cda85b016a88}"
+      DTS:From="Package\0 Job"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\9 DW Post Tasks" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="217,42"
+          Id="Package\0 Job\1 Lookup Tables\Deputy Branch Public Holiday"
+          TopLeft="46,32" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="297,135"
+          Size="297,178"
+          Id="Package\0 Job\1 Lookup Tables"
+          TopLeft="49.5,5.5" />
+        <NodeLayout
+          Size="162,42"
+          Id="Package\0 Job\2 Staging Tables\Deputy Employee"
+          TopLeft="48,40" />
+        <NodeLayout
+          Size="143,42"
+          Id="Package\0 Job\2 Staging Tables\Deputy Leave"
+          TopLeft="301,117" />
+        <NodeLayout
+          Size="157,42"
+          Id="Package\0 Job\2 Staging Tables\Deputy Loc Area"
+          TopLeft="316,45" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\0 Job\2 Staging Tables\Deputy Roster"
+          TopLeft="73,110" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\0 Job\2 Staging Tables\Deputy Timesheet"
+          TopLeft="58,188" />
+        <EdgeLayout
+          Id="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint]"
+          TopLeft="210,63.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="106,0"
+              Start="0,0"
+              End="98.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="98.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint 1]"
+          TopLeft="394.5,87">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-22,30"
+              Start="0,0"
+              End="-22,22.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11"
+                    Point2="0,15"
+                    Point3="-4,15" />
+                  <mssgle:LineSegment
+                    End="-18,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18,15"
+                    Point2="-22,15"
+                    Point3="-22,19" />
+                  <mssgle:LineSegment
+                    End="-22,22.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint 2]"
+          TopLeft="301,134.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-82,0"
+              Start="0,0"
+              End="-74.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-74.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job\2 Staging Tables.PrecedenceConstraints[Constraint 3]"
+          TopLeft="143.25,152">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="709,478"
+          Size="709,521"
+          Id="Package\0 Job\2 Staging Tables"
+          TopLeft="103.888888888889,213.944444444445" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\0 Job\3 Dimension Tables\Deputy Dimensions"
+          TopLeft="113,72" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="394,194"
+          Size="394,237"
+          Id="Package\0 Job\3 Dimension Tables"
+          TopLeft="9.16666666666674,856.833333333333" />
+        <NodeLayout
+          Size="140,42"
+          Id="Package\0 Job\4 Factual Tables\Deputy Facts"
+          TopLeft="16,27" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\0 Job\4 Factual Tables\Quality Assurance"
+          TopLeft="164.5,73.9566317311169" />
+        <EdgeLayout
+          Id="Package\0 Job\4 Factual Tables.PrecedenceConstraints[Constraint]"
+          TopLeft="156,48">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="90,25.9566317311169"
+              Start="0,0"
+              End="90,18.4566317311169">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="86,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="86,0"
+                    Point2="90,0"
+                    Point3="90,4" />
+                  <mssgle:LineSegment
+                    End="90,18.4566317311169" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="368,171"
+          Size="368,214"
+          Id="Package\0 Job\4 Factual Tables"
+          TopLeft="444.388888888889,893.38888888889" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="205,55"
+          Size="205,98"
+          Id="Package\0 Job\5 Aggregate Tables"
+          TopLeft="531.166666666667,1245.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="205,55"
+          Size="205,98"
+          Id="Package\0 Job\6 Conformed Tables"
+          TopLeft="522.833333333334,1516.83333333333" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="558,497"
+          Size="558,540"
+          Id="Package\0 Job\7 Semantic Layer"
+          TopLeft="49.5000000000002,1661.5" />
+        <EdgeLayout
+          Id="Package\0 Job.PrecedenceConstraints[Constraint]"
+          TopLeft="458.388888888889,734.944444444445">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-252.222222222222,121.888888888888"
+              Start="0,0"
+              End="-252.222222222222,114.388888888888">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,56.944444444444" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,56.944444444444"
+                    Point2="0,60.944444444444"
+                    Point3="-4,60.944444444444" />
+                  <mssgle:LineSegment
+                    End="-248.222222222222,60.944444444444" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-248.222222222222,60.944444444444"
+                    Point2="-252.222222222222,60.944444444444"
+                    Point3="-252.222222222222,64.944444444444" />
+                  <mssgle:LineSegment
+                    End="-252.222222222222,114.388888888888" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job.PrecedenceConstraints[Constraint 1]"
+          TopLeft="198,183.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="260.388888888889,30.444444444445"
+              Start="0,0"
+              End="260.388888888889,22.944444444445">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11.2222222222225" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.2222222222225"
+                    Point2="0,15.2222222222225"
+                    Point3="4,15.2222222222225" />
+                  <mssgle:LineSegment
+                    End="256.388888888889,15.2222222222225" />
+                  <mssgle:CubicBezierSegment
+                    Point1="256.388888888889,15.2222222222225"
+                    Point2="260.388888888889,15.2222222222225"
+                    Point3="260.388888888889,19.2222222222225" />
+                  <mssgle:LineSegment
+                    End="260.388888888889,22.944444444445" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job.PrecedenceConstraints[Constraint 2]"
+          TopLeft="631.027777777778,1107.38888888889">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,138.11111111111"
+              Start="0,0"
+              End="0,130.61111111111">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,130.61111111111" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job.PrecedenceConstraints[Constraint 3]"
+          TopLeft="633.666666666667,1343.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-8.33333333333292,173.33333333333"
+              Start="0,0"
+              End="-8.33333333333292,165.83333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,82.666666666665" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,82.666666666665"
+                    Point2="0,86.666666666665"
+                    Point3="-4,86.666666666665" />
+                  <mssgle:LineSegment
+                    End="-4.33333333333292,86.666666666665" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-4.33333333333292,86.666666666665"
+                    Point2="-8.33333333333292,86.666666666665"
+                    Point3="-8.33333333333292,90.666666666665" />
+                  <mssgle:LineSegment
+                    End="-8.33333333333292,165.83333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job.PrecedenceConstraints[Constraint 4]"
+          TopLeft="403.166666666667,975.333333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="41.2222222222223,25.055555555557"
+              Start="0,0"
+              End="33.7222222222223,25.055555555557">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="16.6111111111111,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="16.6111111111111,0"
+                    Point2="20.6111111111111,0"
+                    Point3="20.6111111111111,4" />
+                  <mssgle:LineSegment
+                    End="20.6111111111111,21.055555555557" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20.6111111111111,21.055555555557"
+                    Point2="20.6111111111111,25.055555555557"
+                    Point3="24.6111111111111,25.055555555557" />
+                  <mssgle:LineSegment
+                    End="33.7222222222223,25.055555555557" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\0 Job.PrecedenceConstraints[Constraint 5]"
+          TopLeft="625.333333333334,1614.83333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-296.833333333334,46.6666666666699"
+              Start="0,0"
+              End="-296.833333333334,39.1666666666699">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.333333333335" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.333333333335"
+                    Point2="0,23.333333333335"
+                    Point3="-4,23.333333333335" />
+                  <mssgle:LineSegment
+                    End="-292.833333333334,23.333333333335" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-292.833333333334,23.333333333335"
+                    Point2="-296.833333333334,23.333333333335"
+                    Point3="-296.833333333334,27.333333333335" />
+                  <mssgle:LineSegment
+                    End="-296.833333333334,39.1666666666699" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="846,2359"
+          Size="846,2402"
+          Id="Package\0 Job"
+          TopLeft="60,365" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\9 DW Post Tasks\EDA Transfers"
+          TopLeft="21,73" />
+        <NodeLayout
+          Size="152,42"
+          Id="Package\9 DW Post Tasks\Table Transfers"
+          TopLeft="17,15" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="402,348"
+          Size="402,391"
+          Id="Package\9 DW Post Tasks"
+          TopLeft="955.83333333333,2361" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="236,204"
+          Size="236,247"
+          Id="Package\9 DW Pre Tasks"
+          TopLeft="114,60" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="232,307">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="251,58"
+              Start="0,0"
+              End="251,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25"
+                    Point2="0,29"
+                    Point3="4,29" />
+                  <mssgle:LineSegment
+                    End="247,29" />
+                  <mssgle:CubicBezierSegment
+                    Point1="247,29"
+                    Point2="251,29"
+                    Point3="251,33" />
+                  <mssgle:LineSegment
+                    End="251,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="906,1566">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="49.8333333333298,990.5"
+              Start="0,0"
+              End="42.3333333333298,990.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="20.9166666666649,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20.9166666666649,0"
+                    Point2="24.9166666666649,0"
+                    Point3="24.9166666666649,4" />
+                  <mssgle:LineSegment
+                    End="24.9166666666649,986.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="24.9166666666649,986.5"
+                    Point2="24.9166666666649,990.5"
+                    Point3="28.9166666666649,990.5" />
+                  <mssgle:LineSegment
+                    End="42.3333333333298,990.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

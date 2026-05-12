@@ -1,0 +1,26 @@
+﻿CREATE TABLE [staging].[WS_Client] (
+    [ClientId]            INT           NULL,
+    [BureauId]            INT           NULL,
+    [ClientIDCode]        VARCHAR (128) NULL,
+    [BureauIDCode]        VARCHAR (128) NULL,
+    [BureauName]          VARCHAR (256) NULL,
+    [DebtorCode]          VARCHAR (64)  NULL,
+    [FK_DIM_ORGANISATION] BIGINT        NULL,
+    [ClientName]          VARCHAR (256) NULL,
+    [Address1]            VARCHAR (128) NULL,
+    [Address2]            VARCHAR (128) NULL,
+    [AddressSuburbId]     INT           NULL,
+    [City]                VARCHAR (128) NULL,
+    [MapLat]              FLOAT (53)    NULL,
+    [MapLong]             FLOAT (53)    NULL,
+    [CreatedDateTime]     DATETIME      NULL,
+    [ModifiedDateTime]    DATETIME      NULL,
+    [IsComplete]          BIT           NULL,
+    [IsSuspended]         BIT           NULL,
+    [SuspendedBy]         VARCHAR (40)  NULL,
+    [SuspendedDate]       DATETIME      NULL,
+    [SuspendedReason]     VARCHAR (128) NULL,
+    [ClientActive]        BIT           NULL,
+    [HasKeys]             BIT           NULL
+);
+

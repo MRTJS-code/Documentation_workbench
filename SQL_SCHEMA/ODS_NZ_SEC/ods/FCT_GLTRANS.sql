@@ -1,0 +1,27 @@
+﻿CREATE TABLE [ods].[FCT_GLTRANS] (
+    [oid]               VARCHAR (34)    NOT NULL,
+    [modifiedUser]      VARCHAR (31)    NULL,
+    [modifiedTimeStamp] DATETIME        NULL,
+    [documentDate]      DATETIME        NULL,
+    [sourceTranType]    VARCHAR (31)    NULL,
+    [reference]         VARCHAR (21)    NULL,
+    [detail]            VARCHAR (31)    NULL,
+    [subCode]           VARCHAR (21)    NULL,
+    [standardText]      VARCHAR (MAX)   NULL,
+    [quantity]          NUMERIC (14, 2) NULL,
+    [tranNetAmount]     NUMERIC (14, 2) NULL,
+    [WILSARRef]         VARCHAR (10)    NULL,
+    [period]            VARCHAR (34)    NULL,
+    [glAccount]         VARCHAR (34)    NULL,
+    [organisation]      VARCHAR (34)    NULL,
+    [job]               VARCHAR (34)    NULL,
+    [activity]          VARCHAR (34)    NULL,
+    PRIMARY KEY CLUSTERED ([oid] ASC),
+    FOREIGN KEY ([activity]) REFERENCES [ods].[DIM_GT_ACTIVITY] ([oid]),
+    FOREIGN KEY ([documentDate]) REFERENCES [ods].[DIM_DATE] ([PK_Date]),
+    CONSTRAINT [FK_FCT_GLTRANS_DIM_GT_GL] FOREIGN KEY ([glAccount]) REFERENCES [ods].[DIM_GT_GL] ([oid]),
+    CONSTRAINT [FK_FCT_GLTRANS_DIM_GT_PERIOD] FOREIGN KEY ([period]) REFERENCES [ods].[DIM_GT_PERIOD] ([oid]),
+    CONSTRAINT [FK_FCT_GLTRANS_DIM_JOB] FOREIGN KEY ([job]) REFERENCES [ods].[DIM_JOB] ([oid]),
+    CONSTRAINT [FK_FCT_GLTRANS_DIM_ORGANISATION] FOREIGN KEY ([organisation]) REFERENCES [ods].[DIM_ORGANISATION] ([oid])
+);
+

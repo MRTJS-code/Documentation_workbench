@@ -1,0 +1,7 @@
+30/04/2025 9:04:02 am	This log contains information about the import schema operation into project 'ODS_NZ_SEC' on computer 'AKL2LPTP11282' by user 'tony.smith'.
+30/04/2025 9:04:02 am	Import of database schema has started.
+30/04/2025 9:04:09 am	An exception was generated.
+The reverse engineering operation cannot continue because you do not have View Definition permission on the 'ODS_NZ_SEC' database.
+30/04/2025 9:04:09 am	Finished importing database.
+30/04/2025 9:04:09 am	A summary of the import was saved to the following location: C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\Import Schema Logs\ODS_NZ_SEC_20250429090402.log
+30/04/2025 9:04:09 am	Click Finish to continue...

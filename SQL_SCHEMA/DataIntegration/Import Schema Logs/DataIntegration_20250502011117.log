@@ -1,0 +1,86 @@
+2/05/2025 1:11:17 pm	This log contains information about the import schema operation into project 'DataIntegration' on computer 'AKL2LPTP11282' by user 'tony.smith'.
+2/05/2025 1:11:17 pm	Import of database schema has started.
+2/05/2025 1:11:50 pm	Gathering database credentials
+2/05/2025 1:11:50 pm	Gathering database options
+2/05/2025 1:11:50 pm	Gathering generic database scoped configuration option
+2/05/2025 1:11:50 pm	Gathering users
+2/05/2025 1:11:50 pm	Gathering roles
+2/05/2025 1:11:50 pm	Gathering application roles
+2/05/2025 1:11:50 pm	Gathering role memberships
+2/05/2025 1:11:50 pm	Gathering filegroups
+2/05/2025 1:11:50 pm	Gathering files
+2/05/2025 1:11:50 pm	Gathering full-text catalogs
+2/05/2025 1:11:50 pm	Gathering assemblies
+2/05/2025 1:11:50 pm	Gathering certificates
+2/05/2025 1:11:50 pm	Gathering asymmetric keys
+2/05/2025 1:11:50 pm	Gathering symmetric keys
+2/05/2025 1:11:50 pm	Gathering encrypted symmetric keys
+2/05/2025 1:11:50 pm	Gathering schemas
+2/05/2025 1:11:50 pm	Gathering XML schema collections
+2/05/2025 1:11:50 pm	Gathering user-defined data types
+2/05/2025 1:11:50 pm	Gathering user-defined types
+2/05/2025 1:11:50 pm	Gathering table types
+2/05/2025 1:11:50 pm	Gathering unique keys for table types
+2/05/2025 1:11:50 pm	Gathering primary keys for table types
+2/05/2025 1:11:50 pm	Gathering indexes for table types
+2/05/2025 1:11:50 pm	Gathering check constraints for table types
+2/05/2025 1:11:50 pm	Gathering default constraints for table types
+2/05/2025 1:11:50 pm	Gathering partition functions
+2/05/2025 1:11:50 pm	Gathering partition schemes
+2/05/2025 1:11:50 pm	Gathering functions
+2/05/2025 1:11:50 pm	Gathering encrypted functions
+2/05/2025 1:11:50 pm	Gathering aggregates
+2/05/2025 1:11:50 pm	Gathering procedures
+2/05/2025 1:11:52 pm	Gathering encrypted procedures
+2/05/2025 1:12:31 pm	Gathering tables
+2/05/2025 1:12:31 pm	Gathering primary keys
+2/05/2025 1:12:31 pm	Gathering unique constraints
+2/05/2025 1:12:31 pm	Gathering foreign keys
+2/05/2025 1:12:31 pm	Gathering default constraints
+2/05/2025 1:12:31 pm	Gathering check constraints
+2/05/2025 1:12:31 pm	Gathering views
+2/05/2025 1:12:31 pm	Gathering encrypted views
+2/05/2025 1:12:31 pm	Gathering indexes
+2/05/2025 1:12:31 pm	Gathering statistics
+2/05/2025 1:12:31 pm	Gathering full-text index stoplists
+2/05/2025 1:12:31 pm	Gathering search property lists
+2/05/2025 1:12:31 pm	Gathering search properties
+2/05/2025 1:12:31 pm	Gathering full-text indexes
+2/05/2025 1:12:31 pm	Gathering column store indexes
+2/05/2025 1:12:31 pm	Gathering spatial indexes
+2/05/2025 1:12:31 pm	Gathering XML indexes
+2/05/2025 1:12:31 pm	Gathering Selective XML indexes
+2/05/2025 1:12:31 pm	Gathering encrypted triggers
+2/05/2025 1:12:31 pm	Gathering triggers
+2/05/2025 1:12:31 pm	Gathering encrypted and clr ddl triggers
+2/05/2025 1:12:31 pm	Gathering ddl triggers
+2/05/2025 1:12:31 pm	Gathering synonyms
+2/05/2025 1:12:31 pm	Gathering defaults
+2/05/2025 1:12:31 pm	Gathering data constraint uddt bindings
+2/05/2025 1:12:32 pm	Gathering rules
+2/05/2025 1:12:32 pm	Gathering data constraint uddt bindings
+2/05/2025 1:12:32 pm	Gathering message types
+2/05/2025 1:12:32 pm	Gathering queues
+2/05/2025 1:12:32 pm	Gathering contracts
+2/05/2025 1:12:32 pm	Gathering services
+2/05/2025 1:12:32 pm	Gathering routes
+2/05/2025 1:12:32 pm	Gathering event notifications
+2/05/2025 1:12:32 pm	Gathering remote service bindings
+2/05/2025 1:12:32 pm	Gathering broker priorities
+2/05/2025 1:12:32 pm	Gathering database audit specifications
+2/05/2025 1:12:32 pm	Gathering signatures
+2/05/2025 1:12:32 pm	Gathering compression options
+2/05/2025 1:12:32 pm	Gathering sequence types
+2/05/2025 1:12:32 pm	Gathering security policies
+2/05/2025 1:12:32 pm	Gather column encryption keys
+2/05/2025 1:12:32 pm	Gathering column master keys
+2/05/2025 1:12:32 pm	Gathering external data sources
+2/05/2025 1:12:32 pm	Gathering external file formats
+2/05/2025 1:12:32 pm	Gathering external tables
+2/05/2025 1:12:32 pm	Gathering extended properties
+2/05/2025 1:12:32 pm	Gathering assemblies
+2/05/2025 1:12:33 pm	Scanning project for duplicate elements
+2/05/2025 1:12:33 pm	Finished duplicate element processing
+2/05/2025 1:12:34 pm	Finished importing database.
+2/05/2025 1:12:34 pm	A summary of the import was saved to the following location: C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\DataIntegration\DataIntegration\Import Schema Logs\DataIntegration_20250502011117.log
+2/05/2025 1:12:34 pm	Click Finish to continue...

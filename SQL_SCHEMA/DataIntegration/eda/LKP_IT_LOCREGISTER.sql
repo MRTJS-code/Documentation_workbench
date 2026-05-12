@@ -1,0 +1,14 @@
+﻿CREATE TABLE [eda].[LKP_IT_LOCREGISTER] (
+    [LOC_REFERENCE]        VARCHAR (7)   NOT NULL,
+    [LOC_CODE]             VARCHAR (25)  NULL,
+    [LOC_NAME]             VARCHAR (100) NULL,
+    [SUBLOC_NAME]          VARCHAR (100) NULL,
+    [LOC_BRANCH]           VARCHAR (25)  NULL,
+    [JOB_STATUS]           VARCHAR (25)  NULL,
+    [DATE_CREATED]         DATETIME      NULL,
+    [DATE_LAST_MODIFIED]   DATETIME      NULL,
+    [DATE_LAST_ASSIGNMENT] DATE          NULL,
+    [LOC_STATUS]           VARCHAR (25)  NULL,
+    PRIMARY KEY CLUSTERED ([LOC_REFERENCE] ASC)
+);
+

@@ -1,0 +1,25 @@
+﻿CREATE TABLE [ods].[DIM_DATE] (
+    [SK_DIM_DATE]           BIGINT       NOT NULL,
+    [PK_DW_Source_system]   VARCHAR (50) NULL,
+    [PK_Date]               DATETIME     NOT NULL,
+    [T_Day_Of_Month_No]     INT          NULL,
+    [T_Day_Of_Year_No]      INT          NULL,
+    [T_Week_No]             INT          NULL,
+    [T_Day_Of_Week_No]      INT          NULL,
+    [T_Day_Of_Week]         VARCHAR (20) NULL,
+    [T_Month_No]            INT          NULL,
+    [T_Month]               VARCHAR (20) NULL,
+    [T_Month_Short]         VARCHAR (3)  NULL,
+    [T_Year]                INT          NULL,
+    [T_Start_Of_Month_Date] DATETIME     NULL,
+    [T_End_Of_Month_Date]   DATETIME     NULL,
+    [T_Start_Of_Week_date]  DATETIME     NULL,
+    [MD_DATE_CREATED]       DATE         NULL,
+    [MD_DATE_MODIFIED]      DATE         NULL,
+    [MD_LOGICAL_DELETE]     SMALLINT     NULL,
+    [MD_JOB_CODE]           INT          NULL,
+    [MD_RUN_CODE]           BIGINT       NULL,
+    [MD_PACK_NAME]          VARCHAR (70) NULL,
+    PRIMARY KEY CLUSTERED ([PK_Date] ASC)
+);
+

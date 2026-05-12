@@ -1,0 +1,3374 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/18/2024 10:56:06 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{281E0322-8123-456C-AD02-EF47232F83E6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="3081"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="24"
+  DTS:VersionGUID="{C0BF5568-F175-43F8-806A-92A475388ECE}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C64A6883-6C81-4EB3-B2FF-B9001458CDCF}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="deltaModified">
+      <DTS:VariableValue
+        DTS:DataType="7">1/1/1900</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Get max modified"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{BBAE821B-7BF4-45FE-B5C9-BF07329491DB}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get max modified"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] != "DELTA"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="SELECT max(r.ModifiedDate)&#xA;FROM staging.FCT_DEP_ROSTER r"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::deltaModified" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Maintain leave roster tracker"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DC8EAEB1-D570-4819-895B-6A197CCFB912}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Maintain leave roster tracker"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;@runType varchar(10) = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@rebuildDate date = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate date = ?;&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;r.EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;r.Id RosterId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;r.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;r.RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;r.Published,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;r.ModifiedDate&#xA;INTO&#x9;&#x9;&#x9;&#x9;#RosterSource&#xA;FROM&#x9;&#x9;&#x9;&#x9;staging.DEP_Roster r&#xA;WHERE&#x9;&#x9;&#x9;&#x9;r.EmployeeId &gt; 0;&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;ea.employeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ll.Id LeaveLineId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ll.LeaveDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ll.Modified&#xA;INTO&#x9;&#x9;&#x9;&#x9;#LeaveSource&#xA;FROM&#x9;&#x9;&#x9;&#x9;staging.DEP_LeaveLine ll&#xA;INNER JOIN&#x9;&#x9;&#x9;staging.DEP_EmployeeAgreement ea on ll.AgreementId = ea.agreementId;&#xA;&#xA;-- Mark as deleted if not matched by roster id and remove anything prior to the rebuild date.  Only possible on FIXED runs after the rebuild date.&#xA;IF @runType = 'FIXED' &#xA;BEGIN&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;r.Id&#xA;INTO&#x9;&#x9;&#x9;&#x9;#rebuildSource&#xA;FROM&#x9;&#x9;&#x9;&#x9;staging.FCT_DEP_ROSTER r&#xA;WHERE&#x9;&#x9;&#x9;&#x9;r.RosterDate &gt;= @rebuildDate;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;lookup.DEP_LeaveRosterTracker t&#xA;USING&#x9;&#x9;&#x9;&#x9;#rebuildSource s ON t.RosterId = s.Id&#xA;WHEN NOT MATCHED BY SOURCE &#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_DeleteDate is NULL&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;t.RosterDate &gt;= @rebuildDate THEN&#xA;UPDATE SET&#x9;&#x9;&#x9;t.MD_DeleteDate = @runDate;&#xA;&#xA;DELETE FROM&#x9;&#x9;&#x9;lookup.DEP_LeaveRosterTracker&#xA;WHERE&#x9;&#x9;&#x9;&#x9;RosterDate &lt; @rebuildDate;&#xA;&#xA;END&#xA;&#xA;-- Add New records&#xA;MERGE INTO&#x9;&#x9;&#x9;lookup.DEP_LeaveRosterTracker t&#xA;USING&#x9;&#x9;&#x9;&#x9;#RosterSource s ON t.RosterId = s.RosterId AND t.EmployeeId = s.EmployeeId&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;INSERT (&#x9;&#x9;&#x9;EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RosterId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_PublishDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate)&#xA;VALUES (&#x9;&#x9;&#x9;s.EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RosterId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;CASE s.Published WHEN 1 THEN s.ModifiedDate ELSE NULL END,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.ModifiedDate)&#xA;&#xA;WHEN MATCHED AND (&#x9;t.AreaId != s.AreaId OR t.RosterDate != s.RosterDate &#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;CASE WHEN t.MD_PublishDate IS NULL THEN 0 ELSE 1 END != s.Published) THEN&#xA;UPDATE SET&#x9;&#x9;&#x9;t.AreaId = s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RosterDate = s.RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveLineId = CASE WHEN t.RosterDate != s.RosterDate AND t.LeaveLineId is NOT NULL THEN NULL ELSE t.LeaveLineId END,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_PublishDate = CASE WHEN s.Published = 1 AND t.MD_PublishDate is NULL THEN s.ModifiedDate &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN s.Published = 0 AND t.MD_PublishDate is NOT NULL THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE t.MD_PublishDate END;&#xA;&#xA;-- Add leave line ID if approved leave found with a match to roster + update removed date&#xA;UPDATE&#x9;&#x9;&#x9;&#x9;t&#xA;SET&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveLineId = s.LeaveLineId&#xA;FROM&#x9;&#x9;&#x9;&#x9;lookup.DEP_LeaveRosterTracker t&#xA;INNER JOIN&#x9;&#x9;&#x9;#LeaveSource s ON t.EmployeeId = s.employeeId AND t.RosterDate = s.LeaveDate;&#xA;&#xA;-- Mark as removed if not matched by roster and employee&#xA;UPDATE&#x9;&#x9;&#x9;&#x9;t&#xA;SET&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_RemovedDate = s.ModifiedDate&#xA;FROM&#x9;&#x9;&#x9;&#x9;lookup.DEP_LeaveRosterTracker t&#xA;INNER JOIN&#x9;&#x9;&#x9;#RosterSource s ON t.RosterId = s.RosterId&#xA;WHERE&#x9;&#x9;&#x9;&#x9;t.EmployeeId != s.EmployeeId&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_DeleteDate is NULL;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_DATA_RANGE_MODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="129"
+            SQLTask:ParameterSize="10" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_CUS_REBUILD_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Roster"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{7817E5E1-9B09-4E62-97EA-6FB02AE56865}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Roster"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Roster\DEP Roster"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;11"
+              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+              name="DEP Roster"
+              version="11">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="30">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("SC_36f59fafd92b4cdfb2b40a4330543c6f")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SC_36f59fafd92b4cdfb2b40a4330543c6f")]
+[assembly: AssemblyCopyright("Copyright @  2024")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.0.0")]
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+/* The Script Component allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services data flow.
+ *
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script component. */
+#endregion
+
+#region Namespaces
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+#endregion
+
+/// <summary>
+/// This is the class to which to add your code.  Do not change the name, attributes, or parent
+/// of this class.
+/// </summary>
+[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
+public class ScriptMain : UserComponent
+{
+    #region Help:  Using Integration Services variables and parameters
+    /* To use a variable in this script, first ensure that the variable has been added to
+     * either the list contained in the ReadOnlyVariables property or the list contained in
+     * the ReadWriteVariables property of this script component, according to whether or not your
+     * code needs to write into the variable.  To do so, save this script, close this instance of
+     * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
+     * Script Transformation Editor window.
+     * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+     *
+     * Example of reading from a variable or parameter:
+     *  DateTime startTime = Variables.MyStartTime;
+     *
+     * Example of writing to a variable:
+     *  Variables.myStringVariable = "new value";
+     */
+    #endregion
+
+    #region Help:  Using Integration Services Connnection Managers
+    /* Some types of connection managers can be used in this script component.  See the help topic
+     * "Working with Connection Managers Programatically" for details.
+     *
+     * To use a connection manager in this script, first ensure that the connection manager has
+     * been added to either the list of connection managers on the Connection Managers page of the
+     * script component editor.  To add the connection manager, save this script, close this instance of
+     * Visual Studio, and add the Connection Manager to the list.
+     *
+     * If the component needs to hold a connection open while processing rows, override the
+     * AcquireConnections and ReleaseConnections methods.
+     * 
+     * Example of using an ADO.Net connection manager to acquire a SqlConnection:
+     *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
+     *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
+     *
+     * Example of using a File connection manager to acquire a file path:
+     *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
+     *  string filePath = (string)rawConnection;
+     *
+     * Example of releasing a connection manager:
+     *  Connections.SalesDB.ReleaseConnection(rawConnection);
+     */
+    #endregion
+
+    #region Help:  Firing Integration Services Events
+    /* This script component can fire events.
+     *
+     * Example of firing an error event:
+     *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
+     *
+     * Example of firing an information event:
+     *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
+     *
+     * Example of firing a warning event:
+     *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
+     */
+    #endregion
+
+    /// <summary>
+    /// This method is called once, before rows begin to be processed in the data flow.
+    ///
+    /// You can remove this method if you don't need to do anything here.
+    /// </summary>
+    public override void PreExecute()
+    {
+        base.PreExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called after all the rows have passed through this component.
+    ///
+    /// You can delete this method if you don't need to do anything here.
+    /// </summary>
+    public override void PostExecute()
+    {
+        base.PostExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    public override void CreateNewOutputRows()
+    {
+        try
+        {
+            // Log the value of the variable
+            string token = Variables.ENVCONNECTION1DEPTOKEN.ToString();
+            string apiCall = "/api/v1/resource/Roster/QUERY";
+            string url = Variables.ENVCONNECTION1DEPURL.ToString() + apiCall;
+            string timeZone = "New Zealand Standard Time";
+            string sourceTimeZone = TimeZone.CurrentTimeZone.StandardName;
+            DateTime deltaDate = Variables.deltaModified;
+            string rebuildDate = Variables.ETLCUSREBUILDDATE;
+            string rangeMode = Variables.ETLVARDATARANGEMODE;
+
+            bool fireAgain = false;
+            //this.ComponentMetaData.FireInformation(0, "Script Component", "url call to " + url, "", 0, ref fireAgain);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            // Create an HttpClient
+            using (HttpClient client = new HttpClient())
+            {
+                // Set the Bearer token in the Authorization header
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.ExpectContinue = false;
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.Timeout = TimeSpan.FromSeconds(60);
+
+                //create flow variables
+                int start = 0;
+                bool moreRecords = true;
+
+                while (moreRecords)
+                {
+                    string requestUrl = url;
+                    string reqBody = "{\n";
+                    reqBody += "\"search\":{\n";
+                    if (rangeMode == "DELTA") reqBody += "\"s1\":{\"field\":\"Modified\", \"data\":\"" + deltaDate.AddSeconds(-10).ToString("yyyy-MM-dd hh:mm:ss") + "\", \"type\":\"ge\"}\n";
+                    else reqBody += "\"s1\":{\"field\":\"Date\", \"data\":\"" + rebuildDate + "\", \"type\":\"ge\"}\n";
+                    reqBody += "}\n";
+                    reqBody += ",\"start\":" + start.ToString() + "\n";
+                    reqBody += ",\"sort\":{\"Id\":\"asc\"}\n";
+                    reqBody += ",\"join\":[\"CustomFieldDataObject\"]\n";
+                    reqBody += "}";
+
+                    this.ComponentMetaData.FireInformation(0, "API Body", reqBody, "", 0, ref fireAgain);
+
+                    JavaScriptSerializer sr = new JavaScriptSerializer();
+                    sr.MaxJsonLength = 5097152;
+
+                    StringContent requestContent = new StringContent(reqBody, System.Text.Encoding.UTF8, "application/json");
+                    HttpResponseMessage depResponse = apiRequest(client, requestUrl, requestContent).Result;
+
+                    // Check if the request was successful
+                    if (depResponse.IsSuccessStatusCode)
+                    {
+                        string responseBody = depResponse.Content.ReadAsStringAsync().Result;
+
+                        // Deserialize the JSON response                        
+                        List<Roster> apiResponse = sr.Deserialize<List<Roster>>(responseBody);
+
+                        foreach (Roster roster in apiResponse)
+                        {
+                            RosterBuffer.AddRow();
+                            RosterBuffer.AreaId = roster.OperationalUnit;
+                            if (!String.IsNullOrEmpty(roster.Comment)) RosterBuffer.Comment = roster.Comment;
+                            if (roster.Cost.HasValue) RosterBuffer.Cost = roster.Cost.Value;
+                            RosterBuffer.Creator = roster._DPMetaData.CreatorInfo.DisplayName;
+                            if (roster.Employee.HasValue) RosterBuffer.EmployeeId = roster.Employee.Value;
+                            RosterBuffer.Hours = roster.TotalTime;
+                            RosterBuffer.Id = roster.Id;
+                            RosterBuffer.ModifiedDate = ConvertTimeZone(roster.Modified, sourceTimeZone, timeZone);
+                            if (roster.Open.HasValue) RosterBuffer.Open = roster.Open.Value;
+                            if (roster.Published.HasValue) RosterBuffer.Published = roster.Published.Value;
+                            RosterBuffer.RosterDate = ConvertTimeZone(roster.Date, sourceTimeZone, timeZone);
+                            RosterBuffer.RosterEnd = ConvertTimeZone(UnixTimeStampToDateTime(roster.EndTime), sourceTimeZone, timeZone);
+                            RosterBuffer.RosterStart = ConvertTimeZone(UnixTimeStampToDateTime(roster.StartTime), sourceTimeZone, timeZone);
+                            if (roster.MatchedByTimesheet.HasValue) RosterBuffer.TimesheetId = roster.MatchedByTimesheet.Value;
+                            if (!String.IsNullOrEmpty(roster.Warning)) RosterBuffer.Warning = roster.Warning;
+                            if (!String.IsNullOrEmpty(roster.WarningOverrideComment)) RosterBuffer.WarningOverride = roster.WarningOverrideComment;
+
+                            if (roster.CustomFieldDataObject != null)
+                            {
+                                CustomFieldDataObject custField = roster.CustomFieldDataObject;
+                                if (!String.IsNullOrEmpty(custField.purchaseorderschedule)) RosterBuffer.PurchaseOrder = custField.purchaseorderschedule;
+                                if (!String.IsNullOrEmpty(custField.ritmschedule)) RosterBuffer.RITM = custField.ritmschedule;
+                            }
+
+                        }
+
+                        if (apiResponse.Count == 500)
+                        {
+                            start += 500;
+                        }
+                        else
+                        {
+                            moreRecords = false;
+                        }
+                    }
+                    else
+                    {
+                        moreRecords = false;
+                        string errorBody = depResponse.Content.ReadAsStringAsync().Result;
+                        ErrorObject errorResponse = sr.Deserialize<ErrorObject>(errorBody);
+                        this.ComponentMetaData.FireError(0, "Deputy API Error", errorResponse.error.code + ": " + errorResponse.error.message, "", 0, out fireAgain);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions and log errors
+            bool fireAgain = false;
+            this.ComponentMetaData.FireError(0, "Script Error", ex.Message, "", 0, out fireAgain);
+        }
+    }
+
+    #region functions
+    private static async Task<HttpResponseMessage> apiRequest(HttpClient c, string url, StringContent req)
+    {
+        var reqMessage = new HttpRequestMessage(HttpMethod.Post, url);
+        reqMessage.Content = req;
+        HttpResponseMessage resp = await c.SendAsync(reqMessage);
+        return resp;
+    }
+
+    static DateTime ConvertTimeZone(DateTime dateTime, string sourceTimeZoneId, string targetTimeZoneId)
+    {
+        // Find source and target time zones
+        TimeZoneInfo sourceTimeZone = TimeZoneInfo.FindSystemTimeZoneById(sourceTimeZoneId);
+        TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById(targetTimeZoneId);
+
+        // Convert the original DateTime to UTC based on the source time zone
+        DateTime sourceTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
+        DateTime dtUTC = TimeZoneInfo.ConvertTimeToUtc(sourceTime, sourceTimeZone);
+
+        // Convert the UTC time to the target time zone
+        DateTime targetTime = TimeZoneInfo.ConvertTimeFromUtc(dtUTC, targetTimeZone);
+
+        return targetTime;
+    }
+
+    public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+        return dateTime;
+    }
+
+    static DateTime ConvertUTCToTimeZone(DateTime dateTime, string timeZoneId)
+    {
+
+        DateTime dtUTC = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+        TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+        DateTime targetTime = TimeZoneInfo.ConvertTimeFromUtc(dtUTC, targetTimeZone);
+        return targetTime;
+
+    }
+    #endregion
+
+    #region Classes
+    public class ErrorDetail
+    {
+        public string code { get; set; }
+        public string message { get; set; }
+    }
+
+    public class ErrorObject
+    {
+        public ErrorDetail error { get; set; }
+    }
+
+    public class CreatorInfo
+    {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public int EmployeeProfile { get; set; }
+        public int Employee { get; set; }
+        public string Photo { get; set; }
+        public int Pronouns { get; set; }
+        public string CustomPronouns { get; set; }
+    }
+
+    public class CustomFieldDataObject
+    {
+        public int Id { get; set; }
+        public string System { get; set; }
+        public string F01 { get; set; }
+        public string F02 { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public string ritmschedule { get; set; }
+        public string purchaseorderschedule { get; set; }
+        //public DPMetaData _DPMetaData { get; set; }
+    }
+
+    public class DPMetaData
+    {
+        public string System { get; set; }
+        public CreatorInfo CreatorInfo { get; set; }
+        //public OperationalUnitInfo OperationalUnitInfo { get; set; }
+        //public EmployeeInfo EmployeeInfo { get; set; }
+        //public List<object> SwapManageByInfo { get; set; }
+    }
+    /*
+    public class EmployeeInfo
+    {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public int EmployeeProfile { get; set; }
+        public int Employee { get; set; }
+        public string Photo { get; set; }
+        public int Pronouns { get; set; }
+        public object CustomPronouns { get; set; }
+    }
+
+    public class OperationalUnitInfo
+    {
+        public int Id { get; set; }
+        public string OperationalUnitName { get; set; }
+        public int Company { get; set; }
+        public string CompanyName { get; set; }
+        public string LabelWithCompany { get; set; }
+    }
+    */
+    public class Roster
+    {
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public int StartTime { get; set; }
+        public int EndTime { get; set; }
+        //public DateTime Mealbreak { get; set; }
+        //public List<object> Slots { get; set; }
+        public double TotalTime { get; set; }
+        public double? Cost { get; set; }
+        public int OperationalUnit { get; set; }
+        public int? Employee { get; set; }
+        public string Comment { get; set; }
+        public string Warning { get; set; }
+        public string WarningOverrideComment { get; set; }
+        public bool? Published { get; set; }
+        public int? MatchedByTimesheet { get; set; }
+        //public int CustomFieldData { get; set; }
+        public bool? Open { get; set; }
+        /*
+        public bool ApprovalRequired { get; set; }
+        public int ConfirmStatus { get; set; }
+        public string ConfirmComment { get; set; }
+        public int ConfirmBy { get; set; }
+        public int ConfirmTime { get; set; }
+        public int SwapStatus { get; set; }
+        public object SwapManageBy { get; set; }
+        public object ShiftTemplate { get; set; }
+        public object ConnectStatus { get; set; }
+        public object ParentId { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        */
+        public DateTime Modified { get; set; }
+        /*
+        public double OnCost { get; set; }
+        public DateTime StartTimeLocalized { get; set; }
+        public DateTime EndTimeLocalized { get; set; }
+        public object ExternalId { get; set; }
+        public object ConnectCreator { get; set; }
+        */
+        public DPMetaData _DPMetaData { get; set; }
+        //public object BidsCount { get; set; }
+        public CustomFieldDataObject CustomFieldDataObject { get; set; }
+    }
+    #endregion
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services buffer wrappers
+*  This module defines classes for accessing data flow buffers
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+
+public class RosterBuffer: ScriptBuffer
+
+{
+    public RosterBuffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
+        : base(Buffer, BufferColumnIndexes, OutputMap)
+    {
+    }
+
+    public Int32 Id
+    {
+        set
+        {
+            this[0] = value;
+        }
+    }
+    public bool Id_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(0);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 AreaId
+    {
+        set
+        {
+            this[1] = value;
+        }
+    }
+    public bool AreaId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(1);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 EmployeeId
+    {
+        set
+        {
+            this[2] = value;
+        }
+    }
+    public bool EmployeeId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(2);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 TimesheetId
+    {
+        set
+        {
+            this[3] = value;
+        }
+    }
+    public bool TimesheetId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(3);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime RosterDate
+    {
+        set
+        {
+            this[4] = value;
+        }
+    }
+    public bool RosterDate_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(4);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime RosterStart
+    {
+        set
+        {
+            this[5] = value;
+        }
+    }
+    public bool RosterStart_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(5);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime RosterEnd
+    {
+        set
+        {
+            this[6] = value;
+        }
+    }
+    public bool RosterEnd_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(6);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Double Hours
+    {
+        set
+        {
+            this[7] = value;
+        }
+    }
+    public bool Hours_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(7);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Double Cost
+    {
+        set
+        {
+            this[8] = value;
+        }
+    }
+    public bool Cost_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(8);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String Comment
+    {
+        set
+        {
+            this[9] = value;
+        }
+    }
+    public bool Comment_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(9);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String Warning
+    {
+        set
+        {
+            this[10] = value;
+        }
+    }
+    public bool Warning_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(10);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String WarningOverride
+    {
+        set
+        {
+            this[11] = value;
+        }
+    }
+    public bool WarningOverride_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(11);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean Open
+    {
+        set
+        {
+            this[12] = value;
+        }
+    }
+    public bool Open_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(12);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean Published
+    {
+        set
+        {
+            this[13] = value;
+        }
+    }
+    public bool Published_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(13);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String PurchaseOrder
+    {
+        set
+        {
+            this[14] = value;
+        }
+    }
+    public bool PurchaseOrder_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(14);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String RITM
+    {
+        set
+        {
+            this[15] = value;
+        }
+    }
+    public bool RITM_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(15);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String Creator
+    {
+        set
+        {
+            this[16] = value;
+        }
+    }
+    public bool Creator_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(16);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime ModifiedDate
+    {
+        set
+        {
+            this[17] = value;
+        }
+    }
+    public bool ModifiedDate_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(17);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    new public void AddRow()
+    {
+        base.AddRow();
+    }
+
+    new public void SetEndOfRowset()
+    {
+        base.SetEndOfRowset();
+    }
+
+    new public bool EndOfRowset()
+    {
+        return base.EndOfRowset();
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties.Settings.get_Default():SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties.Sett" +
+    "ings")]
+
+namespace SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services component wrapper
+*  This module defines the base class for your component
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+
+public class UserComponent: ScriptComponent
+{
+    public Connections Connections;
+    public Variables Variables;
+    public UserComponent()
+    {
+        Connections = new Connections(this);
+        Variables = new Variables(this);
+    }
+
+    public RosterBuffer RosterBuffer;
+
+    public virtual void FinishOutputs()
+    {
+    }
+
+    private void MarkOutputsFinished()
+    {
+
+        if (null != RosterBuffer)
+        {
+            RosterBuffer.SetEndOfRowset();
+            RosterBuffer = null;
+        }
+
+    }
+
+    public override void PrimeOutput(int Outputs, int[] OutputIDs, PipelineBuffer[] Buffers, OutputNameMap OutputMap)
+    {
+       for(int Idx = 0; Idx < Outputs; Idx++)
+       {
+            if(OutputIDs[Idx] == GetOutputID(OutputMap, @"Roster"))
+            {
+                RosterBuffer = new RosterBuffer(Buffers[Idx], GetColumnIndexes(OutputIDs[Idx]), OutputMap);
+            }
+        }
+
+        CreateNewOutputRows();
+
+        FinishOutputs();
+        MarkOutputsFinished();
+
+    }
+
+    public virtual void CreateNewOutputRows()
+    {
+    }
+
+}
+
+public class Connections
+{
+    ScriptComponent ParentComponent;
+
+    public Connections(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+
+public class Variables
+{
+    ScriptComponent ParentComponent;
+
+    public Variables(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+    public DateTime deltaModified
+    {
+        get
+        {
+            return (DateTime)(ParentComponent.ReadOnlyVariables["deltaModified"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ENVCONNECTION1DEPTOKEN
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ENV_CONNECTION_1_DEP_TOKEN"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ENVCONNECTION1DEPURL
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ENV_CONNECTION_1_DEP_URL"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ETLCUSREBUILDDATE
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ETL_CUS_REBUILD_DATE"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ETLVARDATARANGEMODE
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ETL_VAR_DATA_RANGE_MODE"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>SC_36f59fafd92b4cdfb2b40a4330543c6f</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>SC_36f59fafd92b4cdfb2b40a4330543c6f</msb:DisplayName>
+    <msb:ProjectId>{8DA21C62-03F8-49C5-8F3F-F1B405E8AC22}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="SC_36f59fafd92b4cdfb2b40a4330543c6f.csproj" />
+    <msb:File Include="main.cs" />
+    <msb:File Include="BufferWrapper.cs" />
+    <msb:File Include="ComponentWrapper.cs" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_36f59fafd92b4cdfb2b40a4330543c6f.csproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{23D17700-5CFA-4E2E-9CA2-B83A2DE8DF75}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SC_36f59fafd92b4cdfb2b40a4330543c6f</RootNamespace>
+    <AssemblyName>SC_36f59fafd92b4cdfb2b40a4330543c6f</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.cs" />
+    <Compile Include="BufferWrapper.cs" />
+    <Compile Include="ComponentWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" />
+        <Host Name="ScriptComponent" IconIndex="0" />
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC140</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_36f59fafd92b4cdfb2b40a4330543c6f.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_36f59fafd92b4cdfb2b40a4330543c6f.dll]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[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
+EAAxALoREAA5ALoREABBALoREABJALoREABRALoREABZALoREABhALoREABpALoRBgDBALoRFQDh
+ALoRBgDxACwWBgDxAOwIGwARAboRBgA5AboRBgBZAboRIQAxAfQLBgAxAf8LBgDZAMAMaQBpAe8T
+bQBxAT8JcwBxASsIaQB5AaAOeQB5ALoRBgB5AKETgACRAboRhgCJAXUPjAAMALoRmQCJAUIMnwCZ
+AXAChgChAe8RqAB5ABQWrwBpAZkWtgBxAOQRvABxAMAMwgBpAe8TxwCpAcAMaQAxAXoBzwCxARsP
+1QCBALoRBgCBAMkMAQC5AdEA4ACJALoR5gAUALIU9gCRAOcG+wCRAGQV/wDBAb4BBQEcALIU9gCB
+AFUMEwEkAKwRKgEsAFgV9gBpAaUWOgE0AC8M+wA0AAsM9gA8AC8M+wA8AAsM9gAMAC8M+wAMAAsM
+9gAsACwW+wDJAcIJBgAkAJYVSwFpAe8TVAGxAXYR1QCxACsHaQBEAPwJaAFEAMcVcgFEANsMfwHR
+AFkCjwFxAKwGlQHRAOMBnwHRANABnwFxALoRrwFxAJUIvQEZAboRxwEZAcIO0wEZAZgOAQDZAboR
+EAAZAYUWBgAZAW8UBgAZAXIU+wAxAboRBgAxAeMA3QExAdcS5QHZALoRBgAxAa0S6wHxAbkO8QEx
+AXAW+AH5AUEW/gG5AJsHBQK5AIwWDQJBAboREwJhAboRBgAhAgsWLAL5ALoRMgL5AHAVOgJ5ALQB
+QQIUAE8RTAJMAP8C+wBEAOgCXgJMAL0U9gBEALMPdQJEAMcUmQBEAOwIGwAuAAsAHAQuABMAJQQu
+ABsARAQuACMATQQuACsAdgQuADMAdgQuADsAdgQuAEMATQQuAEsAfAQuAFMAdgQuAFsAkwRDAGMA
+/gSAAGsA3QTjAJMA/gQBAXMA/gQhAXMA/gRBAXMA/gRhAXMA/gSBAXMA/gShAXMA/gTBAXMA/gTh
+AXMA/gTjAXMA/gQBAnMA/gQhAnMA/gRBAnMA/gRhAnMA/gSBAnMA/gShAnMA/gTBAnMA/gThAnMA
+/gQBA3MA/gQhA3MA/gRBA3MA/gRhA3MA/gSBA3MA/gShA3MA/gTBA3MA/gThA3MA/gQBBHMA/gQh
+BHMA/gRBBHMA/gRhBHMA/gSBBHMA/gShBHMA/gTBBHMA/gThBHMA/gQBBXMA/gQhBXMA/gRBBXMA
+/gRJBZsARARhBXMA/gRpBZsARASBBXMA/gShBXMA/gTBBXMA/gSACHMA/gSgCHMA/gTACHMA/gTg
+CHMA/gQgCXMA/gRACXMA/gSACXMA/gSgCXMA/gTACXMA/gTgCXMA/gQACnMA/gQgCnMA/gRACnMA
+/gRgCnMA/gSACnMA/gSgCnMA/gTACnMA/gTgCnMA/gQAC3MA/gQgC3MA/gRgC3MA/gSAC3MA/gSg
+C3MA/gTAC3MA/gTgC3MA/gQADHMA/gQgDHMA/gRADHMA/gRgDHMA/gSADHMA/gSgDHMA/gTADHMA
+/gTgDHMA/gQADXMA/gQgDXMA/gRADXMA/gRgDXMA/gSADXMA/gTADXMA/gTgDXMA/gQADnMA/gQg
+DnMA/gRgDnMA/gSADnMA/gSgDnMA/gTADnMA/gTgDnMA/gQAD3MA/gQgD3MA/gRAD3MA/gRgD3MA
+/gSAD3MA/gSgD3MA/gTAD3MA/gTgD3MA/gQAEHMA/gQgEHMA/gRAEHMA/gRgEHMA/gSAEHMA/gSg
+EHMA/gTAEHMA/gTgEHMA/gQAEXMA/gQgEXMA/gRAEXMA/gRgEXMA/gSAEXMA/gSgEXMA/gTAEXMA
+/gTgEXMA/gQAEnMA/gQgEnMA/gRAEnMA/gRgEnMA/gSAEnMA/gTgEosA/gQoAFsBiAGoAcIB2QEb
+AgMAAQAGACUABwAqAAgALAAJAC0ACgAvAAsAMAAMADcADQBAAA4AQgAAAG0CygMAAIENzgMAAAYC
+ygMAAFANzgMAABECygMAAGINzgMAAE0CygMAAHgNzgMAAPEJ0gMAAOwNzgMAAMEV0gMAAHUOzgMA
+AJUG0gMAAKQNzgMAAMcT1wMAAFEOzgMAAOUV1wMAAIwOzgMAACIV2wMAAGIOzgMAALgM2wMAAAIO
+zgMAANcG2wMAALkNzgMAAAsPzgMAABUOzgMAAIYCzgMAAI8NzgMAAJ8Q2wMAACUOzgMAADoB2wMA
+ADINzgMAAKQR2wMAAD4OzgMAAOAJ0gMAANQNzgMAAMIC0gMAAEMB2wMAACEB2wMAAAsB2wMAAPMA
+2wMAANoQ3wMAAKIJ5QMAAKoU6wMAAAwH2wMAAG4H2wMAAI4R8AMAAG0CygMAAFAI2wMAAMUHygMA
+ACIHygMAAAcQ2wMAAGETygMAAFsT2wMAAG0CygMAANoO2wMAAF8A2wMAALYA2wMAAKQRygMAAOAC
+0gMAAMcC0gMAAOoH2wMAABUI2wMAANoO2wMAAO0P9QMAAG0CygMAAPcJ0gMAAM8IygMAAGwIygMA
+ALMI1wMAAOUV+gMAAJYUygMAACIHAgQAACIV2wMAALgM2wMAABMV2wMAAIYCCgQAAFwUAgQAAAsP
+CgQAAMcC0gMAAG4BEgQAABQUFwQBAAoAAwABAAsABQABAAwABwABAA0ACQABAA4ACwABAA8ADQAB
+ABAADwABABEAEQABABIAEwABABMAFQABABQAFwABABUAGQABABYAGwABABcAHQABABgAHwABABkA
+IQABABoAIwABABsAJQABABwAJwABAB0AKQABAB4AKwABAB8ALQABACAALwABACEAMQABACIAMwAB
+ACMANQABACQANwABACUAOQABACYAOwABACcAPQABACgAPwABACkAQQABACoAQwABACsARQABACwA
+RwABAC0ASQACADgASwACADkATQACADoATwACADsAUQACADwAUwACAD4AVQACAD8AVwABAEAAVwAC
+AEEAWQACAEQAWwABAEUAWwACAEYAXQABAEcAXQACAEkAXwABAEoAXwACAEwAYQABAE0AYQACAE4A
+YwABAE8AYwACAFAAZQABAFEAZQACAFIAZwABAFMAZwACAFQAaQABAFUAaQACAFYAawABAFcAawAC
+AFgAbQABAFkAbQACAFsAbwABAFwAbwACAF0AcQABAF4AcQACAF8AcwABAGAAcwACAGEAdQABAGIA
+dQACAGMAdwABAGQAdwACAGUAeQABAGYAeQACAGcAewABAGgAewACAGkAfQABAGoAfQACAGsAfwAB
+AGwAfwACAG4AgQABAG8AgQACAHAAgwABAHEAgwACAHMAhQABAHQAhQACAHUAhwABAHYAhwACAHcA
+iQABAHgAiQACAHkAiwABAHoAiwACAHsAjQABAHwAjQACAH0AjwABAH4AjwACAH8AkQABAIAAkQAC
+AIEAkwABAIIAkwACAIMAlQABAIQAlQACAIUAlwABAIYAlwACAIcAmQABAIgAmQACAIkAmwABAIoA
+mwACAIsAnQABAIwAnQACAI0AnwABAI4AnwACAI8AoQABAJAAoQACAJEAowABAJIAowACAJMApQAB
+AJQApQAPACwBHwAPAC4BIQCTAO8ADQEjATMBPwFFAWABVgIEgAAAAQAAAAAAAAAAAAAAAABhDAAA
+BAAAAAAAAAAAAAAAewKQAQAAAAAOAAAAAAAAAAAAAACEAqAVAAAAAAQAAAAAAAAAAAAAAI0CehAA
+AAAABAAAAAAAAAAAAAAAlgIIEwAAAAAOAAAAAAAAAAAAAACEAuoVAAAAAAQAAAAAAAAAAAAAAHsC
+2g4AAAAADgAAAAAAAAAAAAAAhAJIEAAAAAAOAAAAAAAAAAAAAACEAiUQAAAAAAAAAAABAAAALBIA
+AAkAAgAKAAIACwACAAwAAgANAAIADgACAA8AAgBpABoBaQBPAYsAegHNAGkCAAAAAABJRFRTQ29t
+cG9uZW50TWV0YURhdGExMDAASURUU1ZhcmlhYmxlMTAwAElEVFNWYXJpYWJsZXMxMDAASURUU0V2
+YWx1YXRvckNvbnRleHQxMDAAZ2V0X0YwMQBzZXRfRjAxADw+dV9fMQBOdWxsYWJsZWAxAFRhc2tg
+MQBBc3luY1Rhc2tNZXRob2RCdWlsZGVyYDEAVGFza0F3YWl0ZXJgMQBMaXN0YDEAZ2V0X0YwMgBz
+ZXRfRjAyAEludDMyADxhcGlSZXF1ZXN0PmRfXzMAZ2V0X1VURjgAPE1vZHVsZT4AR2V0T3V0cHV0
+SUQAZ2V0X0VUTFZBUkRBVEFSQU5HRU1PREUAZ2V0X0VUTENVU1JFQlVJTEREQVRFAGdldF9FTlZD
+T05ORUNUSU9OMURFUFVSTABzZXRfUklUTQBnZXRfRU5WQ09OTkVDVElPTjFERVBUT0tFTgBnZXRf
+X0RQTWV0YURhdGEAc2V0X19EUE1ldGFEYXRhAGdldF9Db21wb25lbnRNZXRhRGF0YQBtc2Nvcmxp
+YgBTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYwBTZW5kQXN5bmMAUmVhZEFzU3RyaW5nQXN5bmMA
+Q29udmVydFRpbWVGcm9tVXRjAENvbnZlcnRUaW1lVG9VdGMAZ2V0X0lkAHNldF9JZABzZXRfQXJl
+YUlkAHNldF9FbXBsb3llZUlkAHNvdXJjZVRpbWVab25lSWQAdGFyZ2V0VGltZVpvbmVJZAB0aW1l
+Wm9uZUlkAHNldF9UaW1lc2hlZXRJZABGaW5kU3lzdGVtVGltZVpvbmVCeUlkAEFkZABnZXRfUHVi
+bGlzaGVkAHNldF9QdWJsaXNoZWQATWFya091dHB1dHNGaW5pc2hlZABnZXRfTW9kaWZpZWQAc2V0
+X01vZGlmaWVkAGdldF9kZWx0YU1vZGlmaWVkAGdldF9DcmVhdGVkAHNldF9DcmVhdGVkAEF3YWl0
+VW5zYWZlT25Db21wbGV0ZWQAZ2V0X0lzQ29tcGxldGVkADxGMDE+a19fQmFja2luZ0ZpZWxkADxG
+MDI+a19fQmFja2luZ0ZpZWxkADxfRFBNZXRhRGF0YT5rX19CYWNraW5nRmllbGQAPElkPmtfX0Jh
+Y2tpbmdGaWVsZAA8UHVibGlzaGVkPmtfX0JhY2tpbmdGaWVsZAA8TW9kaWZpZWQ+a19fQmFja2lu
+Z0ZpZWxkADxDcmVhdGVkPmtfX0JhY2tpbmdGaWVsZAA8Y29kZT5rX19CYWNraW5nRmllbGQAPEVt
+cGxveWVlPmtfX0JhY2tpbmdGaWVsZAA8bWVzc2FnZT5rX19CYWNraW5nRmllbGQAPEVtcGxveWVl
+UHJvZmlsZT5rX19CYWNraW5nRmllbGQAPHJpdG1zY2hlZHVsZT5rX19CYWNraW5nRmllbGQAPHB1
+cmNoYXNlb3JkZXJzY2hlZHVsZT5rX19CYWNraW5nRmllbGQAPERpc3BsYXlOYW1lPmtfX0JhY2tp
+bmdGaWVsZAA8RW5kVGltZT5rX19CYWNraW5nRmllbGQAPFRvdGFsVGltZT5rX19CYWNraW5nRmll
+bGQAPFN0YXJ0VGltZT5rX19CYWNraW5nRmllbGQAPERhdGU+a19fQmFja2luZ0ZpZWxkADxXYXJu
+aW5nPmtfX0JhY2tpbmdGaWVsZAA8U3lzdGVtPmtfX0JhY2tpbmdGaWVsZAA8T3Blbj5rX19CYWNr
+aW5nRmllbGQAPENyZWF0b3JJbmZvPmtfX0JhY2tpbmdGaWVsZAA8UGhvdG8+a19fQmFja2luZ0Zp
+ZWxkADxlcnJvcj5rX19CYWNraW5nRmllbGQAPENyZWF0b3I+a19fQmFja2luZ0ZpZWxkADxQcm9u
+b3Vucz5rX19CYWNraW5nRmllbGQAPEN1c3RvbVByb25vdW5zPmtfX0JhY2tpbmdGaWVsZAA8Q3Vz
+dG9tRmllbGREYXRhT2JqZWN0PmtfX0JhY2tpbmdGaWVsZAA8TWF0Y2hlZEJ5VGltZXNoZWV0Pmtf
+X0JhY2tpbmdGaWVsZAA8T3BlcmF0aW9uYWxVbml0PmtfX0JhY2tpbmdGaWVsZAA8Q29tbWVudD5r
+X19CYWNraW5nRmllbGQAPFdhcm5pbmdPdmVycmlkZUNvbW1lbnQ+a19fQmFja2luZ0ZpZWxkADxD
+b3N0PmtfX0JhY2tpbmdGaWVsZABzZXRfUm9zdGVyRW5kAERhdGVUaW1lS2luZABTcGVjaWZ5S2lu
+ZABIdHRwTWV0aG9kAGRlZmF1bHRJbnN0YW5jZQBzZXRfV2FybmluZ092ZXJyaWRlAGdldF9Jc1N1
+Y2Nlc3NTdGF0dXNDb2RlAGdldF9jb2RlAHNldF9jb2RlAGdldF9FbXBsb3llZQBzZXRfRW1wbG95
+ZWUAZ2V0X01lc3NhZ2UASHR0cFJlc3BvbnNlTWVzc2FnZQBIdHRwUmVxdWVzdE1lc3NhZ2UAZ2V0
+X21lc3NhZ2UAc2V0X21lc3NhZ2UASURpc3Bvc2FibGUARG91YmxlAFJ1bnRpbWVUeXBlSGFuZGxl
+AEdldFR5cGVGcm9tSGFuZGxlAGdldF9FbXBsb3llZVByb2ZpbGUAc2V0X0VtcGxveWVlUHJvZmls
+ZQBnZXRfcml0bXNjaGVkdWxlAHNldF9yaXRtc2NoZWR1bGUAZ2V0X3B1cmNoYXNlb3JkZXJzY2hl
+ZHVsZQBzZXRfcHVyY2hhc2VvcmRlcnNjaGVkdWxlAGdldF9TdGFuZGFyZE5hbWUAZ2V0X0Rpc3Bs
+YXlOYW1lAHNldF9EaXNwbGF5TmFtZQBnZXRfRW5kVGltZQBzZXRfRW5kVGltZQBVbml4VGltZVN0
+YW1wVG9EYXRlVGltZQBkYXRlVGltZQBUb0xvY2FsVGltZQBnZXRfVG90YWxUaW1lAHNldF9Ub3Rh
+bFRpbWUAZ2V0X1N0YXJ0VGltZQBzZXRfU3RhcnRUaW1lAElBc3luY1N0YXRlTWFjaGluZQBTZXRT
+dGF0ZU1hY2hpbmUAc3RhdGVNYWNoaW5lAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlBpcGVsaW5l
+AENvbnZlcnRVVENUb1RpbWVab25lAGdldF9DdXJyZW50VGltZVpvbmUAQ29udmVydFRpbWVab25l
+AFZhbHVlVHlwZQBTZWN1cml0eVByb3RvY29sVHlwZQBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQBy
+ZXNvdXJjZUN1bHR1cmUAQXBwbGljYXRpb25TZXR0aW5nc0Jhc2UARGlzcG9zZQBnZXRfRGF0ZQBz
+ZXRfRGF0ZQBzZXRfTW9kaWZpZWREYXRlAHNldF9Sb3N0ZXJEYXRlAENyZWF0ZQBFZGl0b3JCcm93
+c2FibGVTdGF0ZQA8PjFfX3N0YXRlAENvbXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAERlYnVnZ2Vy
+Tm9uVXNlckNvZGVBdHRyaWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVB
+dHRyaWJ1dGUAQXNzZW1ibHlUaXRsZUF0dHJpYnV0ZQBBc3luY1N0YXRlTWFjaGluZUF0dHJpYnV0
+ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBUYXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUARGVi
+dWdnZXJIaWRkZW5BdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2Vt
+Ymx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBB
+c3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAU1NJU1Nj
+cmlwdENvbXBvbmVudEVudHJ5UG9pbnRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRl
+AFJ1bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAFByZUV4ZWN1dGUAUG9zdEV4ZWN1dGUAZ2V0
+X1ZhbHVlAEF1dGhlbnRpY2F0aW9uSGVhZGVyVmFsdWUAZ2V0X0hhc1ZhbHVlAHZhbHVlAHNldF9F
+eHBlY3RDb250aW51ZQBEZXNlcmlhbGl6ZQBTQ18zNmY1OWZhZmQ5MmI0Y2RmYjJiNDBhNDMzMDU0
+M2M2ZgBFbmNvZGluZwBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAGdldF9XYXJuaW5nAHNldF9X
+YXJuaW5nAFRvU3RyaW5nAHNldF9NYXhKc29uTGVuZ3RoAGdldF9UYXNrAFN5c3RlbS5Db21wb25l
+bnRNb2RlbABFcnJvckRldGFpbABTQ18zNmY1OWZhZmQ5MmI0Y2RmYjJiNDBhNDMzMDU0M2M2Zi5k
+bGwAc2V0X1JJVE1fSXNOdWxsAHNldF9JZF9Jc051bGwAc2V0X0FyZWFJZF9Jc051bGwAc2V0X0Vt
+cGxveWVlSWRfSXNOdWxsAHNldF9UaW1lc2hlZXRJZF9Jc051bGwAc2V0X1B1Ymxpc2hlZF9Jc051
+bGwAc2V0X1Jvc3RlckVuZF9Jc051bGwAc2V0X1dhcm5pbmdPdmVycmlkZV9Jc051bGwAc2V0X01v
+ZGlmaWVkRGF0ZV9Jc051bGwAc2V0X1Jvc3RlckRhdGVfSXNOdWxsAHNldF9XYXJuaW5nX0lzTnVs
+bABzZXRfT3Blbl9Jc051bGwAc2V0X1B1cmNoYXNlT3JkZXJfSXNOdWxsAHNldF9DcmVhdG9yX0lz
+TnVsbABzZXRfSG91cnNfSXNOdWxsAHNldF9Db21tZW50X0lzTnVsbABzZXRfUm9zdGVyU3RhcnRf
+SXNOdWxsAHNldF9Db3N0X0lzTnVsbABTZXROdWxsAHNldF9TZWN1cml0eVByb3RvY29sAHVybABn
+ZXRfSXRlbQBzZXRfSXRlbQBnZXRfU3lzdGVtAHNldF9TeXN0ZW0AcmVzb3VyY2VNYW4AQm9vbGVh
+bgBUaW1lU3BhbgBnZXRfT3BlbgBzZXRfT3BlbgBTY3JpcHRNYWluAEZpcmVJbmZvcm1hdGlvbgBT
+eXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xvYmFsaXphdGlvbgBTeXN0ZW0uV2ViLlNjcmlw
+dC5TZXJpYWxpemF0aW9uAHNldF9BdXRob3JpemF0aW9uAFN5c3RlbS5SZWZsZWN0aW9uAEludmFs
+aWRPcGVyYXRpb25FeGNlcHRpb24AU2V0RXhjZXB0aW9uAFRpbWVab25lSW5mbwBDdWx0dXJlSW5m
+bwBnZXRfQ3JlYXRvckluZm8Ac2V0X0NyZWF0b3JJbmZvAGdldF9QaG90bwBzZXRfUGhvdG8AT3V0
+cHV0TmFtZU1hcABPdXRwdXRNYXAATWljcm9zb2Z0LlNxbFNlcnZlci5EVFNSdW50aW1lV3JhcABN
+aWNyb3NvZnQuU3FsU2VydmVyLkRUU1BpcGVsaW5lV3JhcAB1bml4VGltZVN0YW1wAFN5c3RlbS5O
+ZXQuSHR0cAByZXEAPD50X19idWlsZGVyAHNldF9QdXJjaGFzZU9yZGVyAFBpcGVsaW5lQnVmZmVy
+AFJvc3RlckJ1ZmZlcgBTY3JpcHRCdWZmZXIAZ2V0X1Jlc291cmNlTWFuYWdlcgBTZXJ2aWNlUG9p
+bnRNYW5hZ2VyAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlJ1bnRpbWUuV3JhcHBlcgBNaWNyb3Nv
+ZnQuU3FsU2VydmVyLkR0cy5QaXBlbGluZS5XcmFwcGVyAEdldEF3YWl0ZXIAUm9zdGVyAEphdmFT
+Y3JpcHRTZXJpYWxpemVyAEZpcmVFcnJvcgBnZXRfZXJyb3IAc2V0X2Vycm9yAGdldF9DcmVhdG9y
+AHNldF9DcmVhdG9yAEdldEVudW1lcmF0b3IALmN0b3IALmNjdG9yAE91dHB1dElEcwBTeXN0ZW0u
+RGlhZ25vc3RpY3MAQWRkU2Vjb25kcwBGcm9tU2Vjb25kcwBTeXN0ZW0uUnVudGltZS5Db21waWxl
+clNlcnZpY2VzAFN5c3RlbS5SZXNvdXJjZXMAU0NfMzZmNTlmYWZkOTJiNGNkZmIyYjQwYTQzMzA1
+NDNjNmYuUHJvcGVydGllcy5SZXNvdXJjZXMucmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNDXzM2
+ZjU5ZmFmZDkyYjRjZGZiMmI0MGE0MzMwNTQzYzZmLlByb3BlcnRpZXMAZ2V0X1JlYWRPbmx5VmFy
+aWFibGVzAEJ1ZmZlckNvbHVtbkluZGV4ZXMAR2V0Q29sdW1uSW5kZXhlcwBTZXR0aW5ncwBTeXN0
+ZW0uVGhyZWFkaW5nLlRhc2tzAFN5c3RlbS5XZWIuRXh0ZW5zaW9ucwBDb25uZWN0aW9ucwBnZXRf
+UHJvbm91bnMAc2V0X1Byb25vdW5zAGdldF9DdXN0b21Qcm9ub3VucwBzZXRfQ3VzdG9tUHJvbm91
+bnMAU3lzdGVtLk5ldC5IdHRwLkhlYWRlcnMASHR0cEhlYWRlcnMASHR0cFJlcXVlc3RIZWFkZXJz
+AGdldF9EZWZhdWx0UmVxdWVzdEhlYWRlcnMAQnVmZmVycwBzZXRfSG91cnMARmluaXNoT3V0cHV0
+cwBDcmVhdGVOZXdPdXRwdXRSb3dzAENvbmNhdABnZXRfQ3VzdG9tRmllbGREYXRhT2JqZWN0AHNl
+dF9DdXN0b21GaWVsZERhdGFPYmplY3QARXJyb3JPYmplY3QAU3lzdGVtLk5ldABnZXRfTWF0Y2hl
+ZEJ5VGltZXNoZWV0AHNldF9NYXRjaGVkQnlUaW1lc2hlZXQAU2V0RW5kT2ZSb3dzZXQAZ2V0X09w
+ZXJhdGlvbmFsVW5pdABzZXRfT3BlcmF0aW9uYWxVbml0AGdldF9EZWZhdWx0AGdldF9SZXN1bHQA
+R2V0UmVzdWx0AFNldFJlc3VsdABIdHRwQ2xpZW50AGdldF9Db21tZW50AHNldF9Db21tZW50AGdl
+dF9XYXJuaW5nT3ZlcnJpZGVDb21tZW50AHNldF9XYXJuaW5nT3ZlcnJpZGVDb21tZW50AFVzZXJD
+b21wb25lbnQAUGFyZW50Q29tcG9uZW50AFNjcmlwdENvbXBvbmVudABnZXRfQ3VycmVudABnZXRf
+Q29udGVudABzZXRfQ29udGVudABTdHJpbmdDb250ZW50AEh0dHBDb250ZW50AGdldF9Db3VudABN
+aWNyb3NvZnQuU3FsU2VydmVyLlR4U2NyaXB0AHNldF9Sb3N0ZXJTdGFydABhcGlSZXF1ZXN0AGdl
+dF9Db3N0AHNldF9Db3N0AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuUGlwZWxpbmVIb3N0AGdldF9Qb3N0
+AHNldF9UaW1lb3V0AFByaW1lT3V0cHV0AE1vdmVOZXh0AFN5c3RlbS5UZXh0AEdldFZhbHVlV2l0
+aENvbnRleHQAU2NyaXB0Q29tcG9uZW50RXZhbENvbnRleHQAZ2V0X0V2YWx1YXRvckNvbnRleHQA
+QWRkUm93AGdldF9Bc3NlbWJseQBvcF9FcXVhbGl0eQBJc051bGxPckVtcHR5AAAAOy8AYQBwAGkA
+LwB2ADEALwByAGUAcwBvAHUAcgBjAGUALwBSAG8AcwB0AGUAcgAvAFEAVQBFAFIAWQAAM04AZQB3
+ACAAWgBlAGEAbABhAG4AZAAgAFMAdABhAG4AZABhAHIAZAAgAFQAaQBtAGUAAA1CAGUAYQByAGUA
+cgAAFUMAbwBuAG4AZQBjAHQAaQBvAG4AABVLAGUAZQBwAC0AQQBsAGkAdgBlAAEFewAKAAAXIgBz
+AGUAYQByAGMAaAAiADoAewAKAAALRABFAEwAVABBAABFIgBzADEAIgA6AHsAIgBmAGkAZQBsAGQA
+IgA6ACIATQBvAGQAaQBmAGkAZQBkACIALAAgACIAZABhAHQAYQAiADoAIgAAJ3kAeQB5AHkALQBN
+AE0ALQBkAGQAIABoAGgAOgBtAG0AOgBzAHMAASEiACwAIAAiAHQAeQBwAGUAIgA6ACIAZwBlACIA
+fQAKAAA9IgBzADEAIgA6AHsAIgBmAGkAZQBsAGQAIgA6ACIARABhAHQAZQAiACwAIAAiAGQAYQB0
+AGEAIgA6ACIAAAV9AAoAABMsACIAcwB0AGEAcgB0ACIAOgAAAwoAACssACIAcwBvAHIAdAAiADoA
+ewAiAEkAZAAiADoAIgBhAHMAYwAiAH0ACgAARSwAIgBqAG8AaQBuACIAOgBbACIAQwB1AHMAdABv
+AG0ARgBpAGUAbABkAEQAYQB0AGEATwBiAGoAZQBjAHQAIgBdAAoAAAN9AAARQQBQAEkAIABCAG8A
+ZAB5AAABACFhAHAAcABsAGkAYwBhAHQAaQBvAG4ALwBqAHMAbwBuAAAhRABlAHAAdQB0AHkAIABB
+AFAASQAgAEUAcgByAG8AcgAABToAIAAAGVMAYwByAGkAcAB0ACAARQByAHIAbwByAACAm0kAcwBO
+AHUAbABsACAAcAByAG8AcABlAHIAdAB5ACAAYwBhAG4AbgBvAHQAIABiAGUAIABzAGUAdAAgAHQA
+bwAgAEYAYQBsAHMAZQAuACAAQQBzAHMAaQBnAG4AIABhACAAdgBhAGwAdQBlACAAdABvACAAdABo
+AGUAIABjAG8AbAB1AG0AbgAgAGkAbgBzAHQAZQBhAGQALgAADVIAbwBzAHQAZQByAAAbZABlAGwA
+dABhAE0AbwBkAGkAZgBpAGUAZAAANUUATgBWAF8AQwBPAE4ATgBFAEMAVABJAE8ATgBfADEAXwBE
+AEUAUABfAFQATwBLAEUATgAAMUUATgBWAF8AQwBPAE4ATgBFAEMAVABJAE8ATgBfADEAXwBEAEUA
+UABfAFUAUgBMAAApRQBUAEwAXwBDAFUAUwBfAFIARQBCAFUASQBMAEQAXwBEAEEAVABFAAAvRQBU
+AEwAXwBWAEEAUgBfAEQAQQBUAEEAXwBSAEEATgBHAEUAXwBNAE8ARABFAABxUwBDAF8AMwA2AGYA
+NQA5AGYAYQBmAGQAOQAyAGIANABjAGQAZgBiADIAYgA0ADAAYQA0ADMAMwAwADUANAAzAGMANgBm
+AC4AUAByAG8AcABlAHIAdABpAGUAcwAuAFIAZQBzAG8AdQByAGMAZQBzAAAAALIpSixb9vxNhUyi
+DXapRcYABCABAQgDIAABBSABARERBCABAQ4FIAEBEl0FIAEBEnkGIAEBEYCpQAceDg4ODg4ROQ4O
+AhI9CAIODhJBEkUSSRE5DhUSTQESOBURUQESOBI4FRFVAQ0VEVUBCBURVQECEjAOEigSWQIDIAAO
+BQACDg4OBQAAEoC5BgABARGAwQUgABKAxQUgAgEODgYgAQESgMkFFRFVAQIFIAEBEwAIIAEBFRFV
+AQIGAAERgNENBiABARGA0QUAAgIODgUgARE5DQQgAQ4OBwAEDg4ODg4FIAASgNkKIAYBCA4ODggQ
+AgUAABKA3QggAwEOEoDdDgYVEmUBEkkEIAATAAMgAAIFIAASgOEHIAAVEmUBDgUVEmUBDgYwAQEe
+AA4ICgEVEk0BEjgGFRJNARI4CCAAFRFRARMABhURUQESOAQAAQIOBRURVQENBRURVQEIAyAACAQK
+ARIoBgADDg4ODgQHARE8BxURgIUBEkkJAAAVEYCFARMABzABAQEQHgAECgERPAggABUSZQETAAYH
+AhJpEmkFAAESaQ4JAAIRORE5EYDpCAACETkRORJpBgcCETkROQ0gCAEICAgICAgIEYDpBCAAETkE
+BwESaQsgAwESgJEdCBKAlQUgAgEIHAMHAQgHAAIIEoCVDgUgAR0ICAUgABKA+QYgARKA/RwFAAAS
+gQEGIAEcEoEFBwABEl0RgQkFIAASgQ0HIAIBDhKBDRAHBQgSSRJ9FRGAgQESSRJZBQAAEoERByAC
+ARKBEQ4GIAEBEoDhCiABFRJlARJJEn0JIAAVEYCBARMABxURgIEBEkkKMAICARAeABAeAQsKAhUR
+gIEBEkkRPAUgAQESWQi3elxWGTTgiQiJhF3NgIDMkQiwP19/EdUKOggxvzhWrTZONQMGEhQDBhIY
+AwYSDAQGEoCZBAYSgKEEBhKApQMGEiACBg4DBhIkAgYIAwYROQMGEiwCBg0GBhURVQENBgYVEVUB
+CAYGFRFVAQIDBhI0AwYSMAgGFRGAhQESSQMGEkUDBhI9CAYVEYCBARJJDQADFRJlARJJEj0OEkUI
+AAMRORE5Dg4FAAEROQ0HAAIRORE5DgQgAQECBSABARE5BCABAQ0NIAQBCB0IHRKAkRKAlQYgAQES
+gJkFAAASgKEFAAASgKUGAAEBEoClBAAAEiADAAABBCAAEiQFIAEBEiQEIAASLAUgAQESLAMgAA0H
+IAAVEVUBDQggAQEVEVUBDQcgABURVQEICCABARURVQEIByAAFRFVAQIEIAASNAUgAQESNAQgABIw
+BSABARIwAygACAMoAAIEKAAROQMoAA0DKAAOBQgAEoChBQgAEoClBAgAEiAEKAASJAQoABIsBygA
+FRFVAQ0HKAAVEVUBCAcoABURVQECBCgAEjQEKAASMAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4
+Y2VwdGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMzZmNTlmYWZkOTJiNGNkZmIyYjQwYTQzMzA1
+NDNjNmYAAAUBAAAAABYBABFDb3B5cmlnaHQgQCAgMjAyNAAASQEAGi5ORVRGcmFtZXdvcmssVmVy
+c2lvbj12NC43AQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRIuTkVUIEZyYW1ld29yayA0LjcgAQAb
+U2NyaXB0TWFpbis8YXBpUmVxdWVzdD5kX18zAAAEAQAAAAC0AAAAzsrvvgEAAACRAAAAbFN5c3Rl
+bS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1
+bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVz
+b3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAA8GoAAAAAAAAA
+AAAACmsAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPxqAAAAAAAAAAAAAAAAX0NvckRsbE1haW4A
+bXNjb3JlZS5kbGwAAAAAAP8lACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAAB
+AAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAAWIAAAOwDAAAAAAAAAAAAAOwDNAAAAFYA
+UwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9BO/+AAABAAAAAQAAAAAAAAABAAAAAAA/
+AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAA
+AAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAAAAAAsARMAwAAAQBTAHQAcgBpAG4AZwBG
+AGkAbABlAEkAbgBmAG8AAAAoAwAAAQAwADAAMAAwADAANABiADAAAAAaAAEAAQBDAG8AbQBtAGUA
+bgB0AHMAAAAAAAAAIgABAAEAQwBvAG0AcABhAG4AeQBOAGEAbQBlAAAAAAAAAAAAcAAkAAEARgBp
+AGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMAQwBfADMANgBmADUAOQBmAGEAZgBkADkA
+MgBiADQAYwBkAGYAYgAyAGIANAAwAGEANAAzADMAMAA1ADQAMwBjADYAZgAAADAACAABAEYAaQBs
+AGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgAwAC4AMAAAAHAAKAABAEkAbgB0AGUAcgBuAGEA
+bABOAGEAbQBlAAAAUwBDAF8AMwA2AGYANQA5AGYAYQBmAGQAOQAyAGIANABjAGQAZgBiADIAYgA0
+ADAAYQA0ADMAMwAwADUANAAzAGMANgBmAC4AZABsAGwAAABIABIAAQBMAGUAZwBhAGwAQwBvAHAA
+eQByAGkAZwBoAHQAAABDAG8AcAB5AHIAaQBnAGgAdAAgAEAAIAAgADIAMAAyADQAAAAqAAEAAQBM
+AGUAZwBhAGwAVAByAGEAZABlAG0AYQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEA
+bABGAGkAbABlAG4AYQBtAGUAAABTAEMAXwAzADYAZgA1ADkAZgBhAGYAZAA5ADIAYgA0AGMAZABm
+AGIAMgBiADQAMABhADQAMwAzADAANQA0ADMAYwA2AGYALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQA
+dQBjAHQATgBhAG0AZQAAAAAAUwBDAF8AMwA2AGYANQA5AGYAYQBmAGQAOQAyAGIANABjAGQAZgBi
+ADIAYgA0ADAAYQA0ADMAMwAwADUANAAzAGMANgBmAAAANAAIAAEAUAByAG8AZAB1AGMAdABWAGUA
+cgBzAGkAbwBuAAAAMQAuADAALgAwAC4AMAAAADgACAABAEEAcwBzAGUAbQBiAGwAeQAgAFYAZQBy
+AHMAaQBvAG4AAAAxAC4AMAAuADAALgAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAGAAAAwAAAAcOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAA=]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">SC_36f59fafd92b4cdfb2b40a4330543c6f</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read-only variables."
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg">User::deltaModified,$Project::ETL_VAR_DATA_RANGE_MODE,$Project::ENV_CONNECTION_1_DEP_URL,$Project::ENV_CONNECTION_1_DEP_TOKEN,$Project::ETL_CUS_REBUILD_DATE</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read/write variables."
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum140"
+                  typeConverter="NOTBROWSABLE">FD</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
+              </properties>
+              <outputs>
+                <output
+                  refId="Package\Roster\DEP Roster.Outputs[Roster]"
+                  hasSideEffects="true"
+                  name="Roster">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Id]"
+                      name="Id" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[AreaId]"
+                      dataType="i4"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[AreaId]"
+                      name="AreaId" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[EmployeeId]"
+                      dataType="i4"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[EmployeeId]"
+                      name="EmployeeId" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[TimesheetId]"
+                      dataType="i4"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[TimesheetId]"
+                      name="TimesheetId" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterDate]"
+                      dataType="date"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterDate]"
+                      name="RosterDate" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterStart]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterStart]"
+                      name="RosterStart" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterEnd]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterEnd]"
+                      name="RosterEnd" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Hours]"
+                      dataType="r8"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Hours]"
+                      name="Hours" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Cost]"
+                      dataType="r8"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Cost]"
+                      name="Cost" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Comment]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1000"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Comment]"
+                      name="Comment" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Warning]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Warning]"
+                      name="Warning" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[WarningOverride]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[WarningOverride]"
+                      name="WarningOverride" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Open]"
+                      dataType="bool"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Open]"
+                      name="Open" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Published]"
+                      dataType="bool"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Published]"
+                      name="Published" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[PurchaseOrder]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[PurchaseOrder]"
+                      name="PurchaseOrder" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RITM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RITM]"
+                      name="RITM" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Creator]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Creator]"
+                      name="Creator" />
+                    <outputColumn
+                      refId="Package\Roster\DEP Roster.Outputs[Roster].Columns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[ModifiedDate]"
+                      name="ModifiedDate" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Roster\Sort"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Roster\Sort.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Id]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[AreaId]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[EmployeeId]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[TimesheetId]"
+                      cachedDataType="i4"
+                      cachedName="TimesheetId"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[TimesheetId]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[RosterDate]"
+                      cachedDataType="date"
+                      cachedName="RosterDate"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterDate]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[RosterStart]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="RosterStart"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterStart]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[RosterEnd]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="RosterEnd"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterEnd]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Hours]"
+                      cachedDataType="r8"
+                      cachedName="Hours"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Hours]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Cost]"
+                      cachedDataType="r8"
+                      cachedName="Cost"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Cost]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Comment]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1000"
+                      cachedName="Comment"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Comment]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Warning]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="500"
+                      cachedName="Warning"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Warning]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[WarningOverride]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="500"
+                      cachedName="WarningOverride"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[WarningOverride]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Open]"
+                      cachedDataType="bool"
+                      cachedName="Open"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Open]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Published]"
+                      cachedDataType="bool"
+                      cachedName="Published"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Published]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[PurchaseOrder]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="255"
+                      cachedName="PurchaseOrder"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[PurchaseOrder]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[RITM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="255"
+                      cachedName="RITM"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[RITM]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[Creator]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Creator"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[Creator]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Roster\Sort.Inputs[Sort Input].Columns[ModifiedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ModifiedDate"
+                      lineageId="Package\Roster\DEP Roster.Outputs[Roster].Columns[ModifiedDate]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Roster\Sort.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Id]"
+                      name="Id"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Id]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[AreaId]"
+                      dataType="i4"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[AreaId]"
+                      name="AreaId">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[AreaId]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[EmployeeId]"
+                      name="EmployeeId">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[EmployeeId]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[TimesheetId]"
+                      dataType="i4"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[TimesheetId]"
+                      name="TimesheetId">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[TimesheetId]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterDate]"
+                      dataType="date"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterDate]"
+                      name="RosterDate">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterDate]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterStart]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterStart]"
+                      name="RosterStart">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterStart]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterEnd]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterEnd]"
+                      name="RosterEnd">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[RosterEnd]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Hours]"
+                      dataType="r8"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Hours]"
+                      name="Hours">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Hours]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Cost]"
+                      dataType="r8"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Cost]"
+                      name="Cost">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Cost]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Comment]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1000"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Comment]"
+                      name="Comment">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Comment]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Warning]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Warning]"
+                      name="Warning">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Warning]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[WarningOverride]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[WarningOverride]"
+                      name="WarningOverride">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[WarningOverride]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Open]"
+                      dataType="bool"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Open]"
+                      name="Open">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Open]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Published]"
+                      dataType="bool"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Published]"
+                      name="Published">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Published]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[PurchaseOrder]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[PurchaseOrder]"
+                      name="PurchaseOrder">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[PurchaseOrder]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[RITM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RITM]"
+                      name="RITM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[RITM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[Creator]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Creator]"
+                      name="Creator">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[Creator]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Roster\Sort.Outputs[Sort Output].Columns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[ModifiedDate]"
+                      name="ModifiedDate">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Roster\DEP Roster.Outputs[Roster].Columns[ModifiedDate]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Roster\STG Roster"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="STG Roster"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[staging].[DEP_Roster]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Roster\STG Roster.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[AreaId]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[EmployeeId]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[TimesheetId]"
+                      cachedDataType="i4"
+                      cachedName="TimesheetId"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[TimesheetId]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[TimesheetId]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[RosterDate]"
+                      cachedDataType="date"
+                      cachedName="RosterDate"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterDate]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[RosterStart]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="RosterStart"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RosterStart]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterStart]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[RosterEnd]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="RosterEnd"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RosterEnd]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RosterEnd]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Hours]"
+                      cachedDataType="r8"
+                      cachedName="Hours"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Hours]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Hours]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Cost]"
+                      cachedDataType="r8"
+                      cachedName="Cost"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Cost]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Cost]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Comment]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1000"
+                      cachedName="Comment"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Comment]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Comment]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Warning]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="500"
+                      cachedName="Warning"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Warning]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Warning]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[WarningOverride]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="500"
+                      cachedName="WarningOverride"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[WarningOverride]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[WarningOverride]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Open]"
+                      cachedDataType="bool"
+                      cachedName="Open"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Open]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Open]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Published]"
+                      cachedDataType="bool"
+                      cachedName="Published"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Published]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Published]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[PurchaseOrder]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="255"
+                      cachedName="PurchaseOrder"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[PurchaseOrder]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[PurchaseOrder]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[RITM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="255"
+                      cachedName="RITM"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RITM]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[RITM]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[Creator]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Creator"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Creator]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[Creator]" />
+                    <inputColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].Columns[ModifiedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ModifiedDate"
+                      externalMetadataColumnId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      lineageId="Package\Roster\Sort.Outputs[Sort Output].Columns[ModifiedDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
+                      dataType="i4"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[TimesheetId]"
+                      dataType="i4"
+                      name="TimesheetId" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      dataType="dbTimeStamp"
+                      name="RosterDate" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RosterStart]"
+                      dataType="dbTimeStamp"
+                      name="RosterStart" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RosterEnd]"
+                      dataType="dbTimeStamp"
+                      name="RosterEnd" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Hours]"
+                      dataType="r8"
+                      name="Hours" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Cost]"
+                      dataType="r8"
+                      name="Cost" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Comment]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1000"
+                      name="Comment" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Warning]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="Warning" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[WarningOverride]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="WarningOverride" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Open]"
+                      dataType="bool"
+                      name="Open" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Published]"
+                      dataType="bool"
+                      name="Published" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[PurchaseOrder]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      name="PurchaseOrder" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[RITM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      name="RITM" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[Creator]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Creator" />
+                    <externalMetadataColumn
+                      refId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="ModifiedDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Roster\STG Roster.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Roster\STG Roster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Roster\STG Roster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Roster\STG Roster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Roster\STG Roster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Roster.Paths[Roster]"
+              endId="Package\Roster\Sort.Inputs[Sort Input]"
+              name="Roster"
+              startId="Package\Roster\DEP Roster.Outputs[Roster]" />
+            <path
+              refId="Package\Roster.Paths[Sort Output]"
+              endId="Package\Roster\STG Roster.Inputs[OLE DB Destination Input]"
+              name="Sort Output"
+              startId="Package\Roster\Sort.Outputs[Sort Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Temp FCT Merge"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{D62E7748-0133-4E5F-BD6F-B6A099897BF6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Temp FCT Merge"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] != "DELTA"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="-- Staging Duplication handling&#xA;WITH dupcheck as(&#xA;SELECT&#x9;&#x9;&#x9;&#x9;r.Id ,ROW_NUMBER() OVER (PARTITION BY r.Id ORDER BY r.Id) rowNum &#xA;FROM&#x9;&#x9;&#x9;&#x9;staging.DEP_ROSTER r)&#xA;DELETE&#xA;FROM&#x9;&#x9;&#x9;&#x9;dupcheck&#xA;WHERE&#x9;&#x9;&#x9;&#x9;rowNum &gt;1&#xA;&#xA;&#xA;-- Merge Statement for temporary FCT Table&#xA;MERGE INTO&#x9;&#x9;&#x9;staging.FCT_DEP_ROSTER t&#xA;USING&#x9;&#x9;&#x9;&#x9;staging.DEP_ROSTER s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;t.Id = s.Id&#xA;WHEN MATCHED AND(&#x9;isnull(t.AreaId,0) != isnull(s.AreaId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.EmployeeId,0) != isnull(s.EmployeeId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TimesheetId,0) != isnull(s.TimesheetId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RosterDate,'1900-01-01') != isnull(s.RosterDate,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RosterStart,'1900-01-01') != isnull(s.RosterStart,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RosterEnd,'1900-01-01') != isnull(s.RosterEnd,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Hours,0) != isnull(s.Hours,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Cost,0) != isnull(s.Cost,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Comment,'') != isnull(s.Comment,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Warning,'') != isnull(s.Warning,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.WarningOverride,'') != isnull(s.WarningOverride,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.[Open],0) != isnull(s.[Open],0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Published,0) != isnull(s.Published,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.PurchaseOrder,'') != isnull(s.PurchaseOrder,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RITM,'') != isnull(s.RITM,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Creator,'') != isnull(s.Creator,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.ModifiedDate,'1900-01-01') != isnull(s.ModifiedDate,'1900-01-01'))&#xA;THEN UPDATE SET&#x9;&#x9;t.AreaId = s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.EmployeeId = s.EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.TimesheetId = s.TimesheetId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RosterDate = s.RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RosterStart = s.RosterStart,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RosterEnd = s.RosterEnd,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Hours = s.Hours,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Cost = s.Cost,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Comment = s.Comment,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Warning = s.Warning,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.WarningOverride = s.WarningOverride,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.[Open] = s.[Open],&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Published = s.Published,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.PurchaseOrder = s.PurchaseOrder,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RITM = s.RITM,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Creator = s.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.ModifiedDate = s.ModifiedDate&#xA;WHEN NOT MATCHED&#xA;THEN INSERT (&#x9;&#x9;Id,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;TimesheetId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RosterStart,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RosterEnd,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Hours,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Cost,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Comment,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Warning,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;WarningOverride,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;[Open],&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Published,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;PurchaseOrder,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RITM,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;ModifiedDate)&#xA;VALUES (&#x9;&#x9;&#x9;s.Id,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.TimesheetId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RosterDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RosterStart,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RosterEnd,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Hours,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Cost,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Comment,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Warning,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.WarningOverride,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.[Open],&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Published,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.PurchaseOrder,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RITM,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.ModifiedDate);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Temp FCT Rebuild"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{501D3A34-E7E1-4089-A896-DAA43246E3B4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Temp FCT Rebuild"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] == "DELTA"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE @dateFrom date = ?;&#xA;&#xA;-- Staging Duplication handling&#xA;WITH dupcheck as(&#xA;SELECT&#x9;&#x9;&#x9;&#x9;r.Id ,ROW_NUMBER() OVER (PARTITION BY r.Id ORDER BY r.Id) rowNum &#xA;FROM&#x9;&#x9;&#x9;&#x9;staging.DEP_ROSTER r)&#xA;DELETE&#xA;FROM&#x9;&#x9;&#x9;&#x9;dupcheck&#xA;WHERE&#x9;&#x9;&#x9;&#x9;rowNum &gt;1&#xA;&#xA;-- Rebuild Code&#xA;DELETE FROM staging.FCT_DEP_ROSTER&#xA;WHERE RosterDate &gt;= @dateFrom;&#xA;&#xA;INSERT INTO staging.FCT_DEP_ROSTER&#xA;SELECT * FROM staging.DEP_Roster;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_CUS_REBUILD_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Staging Tables"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{989373EB-2657-434F-A766-C3302A5894AB}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Staging Tables"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE staging.DEP_Roster;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{FA7E9755-3889-4645-AFED-DEC442AF881C}"
+      DTS:From="Package\Get max modified"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Roster" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{C7980C4C-71FB-4454-8925-D58B69BA69A7}"
+      DTS:From="Package\Roster"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Temp FCT Merge" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{0619EF55-197D-4F8B-BC68-05ABE6F7626A}"
+      DTS:From="Package\Truncate Staging Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Roster" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{6A1A931F-9F85-4A71-B171-4EB7032C655F}"
+      DTS:From="Package\Roster"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Temp FCT Rebuild" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{DE07108F-BE77-42D6-9768-EBC450FD7AAA}"
+      DTS:From="Package\Temp FCT Merge"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Maintain leave roster tracker" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{B6CA2733-71E2-495F-8666-92EEAE1738DA}"
+      DTS:From="Package\Temp FCT Rebuild"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Maintain leave roster tracker" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Get max modified"
+          TopLeft="467,66" />
+        <NodeLayout
+          Size="213,42"
+          Id="Package\Maintain leave roster tracker"
+          TopLeft="311,384" />
+        <NodeLayout
+          Size="109,42"
+          Id="Package\Roster"
+          TopLeft="246,156" />
+        <NodeLayout
+          Size="160,42"
+          Id="Package\Temp FCT Merge"
+          TopLeft="211,287" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Temp FCT Rebuild"
+          TopLeft="437.5,282.5" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\Truncate Staging Tables"
+          TopLeft="144,47" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="548,108">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-247.5,48"
+              Start="0,0"
+              End="-247.5,40.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20"
+                    Point2="0,24"
+                    Point3="-4,24" />
+                  <mssgle:LineSegment
+                    End="-243.5,24" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-243.5,24"
+                    Point2="-247.5,24"
+                    Point3="-247.5,28" />
+                  <mssgle:LineSegment
+                    End="-247.5,40.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="287.333333333333,198">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,89"
+              Start="0,0"
+              End="0,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="240.5,89">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="43.1666666666667,67"
+              Start="0,0"
+              End="43.1666666666667,59.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.6184448462929" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35.6184448462929"
+                    Point2="0,39.6184448462929"
+                    Point3="4,39.6184448462929" />
+                  <mssgle:LineSegment
+                    End="39.1666666666667,39.6184448462929" />
+                  <mssgle:CubicBezierSegment
+                    Point1="39.1666666666667,39.6184448462929"
+                    Point2="43.1666666666667,39.6184448462929"
+                    Point3="43.1666666666667,43.6184448462929" />
+                  <mssgle:LineSegment
+                    End="43.1666666666667,59.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="317.333333333333,198">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="202.666666666667,84.5"
+              Start="0,0"
+              End="202.666666666667,77">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30.5334538878843" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,30.5334538878843"
+                    Point2="0,34.5334538878843"
+                    Point3="4,34.5334538878843" />
+                  <mssgle:LineSegment
+                    End="198.666666666667,34.5334538878843" />
+                  <mssgle:CubicBezierSegment
+                    Point1="198.666666666667,34.5334538878843"
+                    Point2="202.666666666667,34.5334538878843"
+                    Point3="202.666666666667,38.5334538878843" />
+                  <mssgle:LineSegment
+                    End="202.666666666667,77" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="291,329">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="126.5,55"
+              Start="0,0"
+              End="126.5,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.5"
+                    Point2="0,27.5"
+                    Point3="4,27.5" />
+                  <mssgle:LineSegment
+                    End="122.5,27.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="122.5,27.5"
+                    Point2="126.5,27.5"
+                    Point3="126.5,31.5" />
+                  <mssgle:LineSegment
+                    End="126.5,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="520,324.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-68.3333333333334,59.5"
+              Start="0,0"
+              End="-68.3333333333334,52">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.4338303821062" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.4338303821062"
+                    Point2="0,35.4338303821062"
+                    Point3="-4,35.4338303821062" />
+                  <mssgle:LineSegment
+                    End="-64.3333333333334,35.4338303821062" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-64.3333333333334,35.4338303821062"
+                    Point2="-68.3333333333334,35.4338303821062"
+                    Point3="-68.3333333333334,39.4338303821062" />
+                  <mssgle:LineSegment
+                    End="-68.3333333333334,52" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Roster">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\Roster\STG Roster"
+          TopLeft="137,275" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\Roster\DEP Roster"
+          TopLeft="97,116" />
+        <NodeLayout
+          Size="98,42"
+          Id="Package\Roster\Sort"
+          TopLeft="275,190" />
+        <EdgeLayout
+          Id="Package\Roster.Paths[Roster]"
+          TopLeft="163,158">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="161,32"
+              Start="0,0"
+              End="161,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12"
+                    Point2="0,16"
+                    Point3="4,16" />
+                  <mssgle:LineSegment
+                    End="157,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="157,16"
+                    Point2="161,16"
+                    Point3="161,20" />
+                  <mssgle:LineSegment
+                    End="161,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Roster.Paths[Sort Output]"
+          TopLeft="324,232">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-121,43"
+              Start="0,0"
+              End="-121,35.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.5"
+                    Point2="0,21.5"
+                    Point3="-4,21.5" />
+                  <mssgle:LineSegment
+                    End="-117,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-117,21.5"
+                    Point2="-121,21.5"
+                    Point3="-121,25.5" />
+                  <mssgle:LineSegment
+                    End="-121,35.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Roster\STG Roster">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

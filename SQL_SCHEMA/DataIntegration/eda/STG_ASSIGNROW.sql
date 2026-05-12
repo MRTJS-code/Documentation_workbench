@@ -1,0 +1,28 @@
+﻿CREATE TABLE [eda].[STG_ASSIGNROW] (
+    [assignmentId]         BIGINT        NULL,
+    [assignmentRow]        INT           NULL,
+    [startTime]            DATETIME      NULL,
+    [endTime]              DATETIME      NULL,
+    [lengthHours]          FLOAT (53)    NULL,
+    [customerName]         VARCHAR (200) NULL,
+    [customerRef]          VARCHAR (50)  NULL,
+    [customerCode]         VARCHAR (50)  NULL,
+    [locationName]         VARCHAR (200) NULL,
+    [locationShortName]    VARCHAR (50)  NULL,
+    [locationRef]          VARCHAR (50)  NULL,
+    [locationCode]         VARCHAR (50)  NULL,
+    [subLocationName]      VARCHAR (200) NULL,
+    [subLocationShortName] VARCHAR (50)  NULL,
+    [subLocationRef]       VARCHAR (50)  NULL,
+    [subLocationCode]      VARCHAR (50)  NULL,
+    [activityName]         VARCHAR (200) NULL,
+    [activityShortName]    VARCHAR (50)  NULL,
+    [activityRef]          VARCHAR (50)  NULL,
+    [activityCode]         VARCHAR (50)  NULL,
+    [unitName]             VARCHAR (200) NULL,
+    [unitRef]              VARCHAR (50)  NULL,
+    [rankName]             VARCHAR (200) NULL,
+    [rankRef]              VARCHAR (50)  NULL,
+    [notes]                TEXT          NULL
+);
+

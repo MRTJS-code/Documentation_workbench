@@ -1,0 +1,86 @@
+30/04/2025 9:05:05 am	This log contains information about the import schema operation into project 'ODS_NZ_SEC' on computer 'AKL2LPTP11282' by user 'tony.smith'.
+30/04/2025 9:05:05 am	Import of database schema has started.
+30/04/2025 9:05:15 am	Gathering database credentials
+30/04/2025 9:05:15 am	Gathering database options
+30/04/2025 9:05:15 am	Gathering generic database scoped configuration option
+30/04/2025 9:05:15 am	Gathering users
+30/04/2025 9:05:15 am	Gathering roles
+30/04/2025 9:05:15 am	Gathering application roles
+30/04/2025 9:05:15 am	Gathering role memberships
+30/04/2025 9:05:15 am	Gathering filegroups
+30/04/2025 9:05:15 am	Gathering files
+30/04/2025 9:05:15 am	Gathering full-text catalogs
+30/04/2025 9:05:15 am	Gathering assemblies
+30/04/2025 9:05:15 am	Gathering certificates
+30/04/2025 9:05:15 am	Gathering asymmetric keys
+30/04/2025 9:05:15 am	Gathering symmetric keys
+30/04/2025 9:05:15 am	Gathering encrypted symmetric keys
+30/04/2025 9:05:15 am	Gathering schemas
+30/04/2025 9:05:15 am	Gathering XML schema collections
+30/04/2025 9:05:15 am	Gathering user-defined data types
+30/04/2025 9:05:15 am	Gathering user-defined types
+30/04/2025 9:05:16 am	Gathering table types
+30/04/2025 9:05:16 am	Gathering unique keys for table types
+30/04/2025 9:05:16 am	Gathering primary keys for table types
+30/04/2025 9:05:16 am	Gathering indexes for table types
+30/04/2025 9:05:16 am	Gathering check constraints for table types
+30/04/2025 9:05:16 am	Gathering default constraints for table types
+30/04/2025 9:05:16 am	Gathering partition functions
+30/04/2025 9:05:16 am	Gathering partition schemes
+30/04/2025 9:05:16 am	Gathering functions
+30/04/2025 9:05:16 am	Gathering encrypted functions
+30/04/2025 9:05:16 am	Gathering aggregates
+30/04/2025 9:05:16 am	Gathering procedures
+30/04/2025 9:05:19 am	Gathering encrypted procedures
+30/04/2025 9:05:19 am	Gathering tables
+30/04/2025 9:05:22 am	Gathering primary keys
+30/04/2025 9:05:22 am	Gathering unique constraints
+30/04/2025 9:05:22 am	Gathering foreign keys
+30/04/2025 9:05:22 am	Gathering default constraints
+30/04/2025 9:05:22 am	Gathering check constraints
+30/04/2025 9:05:22 am	Gathering views
+30/04/2025 9:05:22 am	Gathering encrypted views
+30/04/2025 9:05:22 am	Gathering indexes
+30/04/2025 9:05:22 am	Gathering statistics
+30/04/2025 9:05:22 am	Gathering full-text index stoplists
+30/04/2025 9:05:22 am	Gathering search property lists
+30/04/2025 9:05:22 am	Gathering search properties
+30/04/2025 9:05:22 am	Gathering full-text indexes
+30/04/2025 9:05:22 am	Gathering column store indexes
+30/04/2025 9:05:22 am	Gathering spatial indexes
+30/04/2025 9:05:22 am	Gathering XML indexes
+30/04/2025 9:05:22 am	Gathering Selective XML indexes
+30/04/2025 9:05:22 am	Gathering encrypted triggers
+30/04/2025 9:05:22 am	Gathering triggers
+30/04/2025 9:05:22 am	Gathering encrypted and clr ddl triggers
+30/04/2025 9:05:22 am	Gathering ddl triggers
+30/04/2025 9:05:22 am	Gathering synonyms
+30/04/2025 9:05:22 am	Gathering defaults
+30/04/2025 9:05:22 am	Gathering data constraint uddt bindings
+30/04/2025 9:05:22 am	Gathering rules
+30/04/2025 9:05:22 am	Gathering data constraint uddt bindings
+30/04/2025 9:05:22 am	Gathering message types
+30/04/2025 9:05:22 am	Gathering queues
+30/04/2025 9:05:22 am	Gathering contracts
+30/04/2025 9:05:22 am	Gathering services
+30/04/2025 9:05:22 am	Gathering routes
+30/04/2025 9:05:22 am	Gathering event notifications
+30/04/2025 9:05:22 am	Gathering remote service bindings
+30/04/2025 9:05:22 am	Gathering broker priorities
+30/04/2025 9:05:22 am	Gathering database audit specifications
+30/04/2025 9:05:22 am	Gathering signatures
+30/04/2025 9:05:22 am	Gathering compression options
+30/04/2025 9:05:22 am	Gathering sequence types
+30/04/2025 9:05:22 am	Gathering security policies
+30/04/2025 9:05:22 am	Gather column encryption keys
+30/04/2025 9:05:22 am	Gathering column master keys
+30/04/2025 9:05:22 am	Gathering external data sources
+30/04/2025 9:05:22 am	Gathering external file formats
+30/04/2025 9:05:22 am	Gathering external tables
+30/04/2025 9:05:22 am	Gathering extended properties
+30/04/2025 9:05:22 am	Gathering assemblies
+30/04/2025 9:05:24 am	Scanning project for duplicate elements
+30/04/2025 9:05:24 am	Finished duplicate element processing
+30/04/2025 9:05:27 am	Finished importing database.
+30/04/2025 9:05:27 am	A summary of the import was saved to the following location: C:\Users\tony.smith\source\repos\ODS_NZ_SEC\SQL_SCHEMA\ODS_NZ_SEC\Import Schema Logs\ODS_NZ_SEC_20250429090505.log
+30/04/2025 9:05:27 am	Click Finish to continue...

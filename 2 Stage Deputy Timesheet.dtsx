@@ -1,0 +1,3553 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/26/2024 9:59:18 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{678E6A9B-C661-4868-B338-89BAA0AFC8EF}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="3081"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="30"
+  DTS:VersionGUID="{C6FCE344-43A4-4911-94C9-DAE2B1A4FDC5}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{03769E59-9471-4449-86E1-A724F2866421}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DeltaModified">
+      <DTS:VariableValue
+        DTS:DataType="7">12:00:00 AM</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\FCT MERGE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C01493C6-9BAB-46D9-AFF9-F3E7B3452C8C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FCT MERGE"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] != "DELTA"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;@defaultDateTime datetime = '1955-05-05 05:55';&#xA;&#xA;-- Duplication handler&#xA;WITH DUPCHECK as (&#xA;SELECT t.Id, ROW_NUMBER() OVER (PARTITION BY t.Id ORDER BY t.Id) rowNum&#xA;FROM staging.DEP_Timesheet t)&#xA;DELETE FROM DUPCHECK WHERE rowNum &gt; 1&#xA;&#xA;&#xA;-- Merge Code&#xA;MERGE INTO&#x9;&#x9;&#x9;staging.FCT_DEP_TIMESHEET t&#xA;USING&#x9;&#x9;&#x9;&#x9;staging.DEP_Timesheet s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;t.Id = s.Id&#xA;WHEN NOT MATCHED THEN&#xA;INSERT (&#x9;&#x9;&#x9;Id,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AgreementId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveRuleId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;PayCycleId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RosterId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;JobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;timesheetStart,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;timesheetEnd,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;timesheetHours,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;timesheetCost,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;SourceType,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;InProgress,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RealTime,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AutoProcessed,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;PayApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;TimeApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AutoPayApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AutoTimeApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Exported,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Paid,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Invoiced,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;InvoiceComment,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Discarded,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;PONumber,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;RITM,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;EMSMinutes,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;NCRMinutes,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Modified)&#xA;VALUES (&#x9;&#x9;&#x9;s.Id,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AgreementId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeaveRuleId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeaveId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.PayCycleId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RosterId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.JobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.timesheetStart,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.timesheetEnd,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.timesheetHours,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.timesheetCost,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.SourceType,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.InProgress,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RealTime,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AutoProcessed,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.PayApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.TimeApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AutoPayApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AutoTimeApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Exported,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Paid,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Invoiced,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.InvoiceComment,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Discarded,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.PONumber,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.RITM,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.EMSMinutes,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.NCRMinutes,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified )&#xA;WHEN MATCHED AND (&#x9;isnull(t.AgreementId,0) != isnull(s.AgreementId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.EmployeeId,0) != isnull(s.EmployeeId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeaveRuleId,0) != isnull(s.LeaveRuleId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeaveId,0) != isnull(s.LeaveId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.PayCycleId,0) != isnull(s.PayCycleId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaId,0) != isnull(s.AreaId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RosterId,0) != isnull(s.RosterId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.JobCode,'') != isnull(s.JobCode,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.timesheetStart,@defaultDateTime) != isnull(s.timesheetStart,@defaultDateTime)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.timesheetEnd,@defaultDateTime) != isnull(s.timesheetEnd,@defaultDateTime)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.timesheetHours,0) != isnull(s.timesheetHours,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.timesheetCost,0) != isnull(s.timesheetCost,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.SourceType,'') != isnull(s.SourceType,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.InProgress,0) != isnull(s.InProgress,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RealTime,0) != isnull(s.RealTime,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AutoProcessed,0) != isnull(s.AutoProcessed,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.PayApproved,0) != isnull(s.PayApproved,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TimeApproved,0) != isnull(s.TimeApproved,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AutoPayApproved,0) != isnull(s.AutoPayApproved,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AutoTimeApproved,0) != isnull(s.AutoTimeApproved,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Exported,0) != isnull(s.Exported,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Paid,0) != isnull(s.Paid,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Invoiced,0) != isnull(s.Invoiced,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.InvoiceComment,'') != isnull(s.InvoiceComment,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Discarded,0) != isnull(s.Discarded,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.PONumber,'') != isnull(s.PONumber,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.RITM,'') != isnull(s.RITM,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.EMSMinutes,0) != isnull(s.EMSMinutes,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.NCRMinutes,0) != isnull(s.NCRMinutes,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Modified,0) != isnull(s.Modified,0)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;) THEN&#xA;UPDATE SET&#x9;&#x9;&#x9;t.AgreementId = s.AgreementId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.EmployeeId = s.EmployeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveRuleId = s.LeaveRuleId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveId = s.LeaveId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.PayCycleId = s.PayCycleId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaId = s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RosterId = s.RosterId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.JobCode = s.JobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.timesheetStart = s.timesheetStart,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.timesheetEnd = s.timesheetEnd,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.timesheetHours = s.timesheetHours,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.timesheetCost = s.timesheetCost,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.SourceType = s.SourceType,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.InProgress = s.InProgress,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RealTime = s.RealTime,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.AutoProcessed = s.AutoProcessed,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.PayApproved = s.PayApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.TimeApproved = s.TimeApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.AutoPayApproved = s.AutoPayApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.AutoTimeApproved = s.AutoTimeApproved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Exported = s.Exported,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Paid = s.Paid,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Invoiced = s.Invoiced,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.InvoiceComment = s.InvoiceComment,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Discarded = s.Discarded,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.PONumber = s.PONumber,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.RITM = s.RITM,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.EMSMinutes = s.EMSMinutes,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.NCRMinutes = s.NCRMinutes,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;t.Modified = s.Modified;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\FCT Rebuild"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{F2A6AC82-84B7-4583-A79C-977E83F6BFFD}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FCT Rebuild"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] == "DELTA"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE @dateFrom date = ?;&#xA;&#xA;DELETE FROM staging.FCT_DEP_TIMESHEET&#xA;WHERE Cast(timesheetStart as date) &gt;= @dateFrom;&#xA;&#xA;INSERT INTO staging.FCT_DEP_TIMESHEET ([Id]&#xA;      ,[AgreementId]&#xA;      ,[EmployeeId]&#xA;      ,[LeaveRuleId]&#xA;      ,[LeaveId]&#xA;      ,[PayCycleId]&#xA;      ,[AreaId]&#xA;      ,[RosterId]&#xA;      ,[JobCode]&#xA;      ,[timesheetStart]&#xA;      ,[timesheetEnd]&#xA;      ,[timesheetHours]&#xA;      ,[timesheetCost]&#xA;      ,[SourceType]&#xA;      ,[InProgress]&#xA;      ,[RealTime]&#xA;      ,[AutoProcessed]&#xA;      ,[PayApproved]&#xA;      ,[TimeApproved]&#xA;      ,[AutoPayApproved]&#xA;      ,[AutoTimeApproved]&#xA;      ,[Exported]&#xA;      ,[Paid]&#xA;      ,[Invoiced]&#xA;      ,[InvoiceComment]&#xA;      ,[Discarded]&#xA;      ,[PONumber]&#xA;      ,[RITM]&#xA;      ,[EMSMinutes]&#xA;      ,[NCRMinutes]&#xA;      ,[Modified])&#xA;SELECT [Id]&#xA;      ,[AgreementId]&#xA;      ,[EmployeeId]&#xA;      ,[LeaveRuleId]&#xA;      ,[LeaveId]&#xA;      ,[PayCycleId]&#xA;      ,[AreaId]&#xA;      ,[RosterId]&#xA;      ,[JobCode]&#xA;      ,[timesheetStart]&#xA;      ,[timesheetEnd]&#xA;      ,[timesheetHours]&#xA;      ,[timesheetCost]&#xA;      ,[SourceType]&#xA;      ,[InProgress]&#xA;      ,[RealTime]&#xA;      ,[AutoProcessed]&#xA;      ,[PayApproved]&#xA;      ,[TimeApproved]&#xA;      ,[AutoPayApproved]&#xA;      ,[AutoTimeApproved]&#xA;      ,[Exported]&#xA;      ,[Paid]&#xA;      ,[Invoiced]&#xA;      ,[InvoiceComment]&#xA;      ,[Discarded]&#xA;      ,[PONumber]&#xA;      ,[RITM]&#xA;      ,[EMSMinutes]&#xA;      ,[NCRMinutes]&#xA;      ,[Modified] &#xA;&#x9;  FROM staging.DEP_Timesheet;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_CUS_REBUILD_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get max modified"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{769DC15A-2CD6-4A80-8F0A-A32A49D2CABC}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get max modified"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="Disable">@[$Project::ETL_VAR_DATA_RANGE_MODE] != "DELTA"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="SELECT max(t.Modified)&#xA;FROM staging.FCT_DEP_TIMESHEET t"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::DeltaModified" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Timesheets"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{37BBCC92-3045-46AD-9A42-95B2CEA1309E}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Timesheets"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Timesheets\DEP Timesheet"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;11"
+              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+              name="DEP Timesheet"
+              version="11">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="30">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+/* The Script Component allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services data flow.
+ *
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script component. */
+#endregion
+
+#region Namespaces
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+#endregion
+
+/// <summary>
+/// This is the class to which to add your code.  Do not change the name, attributes, or parent
+/// of this class.
+/// </summary>
+[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
+public class ScriptMain : UserComponent
+{
+    #region Help:  Using Integration Services variables and parameters
+    /* To use a variable in this script, first ensure that the variable has been added to
+     * either the list contained in the ReadOnlyVariables property or the list contained in
+     * the ReadWriteVariables property of this script component, according to whether or not your
+     * code needs to write into the variable.  To do so, save this script, close this instance of
+     * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
+     * Script Transformation Editor window.
+     * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+     *
+     * Example of reading from a variable or parameter:
+     *  DateTime startTime = Variables.MyStartTime;
+     *
+     * Example of writing to a variable:
+     *  Variables.myStringVariable = "new value";
+     */
+    #endregion
+
+    #region Help:  Using Integration Services Connnection Managers
+    /* Some types of connection managers can be used in this script component.  See the help topic
+     * "Working with Connection Managers Programatically" for details.
+     *
+     * To use a connection manager in this script, first ensure that the connection manager has
+     * been added to either the list of connection managers on the Connection Managers page of the
+     * script component editor.  To add the connection manager, save this script, close this instance of
+     * Visual Studio, and add the Connection Manager to the list.
+     *
+     * If the component needs to hold a connection open while processing rows, override the
+     * AcquireConnections and ReleaseConnections methods.
+     * 
+     * Example of using an ADO.Net connection manager to acquire a SqlConnection:
+     *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
+     *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
+     *
+     * Example of using a File connection manager to acquire a file path:
+     *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
+     *  string filePath = (string)rawConnection;
+     *
+     * Example of releasing a connection manager:
+     *  Connections.SalesDB.ReleaseConnection(rawConnection);
+     */
+    #endregion
+
+    #region Help:  Firing Integration Services Events
+    /* This script component can fire events.
+     *
+     * Example of firing an error event:
+     *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
+     *
+     * Example of firing an information event:
+     *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
+     *
+     * Example of firing a warning event:
+     *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
+     */
+    #endregion
+
+    /// <summary>
+    /// This method is called once, before rows begin to be processed in the data flow.
+    ///
+    /// You can remove this method if you don't need to do anything here.
+    /// </summary>
+    public override void PreExecute()
+    {
+        base.PreExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called after all the rows have passed through this component.
+    ///
+    /// You can delete this method if you don't need to do anything here.
+    /// </summary>
+    public override void PostExecute()
+    {
+        base.PostExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    public override void CreateNewOutputRows()
+    {
+        try
+        {
+            // Log the value of the variable
+            string token = Variables.ENVCONNECTION1DEPTOKEN.ToString();
+            string apiCall = "/api/v1/resource/Timesheet/QUERY";
+            string url = Variables.ENVCONNECTION1DEPURL.ToString() + apiCall;
+            string timeZone = "New Zealand Standard Time";
+            string sourceTimeZone = TimeZone.CurrentTimeZone.StandardName;
+            string rangeMode = Variables.ETLVARDATARANGEMODE;
+            string rebuildDate = Variables.ETLCUSREBUILDDATE;
+            DateTime deltaDate = ConvertTimeZone(Variables.DeltaModified, sourceTimeZone, timeZone);
+
+            bool fireAgain = false;
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            // Create an HttpClient
+            using (HttpClient client = new HttpClient())
+            {
+                // Set the Bearer token in the Authorization header
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.ExpectContinue = false;
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.Timeout = TimeSpan.FromSeconds(60);
+
+                //create flow variables
+                int start = 0;
+                bool moreRecords = true;
+
+                while (moreRecords)
+                {
+                    string requestUrl = url;
+                    string reqBody = "{\n";
+                    reqBody += "\"search\": {\n";
+                    if (rangeMode == "DELTA") reqBody += "\"s1\":{\"field\":\"Modified\", \"data\":\"" + deltaDate.AddSeconds(-10).ToString("yyyy-MM-dd hh:mm:ss") + "\", \"type\":\"ge\"}\n";
+                    else reqBody += "\"s1\":{\"field\":\"Date\", \"data\":\"" + rebuildDate + "\", \"type\":\"ge\"}\n";
+                    reqBody += "}\n";
+                    reqBody += ",\"start\":" + start.ToString() + "\n";
+                    reqBody += ",\"sort\":{\"Id\": \"asc\"}\n";
+                    reqBody += ",\"join\": [\"Leave\", \"CustomFieldDataObject\", \"OperationalUnitObject\"]\n";
+                    reqBody += "}";
+
+                    this.ComponentMetaData.FireInformation(0, "API Body", reqBody, "", 0, ref fireAgain);
+
+                    JavaScriptSerializer sr = new JavaScriptSerializer();
+                    sr.MaxJsonLength = 5097152;
+
+                    StringContent requestContent = new StringContent(reqBody, System.Text.Encoding.UTF8, "application/json");
+                    HttpResponseMessage depResponse = apiRequest(client, requestUrl, requestContent).Result;
+
+                    // Check if the request was successful
+                    if (depResponse.IsSuccessStatusCode)
+                    {
+                        string responseBody = depResponse.Content.ReadAsStringAsync().Result;
+
+                        // Deserialize the JSON response
+                        List<Timesheet> apiResponse = sr.Deserialize<List<Timesheet>>(responseBody);
+                        //string stopRight;
+
+                        foreach (Timesheet line in apiResponse)
+                        {
+                            //this.ComponentMetaData.FireInformation(0, "processing record Id", line.Id.ToString(), "", 0, ref fireAgain);
+                            //if (line.Id == 382258) stopRight = "Now";
+                            bool isDiscarded = false;
+                            if (line.Discarded.HasValue) if (line.Discarded.Value) isDiscarded = true;
+
+
+
+                            TimesheetBuffer.AddRow();
+
+                            TimesheetBuffer.Discarded = isDiscarded;
+                            TimesheetBuffer.Invoiced = line.Invoiced;
+                            if (!String.IsNullOrEmpty(line.InvoiceComment)) TimesheetBuffer.InvoiceComment = line.InvoiceComment;
+                            TimesheetBuffer.Paid = line.PayStaged;
+
+                            TimesheetBuffer.AgreementId = line.EmployeeAgreement;
+                            TimesheetBuffer.AutoPayApproved = line.AutoPayRuleApproved;
+                            TimesheetBuffer.AutoProcessed = line.AutoProcessed;
+                            TimesheetBuffer.AutoTimeApproved = line.AutoTimeApproved;
+                            TimesheetBuffer.EmployeeId = line.Employee;
+                            if (line.Exported.HasValue) TimesheetBuffer.Exported = line.Exported.Value;
+                            TimesheetBuffer.Id = line.Id;
+                            if (line.IsInProgress.HasValue) TimesheetBuffer.InProgress = line.IsInProgress.Value;
+                            if (line.PayRuleApproved.HasValue) TimesheetBuffer.PayApproved = line.PayRuleApproved.Value;
+                            TimesheetBuffer.PayCycleId = line.PaycycleId;
+                            TimesheetBuffer.RealTime = line.RealTime;
+                            TimesheetBuffer.TimeApproved = line.TimeApproved;
+                            if (line.Cost.HasValue) TimesheetBuffer.timesheetCost = line.Cost.Value;
+                            TimesheetBuffer.timesheetEnd = ConvertTimeZone(UnixTimeStampToDateTime(line.EndTime), sourceTimeZone, timeZone);
+                            TimesheetBuffer.timesheetHours = line.TotalTime;
+                            TimesheetBuffer.timesheetStart = ConvertTimeZone(UnixTimeStampToDateTime(line.StartTime), sourceTimeZone, timeZone);
+                            TimesheetBuffer.Modified = line.Modified;
+                            TimesheetBuffer.Created = line.Created;
+                            TimesheetBuffer.Creator = line._DPMetaData.CreatorInfo.DisplayName;
+
+                            string SourceType = "Unplanned";
+
+                            if (line.LeaveRule.HasValue)
+                            {
+                                SourceType = "Leave";
+                                TimesheetBuffer.LeaveRuleId = line.LeaveRule.Value;
+                                if (line.LeaveId.HasValue) TimesheetBuffer.LeaveId = line.LeaveId.Value;
+                                if (line.Roster.HasValue) TimesheetBuffer.RosterId = line.Roster.Value;
+
+                                /*
+                                    List<LeavePayLineArray> leaveLines = line.Leave.LeavePayLineArray;
+                                    foreach (LeavePayLineArray leaveline in leaveLines)
+                                    {
+                                        if (leaveline.Date == line.Date)
+                                        {
+                                            TimesheetBuffer.LeaveRuleId = leaveline.LeaveRule;
+                                            TimesheetBuffer.LeaveLineId = leaveline.Id;
+                                        }
+                                    }
+                                */
+                            }
+                            else if (line.Roster.HasValue)
+                            {
+                                SourceType = "Roster";
+                                TimesheetBuffer.RosterId = line.Roster.Value;
+                            }
+
+                            TimesheetBuffer.SourceType = SourceType;
+
+                            if (line.CustomFieldDataObject != null)
+                            {
+                                CustomFieldDataObject cust = line.CustomFieldDataObject;
+                                double doubleTest = 0;
+                                if (double.TryParse(cust.emsminutes, out doubleTest)) TimesheetBuffer.EMSMinutes = double.Parse(cust.emsminutes);
+                                if (double.TryParse(cust.ncrminutes, out doubleTest)) TimesheetBuffer.NCRMinutes = double.Parse(cust.ncrminutes);
+                                if (!String.IsNullOrEmpty(cust.purchaseorder)) TimesheetBuffer.PONumber = cust.purchaseorder;
+                                if (!String.IsNullOrEmpty(cust.ritmtimesheet)) TimesheetBuffer.RITM = cust.ritmtimesheet;
+                            }
+
+                            if (line.OperationalUnit.HasValue)
+                            {
+                                TimesheetBuffer.AreaId = line.OperationalUnit.Value;
+                                if (line.OperationalUnitObject != null) if (!String.IsNullOrEmpty(line.OperationalUnitObject.PayrollExportName)) TimesheetBuffer.JobCode = line.OperationalUnitObject.PayrollExportName;
+                            }
+
+                        }
+
+                        if (apiResponse.Count == 500)
+                        {
+                            start += 500;
+                        }
+                        else
+                        {
+                            moreRecords = false;
+                        }
+                    }
+                    else
+                    {
+                        ErrorObject err = sr.Deserialize<ErrorObject>(depResponse.Content.ReadAsStringAsync().Result);
+                        this.ComponentMetaData.FireError(0, "API Error", err.error.code + " : " + err.error.message, "", 0, out fireAgain);
+                        moreRecords = false;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions and log errors
+            bool fireAgain = false;
+            this.ComponentMetaData.FireError(0, "Script Error", ex.Message, "", 0, out fireAgain);
+        }
+    }
+    #region functions
+    private static async Task<HttpResponseMessage> apiRequest(HttpClient c, string url, StringContent req)
+    {
+        var reqMessage = new HttpRequestMessage(HttpMethod.Post, url);
+        reqMessage.Content = req;
+        HttpResponseMessage resp = await c.SendAsync(reqMessage);
+        return resp;
+    }
+
+    static DateTime ConvertTimeZone(DateTime dateTime, string sourceTimeZoneId, string targetTimeZoneId)
+    {
+        // Find source and target time zones
+        TimeZoneInfo sourceTimeZone = TimeZoneInfo.FindSystemTimeZoneById(sourceTimeZoneId);
+        TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById(targetTimeZoneId);
+
+        // Convert the original DateTime to UTC based on the source time zone
+        DateTime sourceTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
+        DateTime dtUTC = TimeZoneInfo.ConvertTimeToUtc(sourceTime, sourceTimeZone);
+
+        // Convert the UTC time to the target time zone
+        DateTime targetTime = TimeZoneInfo.ConvertTimeFromUtc(dtUTC, targetTimeZone);
+
+        return targetTime;
+    }
+
+    static DateTime ConvertUTCToTimeZone(DateTime dateTime, string timeZoneId)
+    {
+
+        DateTime dtUTC = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+        TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+        DateTime targetTime = TimeZoneInfo.ConvertTimeFromUtc(dtUTC, targetTimeZone);
+        return targetTime;
+
+    }
+
+    public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+        return dateTime;
+    }
+    #endregion
+
+    #region Classes
+    public class ErrorDetail
+    {
+        public string code { get; set; }
+        public string message { get; set; }
+    }
+
+    public class ErrorObject
+    {
+        public ErrorDetail error { get; set; }
+    }
+
+    /*   
+    public class AddressObject
+    {
+        public int Id { get; set; }
+        public string ContactName { get; set; }
+        public string UnitNo { get; set; }
+        public string StreetNo { get; set; }
+        public string SuiteNo { get; set; }
+        public string PoBox { get; set; }
+        public string Street1 { get; set; }
+        public string Street2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Postcode { get; set; }
+        public int Country { get; set; }
+        public string Phone { get; set; }
+        public string Notes { get; set; }
+        public int? Format { get; set; }
+        public bool? Saved { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public object Verified { get; set; }
+        public string Print { get; set; }
+    }
+
+    public class ApproverInfo
+    {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public int Employee { get; set; }
+        public string Photo { get; set; }
+    } */
+
+    public class CreatorInfo
+    {
+        //public int Id { get; set; }
+        public string DisplayName { get; set; }
+        //public string Photo { get; set; }
+        //public int? EmployeeProfile { get; set; }
+        //public int? Employee { get; set; }
+        //public int? Pronouns { get; set; }
+        //public string CustomPronouns { get; set; }
+    }
+    /*
+    public class CustomFieldData
+    {
+        public int Id { get; set; }
+        public string System { get; set; }
+        public string F03 { get; set; }
+        public string F04 { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public string emsminutes { get; set; }
+        public string ncrminutes { get; set; }
+        public DPMetaData _DPMetaData { get; set; }
+        public string F01 { get; set; }
+        public string ritmtimesheet { get; set; }
+    }
+    */
+    public class CustomFieldDataObject
+    {
+        public int Id { get; set; }
+        public string System { get; set; }
+        public string F01 { get; set; }
+        public string F02 { get; set; }
+        public string F03 { get; set; }
+        public string F04 { get; set; }
+        //public int Creator { get; set; }
+        //public DateTime Created { get; set; }
+        //public DateTime Modified { get; set; }
+        public string emsminutes { get; set; }
+        public string ncrminutes { get; set; }
+        public string ritmtimesheet { get; set; }
+        public string purchaseorder { get; set; }
+        //public DPMetaData _DPMetaData { get; set; } 
+    }
+
+    
+    public class DPMetaData
+    {
+        //public string System { get; set; }
+        public CreatorInfo CreatorInfo { get; set; }
+        //public OperationalUnitInfo OperationalUnitInfo { get; set; }
+        //public EmployeeInfo EmployeeInfo { get; set; }
+        //public CustomFieldData CustomFieldData { get; set; }
+        //public ApproverInfo ApproverInfo { get; set; }
+        //public List<object> SwapManageByInfo { get; set; }
+        //public AddressObject AddressObject { get; set; }
+        //public object Geo { get; set; }
+    }
+    /*
+    public class EmployeeInfo
+    {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public int EmployeeProfile { get; set; }
+        public int Employee { get; set; }
+        public string Photo { get; set; }
+        public int Pronouns { get; set; }
+        public string CustomPronouns { get; set; }
+    }
+    */
+    /* public class Leave
+    {
+        public int Id { get; set; }
+        /*
+        public int Employee { get; set; }
+        public int EmployeeHistory { get; set; }
+        public int Company { get; set; }
+        public int LeaveRule { get; set; }
+        public int Start { get; set; }
+        public DateTime DateStart { get; set; }
+        public int End { get; set; }
+        public DateTime DateEnd { get; set; }
+        public double Days { get; set; }
+        public int ApproverTime { get; set; }
+        public int ApproverPay { get; set; }
+        public string Comment { get; set; }
+        public int Status { get; set; }
+        public string ApprovalComment { get; set; }
+        public double TotalHours { get; set; }
+        public object ExternalId { get; set; }
+        public bool AllDay { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public DateTime StartTimeLocalized { get; set; }
+        public DateTime EndTimeLocalized { get; set; }
+        public string TimeZone { get; set; }
+        public bool DateStartAllDay { get; set; }
+        public bool DateEndAllDay { get; set; }
+        public List<object> NotifyManagerArray { get; set; } 
+        public List<LeavePayLineArray> LeavePayLineArray { get; set; }
+        //public DPMetaData _DPMetaData { get; set; }
+    } 
+
+    public class LeavePayLineArray
+    {
+        public int Id { get; set; }
+        //public int LeaveId { get; set; }
+        public int LeaveRule { get; set; }
+        public int EmployeeAgreement { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
+        public string Hours { get; set; }
+        //public string Comment { get; set; }
+        //public int? TimesheetId { get; set; }
+        public double? Cost { get; set; }
+        /*
+        public object RecalculateWithReferencePeriod { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public DateTime StartTimeLocalized { get; set; }
+        public DateTime EndTimeLocalized { get; set; }
+        public string TimeZone { get; set; } 
+    } */
+    /*
+    public class MixedActivity
+    {
+        public int intState { get; set; }
+        public int blnCanStartEarly { get; set; }
+        public int blnCanEndEarly { get; set; }
+        public int blnIsMandatory { get; set; }
+        public string strBreakType { get; set; }
+    }
+
+    public class OperationalUnitInfo
+    {
+        public int Id { get; set; }
+        public string OperationalUnitName { get; set; }
+        public int Company { get; set; }
+        public string CompanyName { get; set; }
+        public string LabelWithCompany { get; set; }
+    }
+    */
+    public class OperationalUnitObject
+    {
+        public int Id { get; set; }
+        /*
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public int Company { get; set; }
+        public string WorkType { get; set; }
+        public int ParentOperationalUnit { get; set; }
+        public string OperationalUnitName { get; set; }
+        public bool Active { get; set; }
+        */
+        public string PayrollExportName { get; set; }
+        /*
+        public int? Address { get; set; }
+        public int? Contact { get; set; }
+        public int RosterSortOrder { get; set; }
+        public bool ShowOnRoster { get; set; }
+        public string Colour { get; set; }
+        public object RosterActiveHoursSchedule { get; set; }
+        public object DailyRosterBudget { get; set; }
+        public int? OperationalUnitType { get; set; }
+        public object AddressObject { get; set; }
+        public string CompanyCode { get; set; }
+        public string CompanyName { get; set; }
+        public int CompanyAddress { get; set; }
+        public DPMetaData _DPMetaData { get; set; }
+        */
+    }
+
+    public class Timesheet
+    {
+        public int Id { get; set; }
+        public int Employee { get; set; }
+        //public int EmployeeHistory { get; set; }
+        public int EmployeeAgreement { get; set; }
+        public DateTime Date { get; set; }
+        public int StartTime { get; set; }
+        public int EndTime { get; set; }
+        /*
+        public DateTime Mealbreak { get; set; }
+        public object MealbreakSlots { get; set; }
+        public List<Slot> Slots { get; set; }
+        */
+        public double TotalTime { get; set; }
+        //public double TotalTimeInv { get; set; }
+        public double? Cost { get; set; }
+        public int? Roster { get; set; }
+        /*
+        public string EmployeeComment { get; set; }
+        public object SupervisorComment { get; set; }
+        public object Supervisor { get; set; }
+        public bool Disputed { get; set; }
+        */
+        public bool TimeApproved { get; set; }
+
+        //public int? TimeApprover { get; set; }
+        public bool? Discarded { get; set; }
+        //public int ValidationFlag { get; set; }
+
+        public int? OperationalUnit { get; set; }
+        public bool? IsInProgress { get; set; }
+        //public bool IsLeave { get; set; }
+        public int? LeaveId { get; set; }
+        public int? LeaveRule { get; set; }
+        public bool Invoiced { get; set; }
+        public string InvoiceComment { get; set; }
+        public bool? PayRuleApproved { get; set; }
+        public bool? Exported { get; set; }
+        //public object StagingId { get; set; }
+        public bool PayStaged { get; set; }
+        public int PaycycleId { get; set; }
+        /*
+        public object AccrualState { get; set; }
+        public object AccrualStateChangedAt { get; set; }
+        public object AccrualAttempts { get; set; }
+        public string MarkedPaidUnpaidAt { get; set; }
+        public object File { get; set; }
+        public int? CustomFieldData { get; set; }
+        */
+        public bool RealTime { get; set; }
+        public bool AutoProcessed { get; set; }
+        public bool AutoRounded { get; set; }
+        public bool AutoTimeApproved { get; set; }
+        public bool AutoPayRuleApproved { get; set; }
+        /*
+        public string Metadata { get; set; }
+        public object ParentId { get; set; }
+        public int Creator { get; set; } */
+        public DateTime Created { get; set; }
+        
+        public DateTime Modified { get; set; }
+        /*
+        public int ReviewState { get; set; }
+        public DateTime StartTimeLocalized { get; set; }
+        public DateTime EndTimeLocalized { get; set; }
+        public double OnCost { get; set; }
+        public object ExternalId { get; set; }*/
+        public DPMetaData _DPMetaData { get; set; }
+        
+        //public Leave Leave { get; set; }
+        //public RosterObject RosterObject { get; set; }
+        public CustomFieldDataObject CustomFieldDataObject { get; set; }
+        public OperationalUnitObject OperationalUnitObject { get; set; }
+    }
+    /*
+    public class RosterObject
+    {
+        public int Id { get; set; }
+        //public DateTime Date { get; set; }
+        public int StartTime { get; set; }
+        public int EndTime { get; set; }
+        //public DateTime Mealbreak { get; set; }
+        //public List<Slot> Slots { get; set; }
+        public double TotalTime { get; set; }
+        public double? Cost { get; set; }
+        /*
+        public int OperationalUnit { get; set; }
+        public int Employee { get; set; }
+        public string Comment { get; set; }
+        public string Warning { get; set; }
+        public string WarningOverrideComment { get; set; }
+        public bool Published { get; set; }
+        public int MatchedByTimesheet { get; set; }
+        public int? CustomFieldData { get; set; }
+        public bool Open { get; set; }
+        public bool ApprovalRequired { get; set; }
+        public int ConfirmStatus { get; set; }
+        public string ConfirmComment { get; set; }
+        public int ConfirmBy { get; set; }
+        public int ConfirmTime { get; set; }
+        public int SwapStatus { get; set; }
+        public object SwapManageBy { get; set; }
+        public int? ShiftTemplate { get; set; }
+        public object ConnectStatus { get; set; }
+        public object ParentId { get; set; }
+        public int Creator { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public double OnCost { get; set; }
+        public DateTime StartTimeLocalized { get; set; }
+        public DateTime EndTimeLocalized { get; set; }
+        public object ExternalId { get; set; }
+        public object ConnectCreator { get; set; }
+        public DPMetaData _DPMetaData { get; set; }
+        public object BidsCount { get; set; }
+        
+    }
+    
+    public class Slot
+    {
+        public bool blnEmptySlot { get; set; }
+        public string strType { get; set; }
+        public int intStart { get; set; }
+        public int intEnd { get; set; }
+        public int intUnixStart { get; set; }
+        public int intUnixEnd { get; set; }
+        public MixedActivity mixedActivity { get; set; }
+        public string strTypeName { get; set; }
+        public string strState { get; set; }
+    }
+    */
+
+    #endregion
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services buffer wrappers
+*  This module defines classes for accessing data flow buffers
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+
+public class TimesheetBuffer: ScriptBuffer
+
+{
+    public TimesheetBuffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
+        : base(Buffer, BufferColumnIndexes, OutputMap)
+    {
+    }
+
+    public Int32 Id
+    {
+        set
+        {
+            this[0] = value;
+        }
+    }
+    public bool Id_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(0);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 AgreementId
+    {
+        set
+        {
+            this[1] = value;
+        }
+    }
+    public bool AgreementId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(1);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 EmployeeId
+    {
+        set
+        {
+            this[2] = value;
+        }
+    }
+    public bool EmployeeId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(2);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 LeaveRuleId
+    {
+        set
+        {
+            this[3] = value;
+        }
+    }
+    public bool LeaveRuleId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(3);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 LeaveId
+    {
+        set
+        {
+            this[4] = value;
+        }
+    }
+    public bool LeaveId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(4);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 PayCycleId
+    {
+        set
+        {
+            this[5] = value;
+        }
+    }
+    public bool PayCycleId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(5);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 AreaId
+    {
+        set
+        {
+            this[6] = value;
+        }
+    }
+    public bool AreaId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(6);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Int32 RosterId
+    {
+        set
+        {
+            this[7] = value;
+        }
+    }
+    public bool RosterId_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(7);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime Created
+    {
+        set
+        {
+            this[8] = value;
+        }
+    }
+    public bool Created_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(8);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String Creator
+    {
+        set
+        {
+            this[9] = value;
+        }
+    }
+    public bool Creator_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(9);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime Modified
+    {
+        set
+        {
+            this[10] = value;
+        }
+    }
+    public bool Modified_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(10);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String JobCode
+    {
+        set
+        {
+            this[11] = value;
+        }
+    }
+    public bool JobCode_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(11);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime timesheetStart
+    {
+        set
+        {
+            this[12] = value;
+        }
+    }
+    public bool timesheetStart_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(12);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public DateTime timesheetEnd
+    {
+        set
+        {
+            this[13] = value;
+        }
+    }
+    public bool timesheetEnd_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(13);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Double timesheetHours
+    {
+        set
+        {
+            this[14] = value;
+        }
+    }
+    public bool timesheetHours_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(14);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Double timesheetCost
+    {
+        set
+        {
+            this[15] = value;
+        }
+    }
+    public bool timesheetCost_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(15);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String SourceType
+    {
+        set
+        {
+            this[16] = value;
+        }
+    }
+    public bool SourceType_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(16);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean InProgress
+    {
+        set
+        {
+            this[17] = value;
+        }
+    }
+    public bool InProgress_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(17);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean RealTime
+    {
+        set
+        {
+            this[18] = value;
+        }
+    }
+    public bool RealTime_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(18);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean AutoProcessed
+    {
+        set
+        {
+            this[19] = value;
+        }
+    }
+    public bool AutoProcessed_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(19);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean PayApproved
+    {
+        set
+        {
+            this[20] = value;
+        }
+    }
+    public bool PayApproved_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(20);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean TimeApproved
+    {
+        set
+        {
+            this[21] = value;
+        }
+    }
+    public bool TimeApproved_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(21);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean AutoPayApproved
+    {
+        set
+        {
+            this[22] = value;
+        }
+    }
+    public bool AutoPayApproved_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(22);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean AutoTimeApproved
+    {
+        set
+        {
+            this[23] = value;
+        }
+    }
+    public bool AutoTimeApproved_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(23);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean Exported
+    {
+        set
+        {
+            this[24] = value;
+        }
+    }
+    public bool Exported_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(24);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean Paid
+    {
+        set
+        {
+            this[25] = value;
+        }
+    }
+    public bool Paid_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(25);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean Invoiced
+    {
+        set
+        {
+            this[26] = value;
+        }
+    }
+    public bool Invoiced_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(26);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String InvoiceComment
+    {
+        set
+        {
+            this[27] = value;
+        }
+    }
+    public bool InvoiceComment_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(27);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean Discarded
+    {
+        set
+        {
+            this[28] = value;
+        }
+    }
+    public bool Discarded_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(28);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String PONumber
+    {
+        set
+        {
+            this[29] = value;
+        }
+    }
+    public bool PONumber_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(29);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public String RITM
+    {
+        set
+        {
+            this[30] = value;
+        }
+    }
+    public bool RITM_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(30);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Double EMSMinutes
+    {
+        set
+        {
+            this[31] = value;
+        }
+    }
+    public bool EMSMinutes_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(31);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Double NCRMinutes
+    {
+        set
+        {
+            this[32] = value;
+        }
+    }
+    public bool NCRMinutes_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(32);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    new public void AddRow()
+    {
+        base.AddRow();
+    }
+
+    new public void SetEndOfRowset()
+    {
+        base.SetEndOfRowset();
+    }
+
+    new public bool EndOfRowset()
+    {
+        return base.EndOfRowset();
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services component wrapper
+*  This module defines the base class for your component
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+
+public class UserComponent: ScriptComponent
+{
+    public Connections Connections;
+    public Variables Variables;
+    public UserComponent()
+    {
+        Connections = new Connections(this);
+        Variables = new Variables(this);
+    }
+
+    public TimesheetBuffer TimesheetBuffer;
+
+    public virtual void FinishOutputs()
+    {
+    }
+
+    private void MarkOutputsFinished()
+    {
+
+        if (null != TimesheetBuffer)
+        {
+            TimesheetBuffer.SetEndOfRowset();
+            TimesheetBuffer = null;
+        }
+
+    }
+
+    public override void PrimeOutput(int Outputs, int[] OutputIDs, PipelineBuffer[] Buffers, OutputNameMap OutputMap)
+    {
+       for(int Idx = 0; Idx < Outputs; Idx++)
+       {
+            if(OutputIDs[Idx] == GetOutputID(OutputMap, @"Timesheet"))
+            {
+                TimesheetBuffer = new TimesheetBuffer(Buffers[Idx], GetColumnIndexes(OutputIDs[Idx]), OutputMap);
+            }
+        }
+
+        CreateNewOutputRows();
+
+        FinishOutputs();
+        MarkOutputsFinished();
+
+    }
+
+    public virtual void CreateNewOutputRows()
+    {
+    }
+
+}
+
+public class Connections
+{
+    ScriptComponent ParentComponent;
+
+    public Connections(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+
+public class Variables
+{
+    ScriptComponent ParentComponent;
+
+    public Variables(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+    public DateTime DeltaModified
+    {
+        get
+        {
+            return (DateTime)(ParentComponent.ReadOnlyVariables["DeltaModified"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ENVCONNECTION1DEPTOKEN
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ENV_CONNECTION_1_DEP_TOKEN"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ENVCONNECTION1DEPURL
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ENV_CONNECTION_1_DEP_URL"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ETLCUSREBUILDDATE
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ETL_CUS_REBUILD_DATE"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+    public String ETLVARDATARANGEMODE
+    {
+        get
+        {
+            return (String)(ParentComponent.ReadOnlyVariables["ETL_VAR_DATA_RANGE_MODE"].GetValueWithContext(ScriptComponent.EvaluatorContext));
+        }
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_7c611e6592df4b498d390d3f5bc7aca2.csproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B0F9D0C9-192E-4705-A91C-A73DB2C1FEF2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SC_7c611e6592df4b498d390d3f5bc7aca2</RootNamespace>
+    <AssemblyName>SC_7c611e6592df4b498d390d3f5bc7aca2</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.cs" />
+    <Compile Include="BufferWrapper.cs" />
+    <Compile Include="ComponentWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" />
+        <Host Name="ScriptComponent" IconIndex="0" />
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC140</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_7c611e6592df4b498d390d3f5bc7aca2.Properties.Settings.get_Default():SC_7c611e6592df4b498d390d3f5bc7aca2.Properties.Sett" +
+    "ings")]
+
+namespace SC_7c611e6592df4b498d390d3f5bc7aca2.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>SC_7c611e6592df4b498d390d3f5bc7aca2</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>SC_7c611e6592df4b498d390d3f5bc7aca2</msb:DisplayName>
+    <msb:ProjectId>{1259DD4D-9A8E-4717-AD2A-C47E35D90839}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="SC_7c611e6592df4b498d390d3f5bc7aca2.csproj" />
+    <msb:File Include="ComponentWrapper.cs" />
+    <msb:File Include="main.cs" />
+    <msb:File Include="BufferWrapper.cs" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("SC_7c611e6592df4b498d390d3f5bc7aca2")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SC_7c611e6592df4b498d390d3f5bc7aca2")]
+[assembly: AssemblyCopyright("Copyright @  2024")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.0.0")]
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_7c611e6592df4b498d390d3f5bc7aca2.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_7c611e6592df4b498d390d3f5bc7aca2.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_7c611e6592df4b498d390d3f5bc7aca2.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace SC_7c611e6592df4b498d390d3f5bc7aca2.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_7c611e6592df4b498d390d3f5bc7aca2.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_7c611e6592df4b498d390d3f5bc7aca2.dll]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[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
+bQALAGcAAgAQAFoUAABtAAwAagACABAA5hgAAG0ADQBtAAIAEACzAQAAbQAXAIIAAgAQACYZAABt
+ABgAhQACABAARxkAAG0AGgCKAAMBEAD0AAAAdQA5AMkABgD2F60CBgA3F7ECBgA0FbUCAQBCGrkC
+AQBCGrkCEQBgE74CEQANDcMCEQBLCsgCAQAzB8wCAQBjB8wCAQDCCM8CAQC6B8wCAQCLBdMCAQBW
+CMwCAQAaBcwCAQAvBcwCAQBEBcwCAQBZBcwCAQD1CMwCAQDZCMwCAQB9CcwCAQCLCMwCAQBuCNYC
+AQCLBdMCAQCXB8wCAQCLBdMCAQBJB9MCAQC9CdMCAQBACNoCAQAlCNMCAQDXB9MCAQAKCN4CAQAA
+CuECAQCqCOgCAQDzBu8CAQALBvICAQCcCegCAQARCfICAQC7BegCAQB8B+gCAQDUBe8CAQDgCcwC
+AQCtBvICAQCTBvICAQAmBu8CAQCfBdMCAQDwB+8CAQBbBu8CAQDuBe8CAQARB+8CAQDOBu8CAQB6
+BtoCAQBBBtoCAQBuBfkCAQAvCf0CAQBWCQEDBgB0DdMCBgD0FAUDBgA0E8wCBgDjFA4DBgA2AhID
+AQBjABYDUCAAAAAAxgBQDwYAAQBYIAAAAADGAFsPBgABAGAgAAAAAMYArRgGAAEAFCgAAAAAkQDa
+Gh8DAQBoKAAAAACRALcMLQMEAJgoAAAAAJEAjgw2AwcAvCgAAAAAlgC+Cz4DCQDuKAAAAACGGDgW
+BgAKAPYoAAAAAIYYOBbVAQoAASkAAAAAhgg/AgEADQAQKQAAAACGCF4QRAMOACcpAAAAAIYI7wIB
+AA8ANikAAAAAhgjoEEQDEABNKQAAAACGCFECAQARAFwpAAAAAIYIfhBEAxIAcykAAAAAhgiNAgEA
+EwCCKQAAAACGCKoQRAMUAJkpAAAAAIYI1gIBABUAqCkAAAAAhgjBEEQDFgC/KQAAAACGCGACAQAX
+AM4pAAAAAIYIlBBEAxgA5SkAAAAAhghGAgEAGQD0KQAAAACGCGwQRAMaAAsqAAAAAIYI4gIBABsA
+GioAAAAAhgjUEEQDHAAxKgAAAACGCPwDSQMdAEAqAAAAAIYIVRFEAx4AVyoAAAAAhggeFhAAHwBi
+KgAAAACGCFsSRAMgAHoqAAAAAIYIrQNJAyEAiioAAAAAhggoEUQDIgCiKgAAAACGCFsKEAAjAK0q
+AAAAAIYIChJEAyQAxSoAAAAAhgjHGkkDJQDVKgAAAACGCOQSRAMmAO0qAAAAAIYIFgpJAycA/SoA
+AAAAhgjyEUQDKAAVKwAAAACGCFsYTwMpACUrAAAAAIYImhJEAyoAPSsAAAAAhgj3Gk8DKwBNKwAA
+AACGCP4SRAMsAGUrAAAAAIYIxwwQAC0AcCsAAAAAhggxEkQDLgCIKwAAAACGCG4YRAMvAJgrAAAA
+AIYItBJEAzAAsCsAAAAAhgj4C0QDMQDAKwAAAACGCB0SRAMyANgrAAAAAIYI3gNEAzMA6CsAAAAA
+hgg8EUQDNAAALAAAAACGCO0ERAM1ABAsAAAAAIYIsBFEAzYAKCwAAAAAhgiyBEQDNwA4LAAAAACG
+CHwRRAM4AFAsAAAAAIYI/QREAzkAYCwAAAAAhgjHEUQDOgB4LAAAAACGCNgERAM7AIgsAAAAAIYI
+lBFEAzwAoCwAAAAAhgg8BEQDPQCwLAAAAACGCGgRRAM+AMgsAAAAAIYIEQVEAz8A2CwAAAAAhgji
+EUQDQADwLAAAAACGCCcDRANBAAAtAAAAAIYI/xBEA0IAGC0AAAAAhgghGhAAQwAjLQAAAACGCMoS
+RANEADstAAAAAIYIYgNEA0UASy0AAAAAhggTEUQDRgBjLQAAAACGCOcUEABHAG4tAAAAAIYIRxJE
+A0gAhi0AAAAAhgh6ARAASQCRLQAAAACGCE4QRANKAKktAAAAAIYIUBdPA0sAuS0AAAAAhgiEEkQD
+TADRLQAAAACGCEEXTwNNAOEtAAAAAIYIbhJEA04A+S0AAAAAhgCkGwYATwABLgAAAACGAHUZBgBP
+AAkuAAAAAIYAeBn9AE8AES4AAAAAhhg4FgYATwAxLgAAAADGAZ8YBgBPADMuAAAAAIEAjAMGAE8A
+UC4AAAAAxgA/G1QDTwAxLgAAAADGAa0YBgBTAKUuAAAAAIYYOBZiA1MAtC4AAAAAhhg4FmIDVADD
+LgAAAACGCLoD0AFVAOkuAAAAAIYIgwFrAFUADy8AAAAAhghhAWsAVQA1LwAAAACGCEsBawBVAFsv
+AAAAAIYIMwFrAFUAgS8AAAAAgxg4FgYAVQCJLwAAAACTCFEVaQNVALUvAAAAAJMI9QxvA1UAvC8A
+AAAAkwgBDXUDVQDELwAAAACWCKwZfANWAMsvAAAAAIYYOBYGAFYA0y8AAAAAkRg+FoEDVgDfLwAA
+AACGCH8KawBWAOcvAAAAAIYIiAoQAFYA8C8AAAAAhgjeCmsAVwD4LwAAAACGCOoKEABXAIEvAAAA
+AIYYOBYGAFgAATAAAAAAhggKFoUDWAAJMAAAAACGCBQWigNYAIEvAAAAAIYYOBYGAFkAEjAAAAAA
+hgiGC2sAWQAaMAAAAACGCJYLEABZAIEvAAAAAIYYOBYGAFoAIzAAAAAAhgg4AlkBWgArMAAAAACG
+CD8CAQBaADQwAAAAAIYIShNrAFsAPDAAAAAAhghVExAAWwBFMAAAAACGCFMAawBcAE0wAAAAAIYI
+WwAQAFwAVjAAAAAAhgiqAGsAXQBeMAAAAACGCLIAEABdAGcwAAAAAIYI5ABrAF4AbzAAAAAAhgjs
+ABAAXgB4MAAAAACGCAUBawBfAIAwAAAAAIYIDQEQAF8AiTAAAAAAhgh9F2sAYACRMAAAAACGCIwX
+EABgAJowAAAAAIYIXxdrAGEAojAAAAAAhghuFxAAYQCrMAAAAACGCFEZawBiALMwAAAAAIYIYxkQ
+AGIAvDAAAAAAhggBFWsAYwDEMAAAAACGCBMVEABjAIEvAAAAAIYYOBYGAGQAzTAAAAAAhghGFJAD
+ZADVMAAAAACGCFYUlQNkAIEvAAAAAIYYOBYGAGUA3jAAAAAAhgg4AlkBZQDmMAAAAACGCD8CAQBl
+AO8wAAAAAIYIWgtrAGYA9zAAAAAAhghwCxAAZgCBLwAAAACGGDgWBgBnAAAxAAAAAIYIOAJZAWcA
+CDEAAAAAhgg/AgEAZwARMQAAAACGCJEKWQFoABkxAAAAAIYIngoBAGgAIjEAAAAAhgjiGVkBaQAq
+MQAAAACGCPgZAQBpADMxAAAAAIYIRg3QAWoAOzEAAAAAhghPDUkDagBEMQAAAACGCCEMWQFrAEwx
+AAAAAIYILwwBAGsAVTEAAAAAhgimC1kBbABdMQAAAACGCLILAQBsAGYxAAAAAIYIBQybA20AbjEA
+AAAAhggTDE8DbQB3MQAAAACGCOUanwNuAH8xAAAAAIYI7hqnA24AiDEAAAAAhgjVFbADbwCQMQAA
+AACGCOAVuANvAJkxAAAAAIYIoQT9AHAAoTEAAAAAhgiyBEQDcACqMQAAAACGCFQDwQNxALIxAAAA
+AIYIYgOhAHEAuzEAAAAAhgiEGbADcgDDMQAAAACGCJgZuANyAMwxAAAAAIYIfRjBA3MA1DEAAAAA
+hgiOGKEAcwDdMQAAAACGCMoCsAN0AOUxAAAAAIYI1gK4A3QA7jEAAAAAhggtC7ADdQD2MQAAAACG
+CDsLuAN1AP8xAAAAAIYIGgP9AHYABzIAAAAAhggnA0QDdgAQMgAAAACGCA4aawB3ABgyAAAAAIYI
+IRoQAHcAITIAAAAAhghJBMEDeAApMgAAAACGCF0EoQB4ADIyAAAAAIYILwTBA3kAOjIAAAAAhgg8
+BKEAeQBDMgAAAACGCHAD/QB6AEsyAAAAAIYIfgNEA3oAVDIAAAAAhghvAlkBewBcMgAAAACGCH4C
+AQB7AGUyAAAAAIYI6wv9AHwAbTIAAAAAhgj4C0QDfAB2MgAAAACGCMwD/QB9AH4yAAAAAIYI3gNE
+A30AhzIAAAAAhgg0A/0AfgCPMgAAAACGCEQDRAN+AJgyAAAAAIYIwwT9AH8AoDIAAAAAhgjYBEQD
+fwCpMgAAAACGCHEE/QCAALEyAAAAAIYIiQREA4AAujIAAAAAhgjwA9ABgQDCMgAAAACGCPwDSQOB
+AMsyAAAAAIYIoAPQAYIA0zIAAAAAhgitA0kDggDcMgAAAACGCJ4ByQODAOQyAAAAAIYIrgHOA4MA
+7TIAAAAAhgjIGNQDhAD1MgAAAACGCOIY2QOEAP4yAAAAAIYICBnfA4UABjMAAAAAhggiGeQDhQCB
+LwAAAACGGDgWBgCGABAzAAAAAOEBSxsGAIYA5DMAAAAA4QFQDBsAhgAAAAEANgIAAAIANBMAAAMA
+4xQAAAEA1gsAAAIAnQIAAAMArgIAAAEA1gsAAAIAvwIAAAEAxRQAAAEAShUAAAIAmxcAAAMAdBQA
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEA
+mA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8A
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEA
+mA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8A
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEA
+mA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8A
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEA
+pRgAAAIARRYAAAMAUxgAAAQAdBQAAAEAWBoAAAEAWBoAAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8A
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEA
+mA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8A
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEA
+mA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8A
+AAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAmA8AAAEAYAwQAHkACQA4FgEA
+EQA4FgYAGQA4FgoAKQA4FhAAMQA4FhAAOQA4FhAAQQA4FhAASQA4FhAAUQA4FhAAWQA4FhAAYQA4
+FhAAaQA4FgYAwQA4FhUA4QA4FgYA8QBLGwYA8QBQDBsAEQE4FgYAOQE4FgYAWQE4FiEAMQFQDwYA
+MQFbDwYA2QDgD2sAaQHBGG8AcQGjDHUAcQFJC2sAeQEfE3sAeQA4FgYAeQA5GIIAkQE4FogAiQHi
+E44ADAA4FpsAiQGeD6EAmQEWA4gAoQFtFqoAeQAzG7EAaQG4G7gAcQBiFr4AcQDgD8QAaQHBGMkA
+qQHgD2sAMQG+AdEAsQGIE9cAgQA4FgYAgQDpDwEAuQEVAeIAiQA4FugAFAC4GfgAkQBnCv0AkQBu
+GgEBwQECAgcBHAC4GfgAgQCxDxUBJAAqFiwBLABiGvgADACLD/0ADABnD/gAaQHEGzwBNACLD/0A
+NABnD/gAPACLD/0APABnD/gAyQE9DU0ByQFADVQBLABLG/0A0QE1DQYAJACgGlkBaQHBGGIBsQEA
+FtcAsQCrCmsARABYDXYBRADUGoABRAD7D40B0QD/Ap0BcQA0CqMB0QAnAq0B0QAUAq0BcQA4FsIB
+cQDfC9ABGQE4FtUBGQFBE+EBGQEXEwEA4QE4FhAAGQGkGwYAGQF1GQYAGQF4Gf0AMQE4FgYAMQEn
+AesBMQGvF/MB2QA4FgYAMQErF/kB8QE4E/8BMQGPGwYC+QFgGwwCuQAbCxMCuQCrGxsCQQE4FiEC
+YQE4FgYAIQIqGzoC+QA4FkAC+QB6GkgCeQD4AU8CFADKFVoCTAAfBP0ARAAIBGwCTADDGfgARAAg
+FIMCRADNGZsARABQDBsALgALAEEELgATAEoELgAbAGkELgAjAHIELgArAJsELgAzAJsELgA7AJsE
+LgBDAHIELgBLAKEELgBTAJsELgBbALgEQwBjACMFgABrAAIF4wCTACMFAQFzACMFIQFzACMFQQFz
+ACMFYQFzACMFgQFzACMFoQFzACMFwQFzACMF4QFzACMFAQJzACMFAwJzACMFIQJzACMFQQJzACMF
+YQJzACMFgQJzACMFoQJzACMFwQJzACMF4QJzACMFAQNzACMFIQNzACMFQQNzACMFYQNzACMFgQNz
+ACMFoQNzACMFwQNzACMF4QNzACMFAQRzACMFIQRzACMFQQRzACMFYQRzACMFgQRzACMFoQRzACMF
+wQRzACMF4QRzACMFAQVzACMFIQVzACMFQQVzACMFYQVzACMFgQVzACMFoQVzACMFwQVzACMF4QVz
+ACMFAQZzACMFIQZzACMFQQZzACMFYQZzACMFgQZzACMFoQZzACMFwQZzACMF4QZzACMFAQdzACMF
+CQmbAGkEKQmbAGkEQAxzACMFYAxzACMFgAxzACMFoAxzACMF4AxzACMFAA1zACMFQA1zACMFYA1z
+ACMFoA1zACMFwA1zACMF4A1zACMFAA5zACMFIA5zACMFQA5zACMFYA5zACMFgA5zACMFoA5zACMF
+wA5zACMF4A5zACMFAA9zACMFIA9zACMFQA9zACMFYA9zACMFgA9zACMFoA9zACMFwA9zACMF4A9z
+ACMFABBzACMFQBBzACMFYBBzACMFoBBzACMFwBBzACMF4BBzACMFABFzACMFQBFzACMFYBFzACMF
+gBFzACMFoBFzACMFwBFzACMF4BFzACMFABJzACMFIBJzACMFQBJzACMFYBJzACMFgBJzACMFoBJz
+ACMFwBJzACMF4BJzACMFABNzACMFIBNzACMFQBNzACMFYBNzACMFgBNzACMFoBNzACMFwBNzACMF
+4BNzACMFABRzACMFIBRzACMFQBRzACMFYBRzACMFgBRzACMFoBRzACMFwBRzACMF4BRzACMFABVz
+ACMFIBVzACMFQBVzACMFYBVzACMFgBVzACMFoBVzACMFwBVzACMF4BVzACMFABZzACMFIBZzACMF
+QBZzACMFYBZzACMFgBZzACMFoBZzACMFwBZzACMF4BZzACMFABdzACMFIBdzACMFQBdzACMFYBdz
+ACMFgBdzACMFoBdzACMFwBdzACMF4BdzACMFABhzACMFIBhzACMFQBhzACMFYBhzACMFgBhzACMF
+oBhzACMFwBhzACMF4BhzACMFQBmLACMFKABpAZYBtgG7AecBKQIDAAEABgBDAAcASAAIAEoACQBL
+AAoATQALAE4ADABPAA0AWQAOAFoADwBcAAAAEwPqAwAA9RDuAwAA8wLqAwAA7BDuAwAAVQLqAwAA
+ghDuAwAAkQLqAwAArhDuAwAA2gLqAwAAxRDuAwAAZALqAwAAmBDuAwAASgLqAwAAcBDuAwAA5gLq
+AwAA2BDuAwAAAATyAwAAWRHuAwAAIhb3AwAAXxLuAwAAwwPyAwAALBHuAwAAXwr3AwAADhLuAwAA
+yxryAwAA6BLuAwAAGgryAwAA9hHuAwAAXxj7AwAAnhLuAwAA+xr7AwAAAhPuAwAAywz3AwAANRLu
+AwAAlBjuAwAAuBLuAwAA/AvuAwAAIRLuAwAA4gPuAwAAQBHuAwAABQXuAwAAzxHuAwAA4ATuAwAA
+nBHuAwAAAQXuAwAAyxHuAwAA3ATuAwAAmBHuAwAAQATuAwAAbBHuAwAAFQXuAwAA5hHuAwAAKwPu
+AwAAAxHuAwAAJRr3AwAAzhLuAwAAZgPuAwAAFxHuAwAA6xT3AwAASxLuAwAAfgH3AwAAUhDuAwAA
+VBf7AwAAiBLuAwAARRf7AwAAchLuAwAAvgPyAwAAhwH3AwAAZQH3AwAATwH3AwAANwH3AwAAVRX/
+AwAAFQ0FBAAAsBkLBAAAjAr3AwAA7gr3AwAAGBYQBAAAmgv3AwAAEwPqAwAAWRP3AwAAXwD3AwAA
+tgD3AwAA8AD3AwAAEQH3AwAAkBf3AwAAchf3AwAAZxn3AwAAFxX3AwAAWhQVBAAAEwPqAwAAdAv3
+AwAAEwPqAwAAogrqAwAA/BnqAwAAUw3yAwAAMwzqAwAAtgvqAwAAFwz7AwAABBsaBAAA5BUiBAAA
+4ATuAwAAZgMqBAAAnBkiBAAAkhgqBAAA2gIiBAAAPwsiBAAAKwPuAwAAJRr3AwAAkQQqBAAAQAQq
+BAAAggPuAwAAggLqAwAA/AvuAwAA4gPuAwAASAPuAwAA3ATuAwAAjQTuAwAAAATyAwAAwwPyAwAA
+sgEyBAAA5hg3BAAAJhk8BAEACgADAAEACwAFAAEADAAHAAEADQAJAAEADgALAAEADwANAAEAEAAP
+AAEAEQARAAEAEgATAAEAEwAVAAEAFAAXAAEAFQAZAAEAFgAbAAEAFwAdAAEAGAAfAAEAGQAhAAEA
+GgAjAAEAGwAlAAEAHAAnAAEAHQApAAEAHgArAAEAHwAtAAEAIAAvAAEAIQAxAAEAIgAzAAEAIwA1
+AAEAJAA3AAEAJQA5AAEAJgA7AAEAJwA9AAEAKAA/AAEAKQBBAAEAKgBDAAEAKwBFAAEALABHAAEA
+LQBJAAEALgBLAAEALwBNAAEAMABPAAEAMQBRAAEAMgBTAAEAMwBVAAEANABXAAEANQBZAAEANgBb
+AAEANwBdAAEAOABfAAEAOQBhAAEAOgBjAAEAOwBlAAEAPABnAAEAPQBpAAEAPgBrAAEAPwBtAAEA
+QABvAAEAQQBxAAEAQgBzAAEAQwB1AAEARAB3AAEARQB5AAEARgB7AAEARwB9AAEASAB/AAEASQCB
+AAEASgCDAAEASwCFAAIAVgCHAAIAVwCJAAIAWACLAAIAWQCNAAIAWgCPAAIAXACRAAIAXQCTAAEA
+XgCTAAIAXwCVAAIAYgCXAAEAYwCXAAIAZACZAAEAZQCZAAIAZwCbAAEAaACbAAIAagCdAAEAawCd
+AAIAbQCfAAEAbgCfAAIAbwChAAEAcAChAAIAcQCjAAEAcgCjAAIAcwClAAEAdAClAAIAdQCnAAEA
+dgCnAAIAdwCpAAEAeACpAAIAeQCrAAEAegCrAAIAewCtAAEAfACtAAIAfQCvAAEAfgCvAAIAfwCx
+AAEAgACxAAIAggCzAAEAgwCzAAIAhQC1AAEAhgC1AAIAhwC3AAEAiAC3AAIAigC5AAEAiwC5AAIA
+jAC7AAEAjQC7AAIAjgC9AAEAjwC9AAIAkAC/AAEAkQC/AAIAkgDBAAEAkwDBAAIAlADDAAEAlQDD
+AAIAlgDFAAEAlwDFAAIAmADHAAEAmQDHAAIAmgDJAAEAmwDJAAIAnADLAAEAnQDLAAIAngDNAAEA
+nwDNAAIAoADPAAEAoQDPAAIAogDRAAEAowDRAAIApADTAAEApQDTAAIApgDVAAEApwDVAAIAqADX
+AAEAqQDXAAIAqgDZAAEAqwDZAAIArADbAAEArQDbAAIArgDdAAEArwDdAAIAsADfAAEAsQDfAAIA
+sgDhAAEAswDhAAIAtADjAAEAtQDjAAIAtgDlAAEAtwDlAAIAuADnAAEAuQDnAAIAugDpAAEAuwDp
+AAIAvADrAAEAvQDrAAIAvgDtAAEAvwDtAAIAwADvAAEAwQDvAAIAwgDxAAEAwwDxAAIAxADzAAEA
+xQDzAAIAxgD1AAEAxwD1ABAAkgEfABAAlAEhAJUA8QAPASUBNQFBAUcBbgFkAgSAAAABAAAAAAAA
+AAAAAAAAAMAAAAAEAAAAAAAAAAAAAACJAtQBAAAAAA4AAAAAAAAAAAAAAJICqhoAAAAABAAAAAAA
+AAAAAAAAmwLTFAAAAAAEAAAAAAAAAAAAAACkAuAXAAAAAA4AAAAAAAAAAAAAAJICCRsAAAAABAAA
+AAAAAAAAAAAAiQJZEwAAAAAOAAAAAAAAAAAAAACSAqEUAAAAAA4AAAAAAAAAAAAAAJICfhQAAAAA
+AAAAAAEAAACqFgAACQACAAoAAgALAAIADAACAA0AAgAOAAIADwACABAAAgBpABwBaQBdAY8AiAHR
+AHcCAAAAAABJRFRTQ29tcG9uZW50TWV0YURhdGExMDAASURUU1ZhcmlhYmxlMTAwAElEVFNWYXJp
+YWJsZXMxMDAASURUU0V2YWx1YXRvckNvbnRleHQxMDAAZ2V0X0YwMQBzZXRfRjAxADw+dV9fMQBO
+dWxsYWJsZWAxAFRhc2tgMQBBc3luY1Rhc2tNZXRob2RCdWlsZGVyYDEAVGFza0F3YWl0ZXJgMQBM
+aXN0YDEAZ2V0X0YwMgBzZXRfRjAyAEludDMyAFNDXzdjNjExZTY1OTJkZjRiNDk4ZDM5MGQzZjVi
+YzdhY2EyAGdldF9GMDMAc2V0X0YwMwA8YXBpUmVxdWVzdD5kX18zAGdldF9GMDQAc2V0X0YwNABn
+ZXRfVVRGOAA8TW9kdWxlPgBHZXRPdXRwdXRJRABnZXRfRVRMVkFSREFUQVJBTkdFTU9ERQBnZXRf
+RVRMQ1VTUkVCVUlMRERBVEUAZ2V0X0VOVkNPTk5FQ1RJT04xREVQVVJMAHNldF9SSVRNAGdldF9F
+TlZDT05ORUNUSU9OMURFUFRPS0VOAGdldF9fRFBNZXRhRGF0YQBzZXRfX0RQTWV0YURhdGEAZ2V0
+X0NvbXBvbmVudE1ldGFEYXRhAG1zY29ybGliAFN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljAFNl
+bmRBc3luYwBSZWFkQXNTdHJpbmdBc3luYwBDb252ZXJ0VGltZUZyb21VdGMAQ29udmVydFRpbWVU
+b1V0YwBnZXRfSWQAc2V0X0lkAHNldF9BcmVhSWQAc2V0X0VtcGxveWVlSWQAc2V0X1BheUN5Y2xl
+SWQAZ2V0X1BheWN5Y2xlSWQAc2V0X1BheWN5Y2xlSWQAc2V0X0xlYXZlUnVsZUlkAHNvdXJjZVRp
+bWVab25lSWQAdGFyZ2V0VGltZVpvbmVJZAB0aW1lWm9uZUlkAGdldF9MZWF2ZUlkAHNldF9MZWF2
+ZUlkAHNldF9Sb3N0ZXJJZABzZXRfQWdyZWVtZW50SWQARmluZFN5c3RlbVRpbWVab25lQnlJZABB
+ZGQAZ2V0X0ludm9pY2VkAHNldF9JbnZvaWNlZABnZXRfQXV0b1JvdW5kZWQAc2V0X0F1dG9Sb3Vu
+ZGVkAGdldF9EaXNjYXJkZWQAc2V0X0Rpc2NhcmRlZABnZXRfUGF5U3RhZ2VkAHNldF9QYXlTdGFn
+ZWQATWFya091dHB1dHNGaW5pc2hlZABnZXRfTW9kaWZpZWQAc2V0X01vZGlmaWVkAGdldF9EZWx0
+YU1vZGlmaWVkAGdldF9BdXRvUHJvY2Vzc2VkAHNldF9BdXRvUHJvY2Vzc2VkAGdldF9DcmVhdGVk
+AHNldF9DcmVhdGVkAEF3YWl0VW5zYWZlT25Db21wbGV0ZWQAZ2V0X0lzQ29tcGxldGVkAGdldF9F
+eHBvcnRlZABzZXRfRXhwb3J0ZWQAZ2V0X1BheVJ1bGVBcHByb3ZlZABzZXRfUGF5UnVsZUFwcHJv
+dmVkAGdldF9BdXRvUGF5UnVsZUFwcHJvdmVkAHNldF9BdXRvUGF5UnVsZUFwcHJvdmVkAGdldF9U
+aW1lQXBwcm92ZWQAc2V0X1RpbWVBcHByb3ZlZABnZXRfQXV0b1RpbWVBcHByb3ZlZABzZXRfQXV0
+b1RpbWVBcHByb3ZlZABzZXRfUGF5QXBwcm92ZWQAc2V0X0F1dG9QYXlBcHByb3ZlZABzZXRfUGFp
+ZAA8RjAxPmtfX0JhY2tpbmdGaWVsZAA8RjAyPmtfX0JhY2tpbmdGaWVsZAA8RjAzPmtfX0JhY2tp
+bmdGaWVsZAA8RjA0PmtfX0JhY2tpbmdGaWVsZAA8X0RQTWV0YURhdGE+a19fQmFja2luZ0ZpZWxk
+ADxJZD5rX19CYWNraW5nRmllbGQAPFBheWN5Y2xlSWQ+a19fQmFja2luZ0ZpZWxkADxMZWF2ZUlk
+PmtfX0JhY2tpbmdGaWVsZAA8SW52b2ljZWQ+a19fQmFja2luZ0ZpZWxkADxBdXRvUm91bmRlZD5r
+X19CYWNraW5nRmllbGQAPERpc2NhcmRlZD5rX19CYWNraW5nRmllbGQAPFBheVN0YWdlZD5rX19C
+YWNraW5nRmllbGQAPE1vZGlmaWVkPmtfX0JhY2tpbmdGaWVsZAA8QXV0b1Byb2Nlc3NlZD5rX19C
+YWNraW5nRmllbGQAPENyZWF0ZWQ+a19fQmFja2luZ0ZpZWxkADxFeHBvcnRlZD5rX19CYWNraW5n
+RmllbGQAPFBheVJ1bGVBcHByb3ZlZD5rX19CYWNraW5nRmllbGQAPEF1dG9QYXlSdWxlQXBwcm92
+ZWQ+a19fQmFja2luZ0ZpZWxkADxUaW1lQXBwcm92ZWQ+a19fQmFja2luZ0ZpZWxkADxBdXRvVGlt
+ZUFwcHJvdmVkPmtfX0JhY2tpbmdGaWVsZAA8Y29kZT5rX19CYWNraW5nRmllbGQAPEVtcGxveWVl
+PmtfX0JhY2tpbmdGaWVsZAA8bWVzc2FnZT5rX19CYWNraW5nRmllbGQAPExlYXZlUnVsZT5rX19C
+YWNraW5nRmllbGQAPFBheXJvbGxFeHBvcnROYW1lPmtfX0JhY2tpbmdGaWVsZAA8RGlzcGxheU5h
+bWU+a19fQmFja2luZ0ZpZWxkADxFbmRUaW1lPmtfX0JhY2tpbmdGaWVsZAA8UmVhbFRpbWU+a19f
+QmFja2luZ0ZpZWxkADxUb3RhbFRpbWU+a19fQmFja2luZ0ZpZWxkADxTdGFydFRpbWU+a19fQmFj
+a2luZ0ZpZWxkADxEYXRlPmtfX0JhY2tpbmdGaWVsZAA8U3lzdGVtPmtfX0JhY2tpbmdGaWVsZAA8
+Q3JlYXRvckluZm8+a19fQmFja2luZ0ZpZWxkADxwdXJjaGFzZW9yZGVyPmtfX0JhY2tpbmdGaWVs
+ZAA8Um9zdGVyPmtfX0JhY2tpbmdGaWVsZAA8ZXJyb3I+a19fQmFja2luZ0ZpZWxkADxuY3JtaW51
+dGVzPmtfX0JhY2tpbmdGaWVsZAA8ZW1zbWludXRlcz5rX19CYWNraW5nRmllbGQAPElzSW5Qcm9n
+cmVzcz5rX19CYWNraW5nRmllbGQAPEN1c3RvbUZpZWxkRGF0YU9iamVjdD5rX19CYWNraW5nRmll
+bGQAPE9wZXJhdGlvbmFsVW5pdE9iamVjdD5rX19CYWNraW5nRmllbGQAPHJpdG10aW1lc2hlZXQ+
+a19fQmFja2luZ0ZpZWxkADxPcGVyYXRpb25hbFVuaXQ+a19fQmFja2luZ0ZpZWxkADxFbXBsb3ll
+ZUFncmVlbWVudD5rX19CYWNraW5nRmllbGQAPEludm9pY2VDb21tZW50PmtfX0JhY2tpbmdGaWVs
+ZAA8Q29zdD5rX19CYWNraW5nRmllbGQAc2V0X3RpbWVzaGVldEVuZABEYXRlVGltZUtpbmQAU3Bl
+Y2lmeUtpbmQASHR0cE1ldGhvZABkZWZhdWx0SW5zdGFuY2UAc2V0X0pvYkNvZGUAZ2V0X0lzU3Vj
+Y2Vzc1N0YXR1c0NvZGUAZ2V0X2NvZGUAc2V0X2NvZGUAZ2V0X0VtcGxveWVlAHNldF9FbXBsb3ll
+ZQBnZXRfTWVzc2FnZQBIdHRwUmVzcG9uc2VNZXNzYWdlAEh0dHBSZXF1ZXN0TWVzc2FnZQBnZXRf
+bWVzc2FnZQBzZXRfbWVzc2FnZQBJRGlzcG9zYWJsZQBEb3VibGUAUnVudGltZVR5cGVIYW5kbGUA
+R2V0VHlwZUZyb21IYW5kbGUAZ2V0X0xlYXZlUnVsZQBzZXRfTGVhdmVSdWxlAGdldF9TdGFuZGFy
+ZE5hbWUAZ2V0X1BheXJvbGxFeHBvcnROYW1lAHNldF9QYXlyb2xsRXhwb3J0TmFtZQBnZXRfRGlz
+cGxheU5hbWUAc2V0X0Rpc3BsYXlOYW1lAGdldF9FbmRUaW1lAHNldF9FbmRUaW1lAFVuaXhUaW1l
+U3RhbXBUb0RhdGVUaW1lAGRhdGVUaW1lAFRvTG9jYWxUaW1lAGdldF9SZWFsVGltZQBzZXRfUmVh
+bFRpbWUAZ2V0X1RvdGFsVGltZQBzZXRfVG90YWxUaW1lAGdldF9TdGFydFRpbWUAc2V0X1N0YXJ0
+VGltZQBJQXN5bmNTdGF0ZU1hY2hpbmUAU2V0U3RhdGVNYWNoaW5lAHN0YXRlTWFjaGluZQBNaWNy
+b3NvZnQuU3FsU2VydmVyLkR0cy5QaXBlbGluZQBDb252ZXJ0VVRDVG9UaW1lWm9uZQBnZXRfQ3Vy
+cmVudFRpbWVab25lAENvbnZlcnRUaW1lWm9uZQBzZXRfU291cmNlVHlwZQBWYWx1ZVR5cGUAU2Vj
+dXJpdHlQcm90b2NvbFR5cGUAZ2V0X0N1bHR1cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VDdWx0dXJl
+AEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAERpc3Bvc2UAVHJ5UGFyc2UAZ2V0X0RhdGUAc2V0X0Rh
+dGUAQ3JlYXRlAEVkaXRvckJyb3dzYWJsZVN0YXRlADw+MV9fc3RhdGUAQ29tcGlsZXJHZW5lcmF0
+ZWRBdHRyaWJ1dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJpYnV0ZQBEZWJ1Z2dhYmxlQXR0cmli
+dXRlAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzeW5j
+U3RhdGVNYWNoaW5lQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAFRhcmdldEZy
+YW1ld29ya0F0dHJpYnV0ZQBEZWJ1Z2dlckhpZGRlbkF0dHJpYnV0ZQBBc3NlbWJseUNvbmZpZ3Vy
+YXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlwdGlvbkF0dHJpYnV0ZQBDb21waWxhdGlvblJl
+bGF4YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5UHJvZHVjdEF0dHJpYnV0ZQBBc3NlbWJseUNvcHly
+aWdodEF0dHJpYnV0ZQBTU0lTU2NyaXB0Q29tcG9uZW50RW50cnlQb2ludEF0dHJpYnV0ZQBBc3Nl
+bWJseUNvbXBhbnlBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGliaWxpdHlBdHRyaWJ1dGUAUHJlRXhl
+Y3V0ZQBQb3N0RXhlY3V0ZQBnZXRfVmFsdWUAQXV0aGVudGljYXRpb25IZWFkZXJWYWx1ZQBnZXRf
+SGFzVmFsdWUAdmFsdWUAc2V0X0V4cGVjdENvbnRpbnVlAERlc2VyaWFsaXplAEVuY29kaW5nAFN5
+c3RlbS5SdW50aW1lLlZlcnNpb25pbmcAVG9TdHJpbmcAc2V0X01heEpzb25MZW5ndGgAZ2V0X1Rh
+c2sAU3lzdGVtLkNvbXBvbmVudE1vZGVsAEVycm9yRGV0YWlsAFNDXzdjNjExZTY1OTJkZjRiNDk4
+ZDM5MGQzZjViYzdhY2EyLmRsbABzZXRfUklUTV9Jc051bGwAc2V0X0lkX0lzTnVsbABzZXRfQXJl
+YUlkX0lzTnVsbABzZXRfRW1wbG95ZWVJZF9Jc051bGwAc2V0X1BheUN5Y2xlSWRfSXNOdWxsAHNl
+dF9MZWF2ZVJ1bGVJZF9Jc051bGwAc2V0X0xlYXZlSWRfSXNOdWxsAHNldF9Sb3N0ZXJJZF9Jc051
+bGwAc2V0X0FncmVlbWVudElkX0lzTnVsbABzZXRfSW52b2ljZWRfSXNOdWxsAHNldF9EaXNjYXJk
+ZWRfSXNOdWxsAHNldF9Nb2RpZmllZF9Jc051bGwAc2V0X0F1dG9Qcm9jZXNzZWRfSXNOdWxsAHNl
+dF9DcmVhdGVkX0lzTnVsbABzZXRfRXhwb3J0ZWRfSXNOdWxsAHNldF9UaW1lQXBwcm92ZWRfSXNO
+dWxsAHNldF9BdXRvVGltZUFwcHJvdmVkX0lzTnVsbABzZXRfUGF5QXBwcm92ZWRfSXNOdWxsAHNl
+dF9BdXRvUGF5QXBwcm92ZWRfSXNOdWxsAHNldF9QYWlkX0lzTnVsbABzZXRfdGltZXNoZWV0RW5k
+X0lzTnVsbABzZXRfSm9iQ29kZV9Jc051bGwAc2V0X1JlYWxUaW1lX0lzTnVsbABzZXRfU291cmNl
+VHlwZV9Jc051bGwAc2V0X1BPTnVtYmVyX0lzTnVsbABzZXRfQ3JlYXRvcl9Jc051bGwAc2V0X05D
+Uk1pbnV0ZXNfSXNOdWxsAHNldF9FTVNNaW51dGVzX0lzTnVsbABzZXRfdGltZXNoZWV0SG91cnNf
+SXNOdWxsAHNldF9JblByb2dyZXNzX0lzTnVsbABzZXRfSW52b2ljZUNvbW1lbnRfSXNOdWxsAHNl
+dF90aW1lc2hlZXRTdGFydF9Jc051bGwAc2V0X3RpbWVzaGVldENvc3RfSXNOdWxsAFNldE51bGwA
+c2V0X1NlY3VyaXR5UHJvdG9jb2wAdXJsAGdldF9JdGVtAHNldF9JdGVtAGdldF9TeXN0ZW0Ac2V0
+X1N5c3RlbQByZXNvdXJjZU1hbgBCb29sZWFuAFRpbWVTcGFuAFNjcmlwdE1haW4ARmlyZUluZm9y
+bWF0aW9uAFN5c3RlbS5Db25maWd1cmF0aW9uAFN5c3RlbS5HbG9iYWxpemF0aW9uAFN5c3RlbS5X
+ZWIuU2NyaXB0LlNlcmlhbGl6YXRpb24Ac2V0X0F1dGhvcml6YXRpb24AU3lzdGVtLlJlZmxlY3Rp
+b24ASW52YWxpZE9wZXJhdGlvbkV4Y2VwdGlvbgBTZXRFeGNlcHRpb24AVGltZVpvbmVJbmZvAEN1
+bHR1cmVJbmZvAGdldF9DcmVhdG9ySW5mbwBzZXRfQ3JlYXRvckluZm8AT3V0cHV0TmFtZU1hcABP
+dXRwdXRNYXAATWljcm9zb2Z0LlNxbFNlcnZlci5EVFNSdW50aW1lV3JhcABNaWNyb3NvZnQuU3Fs
+U2VydmVyLkRUU1BpcGVsaW5lV3JhcAB1bml4VGltZVN0YW1wAFN5c3RlbS5OZXQuSHR0cAByZXEA
+c2V0X1BPTnVtYmVyADw+dF9fYnVpbGRlcgBnZXRfcHVyY2hhc2VvcmRlcgBzZXRfcHVyY2hhc2Vv
+cmRlcgBQaXBlbGluZUJ1ZmZlcgBUaW1lc2hlZXRCdWZmZXIAU2NyaXB0QnVmZmVyAGdldF9SZXNv
+dXJjZU1hbmFnZXIAU2VydmljZVBvaW50TWFuYWdlcgBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5S
+dW50aW1lLldyYXBwZXIATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlwZWxpbmUuV3JhcHBlcgBH
+ZXRBd2FpdGVyAGdldF9Sb3N0ZXIAc2V0X1Jvc3RlcgBKYXZhU2NyaXB0U2VyaWFsaXplcgBGaXJl
+RXJyb3IAZ2V0X2Vycm9yAHNldF9lcnJvcgBzZXRfQ3JlYXRvcgBHZXRFbnVtZXJhdG9yAC5jdG9y
+AC5jY3RvcgBPdXRwdXRJRHMAU3lzdGVtLkRpYWdub3N0aWNzAEFkZFNlY29uZHMARnJvbVNlY29u
+ZHMAU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlcwBTeXN0ZW0uUmVzb3VyY2VzAFNDXzdj
+NjExZTY1OTJkZjRiNDk4ZDM5MGQzZjViYzdhY2EyLlByb3BlcnRpZXMuUmVzb3VyY2VzLnJlc291
+cmNlcwBEZWJ1Z2dpbmdNb2RlcwBTQ183YzYxMWU2NTkyZGY0YjQ5OGQzOTBkM2Y1YmM3YWNhMi5Q
+cm9wZXJ0aWVzAGdldF9SZWFkT25seVZhcmlhYmxlcwBzZXRfTkNSTWludXRlcwBzZXRfRU1TTWlu
+dXRlcwBnZXRfbmNybWludXRlcwBzZXRfbmNybWludXRlcwBnZXRfZW1zbWludXRlcwBzZXRfZW1z
+bWludXRlcwBCdWZmZXJDb2x1bW5JbmRleGVzAEdldENvbHVtbkluZGV4ZXMAU2V0dGluZ3MAU3lz
+dGVtLlRocmVhZGluZy5UYXNrcwBTeXN0ZW0uV2ViLkV4dGVuc2lvbnMAQ29ubmVjdGlvbnMAU3lz
+dGVtLk5ldC5IdHRwLkhlYWRlcnMASHR0cEhlYWRlcnMASHR0cFJlcXVlc3RIZWFkZXJzAGdldF9E
+ZWZhdWx0UmVxdWVzdEhlYWRlcnMAQnVmZmVycwBzZXRfdGltZXNoZWV0SG91cnMAc2V0X0luUHJv
+Z3Jlc3MAZ2V0X0lzSW5Qcm9ncmVzcwBzZXRfSXNJblByb2dyZXNzAEZpbmlzaE91dHB1dHMAQ3Jl
+YXRlTmV3T3V0cHV0Um93cwBDb25jYXQAZ2V0X0N1c3RvbUZpZWxkRGF0YU9iamVjdABzZXRfQ3Vz
+dG9tRmllbGREYXRhT2JqZWN0AEVycm9yT2JqZWN0AGdldF9PcGVyYXRpb25hbFVuaXRPYmplY3QA
+c2V0X09wZXJhdGlvbmFsVW5pdE9iamVjdABTeXN0ZW0uTmV0AFRpbWVzaGVldABnZXRfcml0bXRp
+bWVzaGVldABzZXRfcml0bXRpbWVzaGVldABTZXRFbmRPZlJvd3NldABnZXRfT3BlcmF0aW9uYWxV
+bml0AHNldF9PcGVyYXRpb25hbFVuaXQAZ2V0X0RlZmF1bHQAZ2V0X1Jlc3VsdABHZXRSZXN1bHQA
+U2V0UmVzdWx0AEh0dHBDbGllbnQAZ2V0X0VtcGxveWVlQWdyZWVtZW50AHNldF9FbXBsb3llZUFn
+cmVlbWVudABnZXRfSW52b2ljZUNvbW1lbnQAc2V0X0ludm9pY2VDb21tZW50AFVzZXJDb21wb25l
+bnQAUGFyZW50Q29tcG9uZW50AFNjcmlwdENvbXBvbmVudABnZXRfQ3VycmVudABnZXRfQ29udGVu
+dABzZXRfQ29udGVudABTdHJpbmdDb250ZW50AEh0dHBDb250ZW50AGdldF9Db3VudABNaWNyb3Nv
+ZnQuU3FsU2VydmVyLlR4U2NyaXB0AHNldF90aW1lc2hlZXRTdGFydABhcGlSZXF1ZXN0AGdldF9D
+b3N0AHNldF9Db3N0AHNldF90aW1lc2hlZXRDb3N0AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuUGlwZWxp
+bmVIb3N0AGdldF9Qb3N0AHNldF9UaW1lb3V0AFByaW1lT3V0cHV0AE1vdmVOZXh0AFN5c3RlbS5U
+ZXh0AEdldFZhbHVlV2l0aENvbnRleHQAU2NyaXB0Q29tcG9uZW50RXZhbENvbnRleHQAZ2V0X0V2
+YWx1YXRvckNvbnRleHQAQWRkUm93AGdldF9Bc3NlbWJseQBvcF9FcXVhbGl0eQBJc051bGxPckVt
+cHR5AAAAAEEvAGEAcABpAC8AdgAxAC8AcgBlAHMAbwB1AHIAYwBlAC8AVABpAG0AZQBzAGgAZQBl
+AHQALwBRAFUARQBSAFkAADNOAGUAdwAgAFoAZQBhAGwAYQBuAGQAIABTAHQAYQBuAGQAYQByAGQA
+IABUAGkAbQBlAAANQgBlAGEAcgBlAHIAABVDAG8AbgBuAGUAYwB0AGkAbwBuAAAVSwBlAGUAcAAt
+AEEAbABpAHYAZQABBXsACgAAGSIAcwBlAGEAcgBjAGgAIgA6ACAAewAKAAALRABFAEwAVABBAABF
+IgBzADEAIgA6AHsAIgBmAGkAZQBsAGQAIgA6ACIATQBvAGQAaQBmAGkAZQBkACIALAAgACIAZABh
+AHQAYQAiADoAIgAAJ3kAeQB5AHkALQBNAE0ALQBkAGQAIABoAGgAOgBtAG0AOgBzAHMAASEiACwA
+IAAiAHQAeQBwAGUAIgA6ACIAZwBlACIAfQAKAAA9IgBzADEAIgA6AHsAIgBmAGkAZQBsAGQAIgA6
+ACIARABhAHQAZQAiACwAIAAiAGQAYQB0AGEAIgA6ACIAAAV9AAoAABMsACIAcwB0AGEAcgB0ACIA
+OgAAAwoAAC0sACIAcwBvAHIAdAAiADoAewAiAEkAZAAiADoAIAAiAGEAcwBjACIAfQAKAACAiywA
+IgBqAG8AaQBuACIAOgAgAFsAIgBMAGUAYQB2AGUAIgAsACAAIgBDAHUAcwB0AG8AbQBGAGkAZQBs
+AGQARABhAHQAYQBPAGIAagBlAGMAdAAiACwAIAAiAE8AcABlAHIAYQB0AGkAbwBuAGEAbABVAG4A
+aQB0AE8AYgBqAGUAYwB0ACIAXQAKAAADfQAAEUEAUABJACAAQgBvAGQAeQAAAQAhYQBwAHAAbABp
+AGMAYQB0AGkAbwBuAC8AagBzAG8AbgAAE1UAbgBwAGwAYQBuAG4AZQBkAAALTABlAGEAdgBlAAAN
+UgBvAHMAdABlAHIAABNBAFAASQAgAEUAcgByAG8AcgAAByAAOgAgAAAZUwBjAHIAaQBwAHQAIABF
+AHIAcgBvAHIAAICbSQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkAIABjAGEAbgBuAG8AdAAg
+AGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcAbgAgAGEAIAB2AGEA
+bAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABlAGEAZAAuAAATVABp
+AG0AZQBzAGgAZQBlAHQAABtEAGUAbAB0AGEATQBvAGQAaQBmAGkAZQBkAAA1RQBOAFYAXwBDAE8A
+TgBOAEUAQwBUAEkATwBOAF8AMQBfAEQARQBQAF8AVABPAEsARQBOAAAxRQBOAFYAXwBDAE8ATgBO
+AEUAQwBUAEkATwBOAF8AMQBfAEQARQBQAF8AVQBSAEwAAClFAFQATABfAEMAVQBTAF8AUgBFAEIA
+VQBJAEwARABfAEQAQQBUAEUAAC9FAFQATABfAFYAQQBSAF8ARABBAFQAQQBfAFIAQQBOAEcARQBf
+AE0ATwBEAEUAAHFTAEMAXwA3AGMANgAxADEAZQA2ADUAOQAyAGQAZgA0AGIANAA5ADgAZAAzADkA
+MABkADMAZgA1AGIAYwA3AGEAYwBhADIALgBQAHIAbwBwAGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1
+AHIAYwBlAHMAAADA/mZ13ucSSbA39hkggk0JAAQgAQEIAyAAAQUgAQEREQQgAQEOBSABARJdBSAB
+ARJ5BiABARGAqUIHIA4ODg4ODg4ROQISPQgCDg4SQRJFEkkROQ4VEk0BEjwVEVEBEjwSPAIOFRFV
+AQIVEVUBDRURVQEIEjANEigSWQIDIAAOBQACDg4OBQAAEoC5BgABARGAwQUgABKAxQUgAgEODgYg
+AQESgMkFFRFVAQIFIAEBEwAIIAEBFRFVAQIGAAERgNENBiABARGA0QUAAgIODgUgARE5DQQgAQ4O
+BwAEDg4ODg4FIAASgNkKIAYBCA4ODggQAgUAABKA3QggAwEOEoDdDgYVEmUBEkkEIAATAAMgAAIF
+IAASgOEHIAAVEmUBDgUVEmUBDgYwAQEeAA4ICgEVEk0BEjwGFRJNARI8CCAAFRFRARMABhURUQES
+PAQAAQIOBRURVQENBRURVQEIBgACAg4QDQQAAQ0OAyAACAQKARIoBgADDg4ODgQHARFABxURgIUB
+EkkJAAAVEYCFARMABzABAQEQHgAECgERQAggABUSZQETAAYHAhJpEmkFAAESaQ4JAAIRORE5EYDt
+CAACETkRORJpBAcBEmkGBwIRORE5DSAIAQgICAgICAgRgO0EIAAROQsgAwESgJEdCBKAlQUgAgEI
+HAMHAQgHAAIIEoCVDgUgAR0ICAUgABKA+QYgARKA/RwFAAASgQEGIAEcEoEFBwABEl0RgQkFIAAS
+gQ0HIAIBDhKBDRAHBQgSSRJ9FRGAgQESSRJZBQAAEoERByACARKBEQ4GIAEBEoDhCiABFRJlARJJ
+En0JIAAVEYCBARMABxURgIEBEkkKMAICARAeABAeAQsKAhURgIEBEkkRQAUgAQESWQi3elxWGTTg
+iQiJhF3NgIDMkQiwP19/EdUKOggxvzhWrTZONQMGEhQDBhIYAwYSDAQGEoCZBAYSgKEEBhKApQMG
+EiACBg4DBhIkAgYIAwYSLAMGETkCBg0GBhURVQENBgYVEVUBCAIGAgYGFRFVAQIDBhI0AwYSMAMG
+EjgIBhURgIUBEkkDBhJFAwYSPQgGFRGAgQESSQ0AAxUSZQESSRI9DhJFCAADETkROQ4OBwACETkR
+OQ4FAAEROQ0EIAEBAgUgAQEROQQgAQENDSAEAQgdCB0SgJESgJUGIAEBEoCZBQAAEoChBQAAEoCl
+BgABARKApQQAABIgAwAAAQQgABIkBSABARIkBCAAEiwFIAEBEiwDIAANByAAFRFVAQ0IIAEBFRFV
+AQ0HIAAVEVUBCAggAQEVEVUBCAcgABURVQECBCAAEjQFIAEBEjQEIAASMAUgAQESMAQgABI4BSAB
+ARI4AygACAMoAAIEKAAROQMoAA4DKAANBQgAEoChBQgAEoClBAgAEiAEKAASJAQoABIsBygAFRFV
+AQ0HKAAVEVUBCAcoABURVQECBCgAEjQEKAASMAQoABI4CAEACAAAAAAAHgEAAQBUAhZXcmFwTm9u
+RXhjZXB0aW9uVGhyb3dzAQgBAAIAAAAAACgBACNTQ183YzYxMWU2NTkyZGY0YjQ5OGQzOTBkM2Y1
+YmM3YWNhMgAABQEAAAAAFgEAEUNvcHlyaWdodCBAICAyMDI0AABJAQAaLk5FVEZyYW1ld29yayxW
+ZXJzaW9uPXY0LjcBAFQOFEZyYW1ld29ya0Rpc3BsYXlOYW1lEi5ORVQgRnJhbWV3b3JrIDQuNyAB
+ABtTY3JpcHRNYWluKzxhcGlSZXF1ZXN0PmRfXzMAAAQBAAAAtAAAAM7K774BAAAAkQAAAGxTeXN0
+ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBD
+dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkjU3lzdGVtLlJl
+c291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQQURQQURQtAAAAIh8AAAAAAAA
+AAAAAKJ8AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAACUfAAAAAAAAAAAAAAAAF9Db3JEbGxNYWlu
+AG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACA
+AAAAAAAAAAAAAAAAAAABAAAAAABIAAAAWIAAAOwDAAAAAAAAAAAAAOwDNAAAAFYAUwBfAFYARQBS
+AFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9BO/+AAABAAAAAQAAAAAAAAABAAAAAAA/AAAAAAAAAAQA
+AAACAAAAAAAAAAAAAAAAAAAARAAAAAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABU
+AHIAYQBuAHMAbABhAHQAaQBvAG4AAAAAAAAAsARMAwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkA
+bgBmAG8AAAAoAwAAAQAwADAAMAAwADAANABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAA
+AAAAIgABAAEAQwBvAG0AcABhAG4AeQBOAGEAbQBlAAAAAAAAAAAAcAAkAAEARgBpAGwAZQBEAGUA
+cwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMAQwBfADcAYwA2ADEAMQBlADYANQA5ADIAZABmADQAYgA0
+ADkAOABkADMAOQAwAGQAMwBmADUAYgBjADcAYQBjAGEAMgAAADAACAABAEYAaQBsAGUAVgBlAHIA
+cwBpAG8AbgAAAAAAMQAuADAALgAwAC4AMAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBl
+AAAAUwBDAF8ANwBjADYAMQAxAGUANgA1ADkAMgBkAGYANABiADQAOQA4AGQAMwA5ADAAZAAzAGYA
+NQBiAGMANwBhAGMAYQAyAC4AZABsAGwAAABIABIAAQBMAGUAZwBhAGwAQwBvAHAAeQByAGkAZwBo
+AHQAAABDAG8AcAB5AHIAaQBnAGgAdAAgAEAAIAAgADIAMAAyADQAAAAqAAEAAQBMAGUAZwBhAGwA
+VAByAGEAZABlAG0AYQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABl
+AG4AYQBtAGUAAABTAEMAXwA3AGMANgAxADEAZQA2ADUAOQAyAGQAZgA0AGIANAA5ADgAZAAzADkA
+MABkADMAZgA1AGIAYwA3AGEAYwBhADIALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBh
+AG0AZQAAAAAAUwBDAF8ANwBjADYAMQAxAGUANgA1ADkAMgBkAGYANABiADQAOQA4AGQAMwA5ADAA
+ZAAzAGYANQBiAGMANwBhAGMAYQAyAAAANAAIAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBu
+AAAAMQAuADAALgAwAC4AMAAAADgACAABAEEAcwBzAGUAbQBiAGwAeQAgAFYAZQByAHMAaQBvAG4A
+AAAxAC4AMAAuADAALgAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAHAAAAwAAAC0PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAA=]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">SC_7c611e6592df4b498d390d3f5bc7aca2</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read-only variables."
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg">User::DeltaModified,$Project::ETL_VAR_DATA_RANGE_MODE,$Project::ENV_CONNECTION_1_DEP_URL,$Project::ENV_CONNECTION_1_DEP_TOKEN,$Project::ETL_CUS_REBUILD_DATE</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read/write variables."
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum140"
+                  typeConverter="NOTBROWSABLE">C9</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
+              </properties>
+              <outputs>
+                <output
+                  refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet]"
+                  hasSideEffects="true"
+                  name="Timesheet">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Id]"
+                      name="Id" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AgreementId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AgreementId]"
+                      name="AgreementId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[EmployeeId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[EmployeeId]"
+                      name="EmployeeId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[LeaveRuleId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[LeaveRuleId]"
+                      name="LeaveRuleId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[LeaveId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[LeaveId]"
+                      name="LeaveId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PayCycleId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PayCycleId]"
+                      name="PayCycleId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AreaId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AreaId]"
+                      name="AreaId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RosterId]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RosterId]"
+                      name="RosterId" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Created]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Created]"
+                      name="Created" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Creator]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Creator]"
+                      name="Creator" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Modified]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Modified]"
+                      name="Modified" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[JobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[JobCode]"
+                      name="JobCode" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetStart]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetStart]"
+                      name="timesheetStart" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetEnd]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetEnd]"
+                      name="timesheetEnd" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetHours]"
+                      dataType="r8"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetHours]"
+                      name="timesheetHours" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetCost]"
+                      dataType="r8"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetCost]"
+                      name="timesheetCost" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[SourceType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[SourceType]"
+                      name="SourceType" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[InProgress]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[InProgress]"
+                      name="InProgress" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RealTime]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RealTime]"
+                      name="RealTime" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoProcessed]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoProcessed]"
+                      name="AutoProcessed" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PayApproved]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PayApproved]"
+                      name="PayApproved" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[TimeApproved]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[TimeApproved]"
+                      name="TimeApproved" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoPayApproved]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoPayApproved]"
+                      name="AutoPayApproved" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoTimeApproved]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoTimeApproved]"
+                      name="AutoTimeApproved" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Exported]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Exported]"
+                      name="Exported" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Paid]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Paid]"
+                      name="Paid" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Invoiced]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Invoiced]"
+                      name="Invoiced" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[InvoiceComment]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[InvoiceComment]"
+                      name="InvoiceComment" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Discarded]"
+                      dataType="bool"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Discarded]"
+                      name="Discarded" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PONumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PONumber]"
+                      name="PONumber" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RITM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RITM]"
+                      name="RITM" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[EMSMinutes]"
+                      dataType="r8"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[EMSMinutes]"
+                      name="EMSMinutes" />
+                    <outputColumn
+                      refId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[NCRMinutes]"
+                      dataType="r8"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[NCRMinutes]"
+                      name="NCRMinutes" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Timesheets\STG Timesheet"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="STG Timesheet"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[staging].[DEP_Timesheet]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Timesheets\STG Timesheet.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[AgreementId]"
+                      cachedDataType="i4"
+                      cachedName="AgreementId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AgreementId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AgreementId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[EmployeeId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[LeaveRuleId]"
+                      cachedDataType="i4"
+                      cachedName="LeaveRuleId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[LeaveRuleId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[LeaveRuleId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[PayCycleId]"
+                      cachedDataType="i4"
+                      cachedName="PayCycleId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[PayCycleId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PayCycleId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AreaId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[RosterId]"
+                      cachedDataType="i4"
+                      cachedName="RosterId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RosterId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[JobCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="JobCode"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[JobCode]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[JobCode]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[timesheetStart]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="timesheetStart"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetStart]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetStart]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[timesheetEnd]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="timesheetEnd"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetEnd]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetEnd]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[timesheetHours]"
+                      cachedDataType="r8"
+                      cachedName="timesheetHours"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetHours]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetHours]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[timesheetCost]"
+                      cachedDataType="r8"
+                      cachedName="timesheetCost"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetCost]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[timesheetCost]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[SourceType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="SourceType"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[SourceType]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[SourceType]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[InProgress]"
+                      cachedDataType="bool"
+                      cachedName="InProgress"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[InProgress]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[InProgress]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[RealTime]"
+                      cachedDataType="bool"
+                      cachedName="RealTime"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[RealTime]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RealTime]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[AutoProcessed]"
+                      cachedDataType="bool"
+                      cachedName="AutoProcessed"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AutoProcessed]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoProcessed]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[PayApproved]"
+                      cachedDataType="bool"
+                      cachedName="PayApproved"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[PayApproved]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PayApproved]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[TimeApproved]"
+                      cachedDataType="bool"
+                      cachedName="TimeApproved"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[TimeApproved]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[TimeApproved]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[AutoPayApproved]"
+                      cachedDataType="bool"
+                      cachedName="AutoPayApproved"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AutoPayApproved]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoPayApproved]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[AutoTimeApproved]"
+                      cachedDataType="bool"
+                      cachedName="AutoTimeApproved"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AutoTimeApproved]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[AutoTimeApproved]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Exported]"
+                      cachedDataType="bool"
+                      cachedName="Exported"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Exported]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Exported]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Paid]"
+                      cachedDataType="bool"
+                      cachedName="Paid"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Paid]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Paid]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Invoiced]"
+                      cachedDataType="bool"
+                      cachedName="Invoiced"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Invoiced]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Invoiced]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[InvoiceComment]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="InvoiceComment"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[InvoiceComment]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[InvoiceComment]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Discarded]"
+                      cachedDataType="bool"
+                      cachedName="Discarded"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Discarded]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Discarded]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[PONumber]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="PONumber"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[PONumber]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[PONumber]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[RITM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="RITM"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[RITM]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[RITM]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[EMSMinutes]"
+                      cachedDataType="r8"
+                      cachedName="EMSMinutes"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[EMSMinutes]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[EMSMinutes]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[NCRMinutes]"
+                      cachedDataType="r8"
+                      cachedName="NCRMinutes"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[NCRMinutes]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[NCRMinutes]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[LeaveId]"
+                      cachedDataType="i4"
+                      cachedName="LeaveId"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[LeaveId]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[LeaveId]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Modified]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="Modified"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Modified]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Modified]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Created]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="Created"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Created]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Created]" />
+                    <inputColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].Columns[Creator]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="Creator"
+                      externalMetadataColumnId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Creator]"
+                      lineageId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet].Columns[Creator]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Id]"
+                      dataType="i4"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AgreementId]"
+                      dataType="i4"
+                      name="AgreementId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[LeaveRuleId]"
+                      dataType="i4"
+                      name="LeaveRuleId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[PayCycleId]"
+                      dataType="i4"
+                      name="PayCycleId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      dataType="i4"
+                      name="RosterId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[JobCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="JobCode" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetStart]"
+                      dataType="dbTimeStamp"
+                      name="timesheetStart" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetEnd]"
+                      dataType="dbTimeStamp"
+                      name="timesheetEnd" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetHours]"
+                      dataType="r8"
+                      name="timesheetHours" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[timesheetCost]"
+                      dataType="r8"
+                      name="timesheetCost" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[SourceType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="SourceType" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[InProgress]"
+                      dataType="bool"
+                      name="InProgress" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[RealTime]"
+                      dataType="bool"
+                      name="RealTime" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AutoProcessed]"
+                      dataType="bool"
+                      name="AutoProcessed" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[PayApproved]"
+                      dataType="bool"
+                      name="PayApproved" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[TimeApproved]"
+                      dataType="bool"
+                      name="TimeApproved" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AutoPayApproved]"
+                      dataType="bool"
+                      name="AutoPayApproved" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[AutoTimeApproved]"
+                      dataType="bool"
+                      name="AutoTimeApproved" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Exported]"
+                      dataType="bool"
+                      name="Exported" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Paid]"
+                      dataType="bool"
+                      name="Paid" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Invoiced]"
+                      dataType="bool"
+                      name="Invoiced" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[InvoiceComment]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="InvoiceComment" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Discarded]"
+                      dataType="bool"
+                      name="Discarded" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[PONumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="PONumber" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[RITM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="RITM" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[EMSMinutes]"
+                      dataType="r8"
+                      name="EMSMinutes" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[NCRMinutes]"
+                      dataType="r8"
+                      name="NCRMinutes" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[LeaveId]"
+                      dataType="i4"
+                      name="LeaveId" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Modified]"
+                      dataType="dbTimeStamp"
+                      name="Modified" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Created]"
+                      dataType="dbTimeStamp"
+                      name="Created" />
+                    <externalMetadataColumn
+                      refId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input].ExternalColumns[Creator]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="Creator" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Timesheets\STG Timesheet.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Timesheets\STG Timesheet.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\STG Timesheet.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Timesheets\STG Timesheet.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Timesheets\STG Timesheet.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Timesheets.Paths[Timesheet]"
+              endId="Package\Timesheets\STG Timesheet.Inputs[OLE DB Destination Input]"
+              name="Timesheet"
+              startId="Package\Timesheets\DEP Timesheet.Outputs[Timesheet]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Staging"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{EC710F7B-59DD-43F7-8044-5EB9CFBFDF05}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Staging"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE staging.DEP_Timesheet;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{3DD8B497-2CCF-4DDB-8639-8CFE5D18E2F4}"
+      DTS:From="Package\Truncate Staging"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Timesheets" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{6F86DEDF-978B-4F7D-A0D4-5FC4B738FABC}"
+      DTS:From="Package\Get max modified"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Timesheets" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{D98991D0-434E-4FFF-8B75-D55D93D192CF}"
+      DTS:From="Package\Timesheets"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\FCT MERGE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{83361467-430F-4894-B5B0-3F8BB16263B9}"
+      DTS:From="Package\Timesheets"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\FCT Rebuild" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="134,42"
+          Id="Package\FCT MERGE"
+          TopLeft="415,295" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\FCT Rebuild"
+          TopLeft="158,307" />
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Get max modified"
+          TopLeft="454,48" />
+        <NodeLayout
+          Size="133,42"
+          Id="Package\Timesheets"
+          TopLeft="267,189" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Truncate Staging"
+          TopLeft="112,40" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="191.5,82">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="121.166666666667,107"
+              Start="0,0"
+              End="121.166666666667,99.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.4368499257058" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,59.4368499257058"
+                    Point2="0,63.4368499257058"
+                    Point3="4,63.4368499257058" />
+                  <mssgle:LineSegment
+                    End="117.166666666667,63.4368499257058" />
+                  <mssgle:CubicBezierSegment
+                    Point1="117.166666666667,63.4368499257058"
+                    Point2="121.166666666667,63.4368499257058"
+                    Point3="121.166666666667,67.4368499257058" />
+                  <mssgle:LineSegment
+                    End="121.166666666667,99.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="535,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-180.666666666667,99"
+              Start="0,0"
+              End="-180.666666666667,91.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.6939078751857" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,54.6939078751857"
+                    Point2="0,58.6939078751857"
+                    Point3="-4,58.6939078751857" />
+                  <mssgle:LineSegment
+                    End="-176.666666666667,58.6939078751857" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-176.666666666667,58.6939078751857"
+                    Point2="-180.666666666667,58.6939078751857"
+                    Point3="-180.666666666667,62.6939078751857" />
+                  <mssgle:LineSegment
+                    End="-180.666666666667,91.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="354.333333333333,231">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="127.666666666667,64"
+              Start="0,0"
+              End="127.666666666667,56.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.0564635958395" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.0564635958395"
+                    Point2="0,26.0564635958395"
+                    Point3="4,26.0564635958395" />
+                  <mssgle:LineSegment
+                    End="123.666666666667,26.0564635958395" />
+                  <mssgle:CubicBezierSegment
+                    Point1="123.666666666667,26.0564635958395"
+                    Point2="127.666666666667,26.0564635958395"
+                    Point3="127.666666666667,30.0564635958395" />
+                  <mssgle:LineSegment
+                    End="127.666666666667,56.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="312.666666666667,231">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-87.1666666666667,76"
+              Start="0,0"
+              End="-87.1666666666667,68.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.9420505200594" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26.9420505200594"
+                    Point2="0,30.9420505200594"
+                    Point3="-4,30.9420505200594" />
+                  <mssgle:LineSegment
+                    End="-83.1666666666667,30.9420505200594" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-83.1666666666667,30.9420505200594"
+                    Point2="-87.1666666666667,30.9420505200594"
+                    Point3="-87.1666666666667,34.9420505200594" />
+                  <mssgle:LineSegment
+                    End="-87.1666666666667,68.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Timesheets">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Timesheets\STG Timesheet"
+          TopLeft="175,215" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Timesheets\DEP Timesheet"
+          TopLeft="173,104" />
+        <EdgeLayout
+          Id="Package\Timesheets.Paths[Timesheet]"
+          TopLeft="249,146">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,69"
+              Start="0,0"
+              End="0,61.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,61.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Timesheets\STG Timesheet">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

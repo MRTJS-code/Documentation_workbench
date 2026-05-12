@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dw].[DIM_IT_LOCSUBBRANCH] (
+    [SK_DIM_IT_LocSubBranch] BIGINT        IDENTITY (1, 1) NOT NULL,
+    [FK_DIM_Job]             BIGINT        NULL,
+    [FK_DIM_Branch]          INT           NULL,
+    [FK_DIM_Business]        INT           NULL,
+    [P_Location_Name]        VARCHAR (255) NOT NULL,
+    [P_SubLocation_Name]     VARCHAR (255) NOT NULL,
+    [P_BranchRef]            VARCHAR (255) NOT NULL,
+    [P_Location_Code]        VARCHAR (255) NULL,
+    [P_Location_Shortname]   VARCHAR (255) NULL,
+    [P_Location_Ref]         VARCHAR (255) NULL,
+    [dim_IT_address_key]     BIGINT        NULL,
+    [MD_DATE_CREATED]        DATE          NULL,
+    [MD_DATE_MODIFIED]       DATE          NULL,
+    [MD_JOB_CODE]            INT           NULL,
+    [MD_RUN_CODE]            BIGINT        NULL,
+    [MD_PACK_NAME]           VARCHAR (70)  NULL,
+    [MD_MODIFIED_USER]       VARCHAR (100) NULL,
+    [MD_LOGICAL_DELETE]      SMALLINT      NULL,
+    CONSTRAINT [PK_DIM_IT_LOCSUBBRANCH] PRIMARY KEY CLUSTERED ([SK_DIM_IT_LocSubBranch] ASC),
+    CONSTRAINT [FK_DIM_IT_LOCSUBBRANCH_DIM_BRANCH] FOREIGN KEY ([FK_DIM_Branch]) REFERENCES [dw].[DIM_BRANCH] ([SK_DIM_BRANCH]),
+    CONSTRAINT [FK_DIM_IT_LOCSUBBRANCH_DIM_BUSINESS] FOREIGN KEY ([FK_DIM_Business]) REFERENCES [dw].[DIM_BUSINESS] ([SK_DIM_BUSINESS]),
+    CONSTRAINT [FK_DIM_IT_LOCSUBBRANCH_DIM_JOB] FOREIGN KEY ([FK_DIM_Job]) REFERENCES [dw].[DIM_JOB] ([SK_DIM_JOB])
+);
+

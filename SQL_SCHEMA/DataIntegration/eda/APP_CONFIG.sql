@@ -1,0 +1,6 @@
+﻿CREATE TABLE [eda].[APP_CONFIG] (
+    [ID]             INT IDENTITY (1, 1) NOT NULL,
+    [APP_MAINT_MODE] BIT NULL,
+    PRIMARY KEY CLUSTERED ([ID] ASC)
+);
+

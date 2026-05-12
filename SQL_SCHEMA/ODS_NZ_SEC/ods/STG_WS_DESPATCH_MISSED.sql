@@ -1,0 +1,27 @@
+﻿CREATE TABLE [ods].[STG_WS_DESPATCH_MISSED] (
+    [DespatchID]                  INT           NOT NULL,
+    [EntryClerkUserId]            INT           NULL,
+    [DespatchStatus]              INT           NULL,
+    [DespatchLastChangedDateTime] DATETIME      NULL,
+    [LastUpdateDateTime]          DATETIME      NULL,
+    [ClientId]                    INT           NULL,
+    [AckDateTime]                 DATETIME      NULL,
+    [OnSiteDateTime]              DATETIME      NULL,
+    [OffSiteDateTime]             DATETIME      NULL,
+    [JobText]                     VARCHAR (MAX) NULL,
+    [SpecialInstructions]         VARCHAR (MAX) NULL,
+    [Hazards]                     VARCHAR (MAX) NULL,
+    [PatrolResolution]            VARCHAR (MAX) NULL,
+    [AlarmDocketId]               INT           NULL,
+    [DespatchTypeId]              INT           NULL,
+    [PermanentPatrolCompletedId]  INT           NULL,
+    [DespatchZone1Id]             INT           NULL,
+    [DespatchZone2Id]             INT           NULL,
+    [SubContractorId]             INT           NULL,
+    [PatrolOfficerEmployee1Id]    INT           NULL,
+    [PurchaseOrderNo]             VARCHAR (128) NULL,
+    [MonitoringStationId]         INT           NULL,
+    [PermanentPatrolId]           INT           NULL,
+    PRIMARY KEY CLUSTERED ([DespatchID] ASC)
+);
+

@@ -1,0 +1,6 @@
+﻿CREATE TABLE [staging].[LH_BLOB_LKP_BKP] (
+    [FILE_NAME]    VARCHAR (255) NULL,
+    [STATUS]       VARCHAR (255) NULL,
+    [DATE_PROCESS] DATETIME      NULL
+);
+

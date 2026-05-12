@@ -1,0 +1,23 @@
+﻿CREATE TABLE [dw].[FACT_LH_ISSUE] (
+    [SK_FACT_ISSUE]          BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_ISSUE_ID]            VARCHAR (255) NULL,
+    [FK_SK_AREA]             BIGINT        NULL,
+    [FK_SK_AREA_LOCATION]    BIGINT        NULL,
+    [FK_SK_USER]             BIGINT        NULL,
+    [FK_SK_ROLE]             BIGINT        NULL,
+    [P_ISSUE_LOCATION_ID]    VARCHAR (255) NULL,
+    [P_ISSUE_TITLE]          VARCHAR (255) NULL,
+    [FK_SK_ISSUE_UPDATED_AT] BIGINT        NULL,
+    [FK_SK_ISSUE_CREATED_AT] BIGINT        NULL,
+    [P_ISSUE_STATUS]         VARCHAR (255) NULL,
+    [P_TEMPLATE_ID]          VARCHAR (255) NULL,
+    [P_TEMPLATE_NAME]        VARCHAR (255) NULL,
+    [P_REVISION_NUMBER]      BIGINT        NULL,
+    [MD_FILENAME]            VARCHAR (255) NULL,
+    [MD_DATELASTMODIFIED]    DATETIME      NULL,
+    [MD_ETLJOB]              BIGINT        NULL,
+    [MD_ETLEXECUTION]        BIGINT        NULL,
+    [MD_ETLRUN]              BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([SK_FACT_ISSUE] ASC)
+);
+

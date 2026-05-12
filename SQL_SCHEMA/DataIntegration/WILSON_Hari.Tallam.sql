@@ -1,0 +1,2 @@
+﻿CREATE USER [WILSON\Hari.Tallam] FOR LOGIN [WILSON\Hari.Tallam];
+

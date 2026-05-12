@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dw].[FACT_LH_SHIFT] (
+    [SK_FACT_LH_SHIFT]        BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_SHIFT_ID]             VARCHAR (255) NULL,
+    [FK_SK_USER]              BIGINT        NULL,
+    [FK_SK_ROLE]              BIGINT        NULL,
+    [FK_SK_AREA_START]        BIGINT        NULL,
+    [FK_SK_AREA_END]          BIGINT        NULL,
+    [FK_SK_SHIFT_START_DATE]  BIGINT        NULL,
+    [FK_SK_SHIFT_END_DATE]    BIGINT        NULL,
+    [P_SHIFT_START_TIME]      TIME (3)      NULL,
+    [P_SHIFT_END_TIME]        TIME (3)      NULL,
+    [P_SHIFT_CREATED_AT]      BIGINT        NULL,
+    [P_SHIFT_UPDATED_AT]      BIGINT        NULL,
+    [P_USERNAME]              VARCHAR (255) NULL,
+    [P_END_GPS_COORDINATES]   VARCHAR (255) NULL,
+    [P_END_GEOCODE_LABEL]     VARCHAR (255) NULL,
+    [P_START_GPS_COORDINATES] VARCHAR (255) NULL,
+    [P_START_GEOCODE_LABEL]   VARCHAR (255) NULL,
+    [P_REVISION_NUMBER]       BIGINT        NULL,
+    [MD_FILENAME]             VARCHAR (255) NULL,
+    [MD_DATELASTMODIFIED]     DATETIME      NULL,
+    [MD_ETLJOB]               BIGINT        NULL,
+    [MD_ETLEXECUTION]         BIGINT        NULL,
+    [MD_ETLRUN]               BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([SK_FACT_LH_SHIFT] ASC)
+);
+

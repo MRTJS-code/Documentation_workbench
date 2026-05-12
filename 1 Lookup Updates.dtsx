@@ -1,0 +1,1550 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/20/2025 8:03:06 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{11376596-6E54-4AF0-B2DC-6F45A7E65F91}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1010.2"
+  DTS:LocaleID="3081"
+  DTS:ObjectName="1 Lookup Branch PublicHoliday"
+  DTS:PackageType="5"
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{94C66A60-D378-4F51-B523-64EDA2710030}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CSV Branch PH]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{B1471CB9-ACCC-443E-9ED0-7B96343E5C4A}"
+      DTS:ObjectName="CSV Branch PH">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ENV_CONNECTION_1_CSV_DIR] + "CSV_DEP\\phbranch.csv"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="3081"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x0022_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\SSIS-Files\CSV_DEP\phbranch.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="region"
+              DTS:DTSID="{7680C7E1-9BDD-4CD1-B8B2-E45F8CEF6C7A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Public Holiday SK"
+              DTS:DTSID="{2735E2BA-876F-4B3F-8EF8-D9609000AA32}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CSV Depot Branch]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{00205850-C157-43E4-9EC8-0664B32220AC}"
+      DTS:ObjectName="CSV Depot Branch">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Project::ENV_CONNECTION_1_CSV_DIR] + "CSV_DEP\\depotBranch.csv"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="2057"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x0022_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\SSIS-Files\CSV_DEP\depotBranch.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="DepBranchId"
+              DTS:DTSID="{7D077665-FA6D-48F1-8752-AA9C9AFFE7ED}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="BranchName"
+              DTS:DTSID="{CE488BD4-EE31-49B9-B443-0A1906E293B0}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="SKDIM_Branch"
+              DTS:DTSID="{BAFE4E1D-6EEA-4737-BED0-D7E8DB8903FC}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="SKDIM_Region"
+              DTS:DTSID="{A70D2511-CA24-46CB-AF1F-9CCE2B7F3EB5}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\LKP Branch PH"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{3A2A553B-CD07-4DC9-BCCA-B06B6D7EE21B}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="LKP Branch PH"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\LKP Branch PH\CSV Branch PH"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="3081"
+              name="CSV Branch PH"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether zero-length columns are treated as null."
+                  name="RetainNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LKP Branch PH\CSV Branch PH.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CSV Branch PH]"
+                  connectionManagerRefId="Package.ConnectionManagers[CSV Branch PH]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].Columns[region_branch]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].ExternalColumns[region]"
+                      length="50"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].Columns[region_branch]"
+                      name="region_branch"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].Columns[fk_dim_publicholiday]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].ExternalColumns[Public Holiday SK]"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].Columns[fk_dim_publicholiday]"
+                      name="fk_dim_publicholiday"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].ExternalColumns[region]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="region" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].ExternalColumns[Public Holiday SK]"
+                      dataType="i4"
+                      name="Public Holiday SK" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      codePage="1252"
+                      dataType="text"
+                      description="Flat File Source Error Output Column"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      name="Flat File Source Error Output Column" />
+                    <outputColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LKP Branch PH\LKP Branch PH"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="LKP Branch PH"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_BRANCHPH]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=17.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LKP Branch PH\LKP Branch PH.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input].Columns[region_branch]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="region_branch"
+                      externalMetadataColumnId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input].ExternalColumns[region_branch]"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].Columns[region_branch]" />
+                    <inputColumn
+                      refId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input].Columns[fk_dim_publicholiday]"
+                      cachedDataType="i4"
+                      cachedName="fk_dim_publicholiday"
+                      externalMetadataColumnId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input].ExternalColumns[fk_dim_publicholiday]"
+                      lineageId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output].Columns[fk_dim_publicholiday]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input].ExternalColumns[region_branch]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="region_branch" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input].ExternalColumns[fk_dim_publicholiday]"
+                      dataType="i4"
+                      name="fk_dim_publicholiday" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LKP Branch PH\LKP Branch PH.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Branch PH\LKP Branch PH.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LKP Branch PH\LKP Branch PH.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LKP Branch PH\LKP Branch PH.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LKP Branch PH\LKP Branch PH.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\LKP Branch PH.Paths[Flat File Source Output]"
+              endId="Package\LKP Branch PH\LKP Branch PH.Inputs[OLE DB Destination Input]"
+              name="Flat File Source Output"
+              startId="Package\LKP Branch PH\CSV Branch PH.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\LKP Depot Branch"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{8A367912-968B-4044-8078-435DB1F8CA4C}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="LKP Depot Branch"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\LKP Depot Branch\Flat File Source"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="2057"
+              name="Flat File Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether zero-length columns are treated as null."
+                  name="RetainNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LKP Depot Branch\Flat File Source.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CSV Depot Branch]"
+                  connectionManagerRefId="Package.ConnectionManagers[CSV Depot Branch]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output]"
+                  name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[DepBranchId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepBranchId]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[DepBranchId]"
+                      name="DepBranchId"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[BranchName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[BranchName]"
+                      length="50"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[BranchName]"
+                      name="BranchName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[SKDIM_Branch]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SKDIM_Branch]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[SKDIM_Branch]"
+                      name="SKDIM_Branch"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[SKDIM_Region]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SKDIM_Region]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[SKDIM_Region]"
+                      name="SKDIM_Region"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the data is in binary format."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepBranchId]"
+                      dataType="i4"
+                      name="DepBranchId" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[BranchName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="BranchName" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SKDIM_Branch]"
+                      dataType="i4"
+                      name="SKDIM_Branch" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SKDIM_Region]"
+                      dataType="i4"
+                      name="SKDIM_Region" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output]"
+                  isErrorOut="true"
+                  name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      codePage="1252"
+                      dataType="text"
+                      description="Flat File Source Error Output Column"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                      name="Flat File Source Error Output Column" />
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LKP Depot Branch\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_DEPOTBRANCH]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=17.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LKP Depot Branch\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DepBranchId]"
+                      cachedDataType="i4"
+                      cachedName="DepBranchId"
+                      externalMetadataColumnId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DepBranchId]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[DepBranchId]" />
+                    <inputColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BranchName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="BranchName"
+                      externalMetadataColumnId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BranchName]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[BranchName]" />
+                    <inputColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SKDIM_Branch]"
+                      cachedDataType="i4"
+                      cachedName="SKDIM_Branch"
+                      externalMetadataColumnId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SKDIM_Branch]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[SKDIM_Branch]" />
+                    <inputColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SKDIM_Region]"
+                      cachedDataType="i4"
+                      cachedName="SKDIM_Region"
+                      externalMetadataColumnId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SKDIM_Region]"
+                      lineageId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output].Columns[SKDIM_Region]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DepBranchId]"
+                      dataType="i4"
+                      name="DepBranchId" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BranchName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="BranchName" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SKDIM_Branch]"
+                      dataType="i4"
+                      name="SKDIM_Branch" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SKDIM_Region]"
+                      dataType="i4"
+                      name="SKDIM_Region" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LKP Depot Branch\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LKP Depot Branch\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LKP Depot Branch\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LKP Depot Branch\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\LKP Depot Branch.Paths[Flat File Source Output]"
+              endId="Package\LKP Depot Branch\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Flat File Source Output"
+              startId="Package\LKP Depot Branch\Flat File Source.Outputs[Flat File Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\LKP Rate Cards"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{22FCC025-164A-4DA1-A315-8F8CD2D305A8}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="LKP Rate Cards"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\LKP Rate Cards\EDA Rate Card"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="EDA Rate Card"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=17.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT		a.PK_WorkAreaID,
+			a.WorkAreaName,
+			a.FK_RateCard,
+			CASE
+				WHEN a.FK_RateCard IS NOT NULL AND c.PayAmount IS NULL THEN 0
+				ELSE c.PayAmount
+			END AS PayAmount,
+			x.EffectiveFrom,
+			x.EffectiveTo
+FROM		eda.LKP_DEP_WorkArea a
+INNER JOIN	eda.LKP_DEP_RateCard c ON a.FK_RateCard = c.RateCode
+AND			COALESCE(a.EffectiveFrom, '19000101') &lt; COALESCE(c.EffectiveTo, '99991231') -- Only keep pairs that overlap in time
+AND			COALESCE(c.EffectiveFrom, '19000101') &lt; COALESCE(a.EffectiveTo, '99991231')
+CROSS APPLY (
+SELECT		EffectiveFrom = CASE
+                WHEN COALESCE(a.EffectiveFrom, '19000101') &gt;= COALESCE(c.EffectiveFrom, '19000101') THEN a.EffectiveFrom
+                ELSE c.EffectiveFrom
+            END,
+			EffectiveTo = CASE
+                WHEN COALESCE(a.EffectiveTo, '99991231') &lt;= COALESCE(c.EffectiveTo, '99991231') THEN a.EffectiveTo
+                ELSE c.EffectiveTo
+            END
+			) x</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LKP Rate Cards\EDA Rate Card.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[PK_WorkAreaID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[PK_WorkAreaID]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[PK_WorkAreaID]"
+                      name="PK_WorkAreaID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[WorkAreaName]"
+                      length="100"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[WorkAreaName]"
+                      name="WorkAreaName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[FK_RateCard]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[FK_RateCard]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[FK_RateCard]"
+                      name="FK_RateCard"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[PayAmount]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[PayAmount]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[PayAmount]"
+                      name="PayAmount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[EffectiveFrom]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[EffectiveFrom]"
+                      name="EffectiveFrom"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[EffectiveTo]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[EffectiveTo]"
+                      name="EffectiveTo"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[PK_WorkAreaID]"
+                      dataType="i4"
+                      name="PK_WorkAreaID" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="WorkAreaName" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[FK_RateCard]"
+                      dataType="i4"
+                      name="FK_RateCard" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[PayAmount]"
+                      dataType="r8"
+                      name="PayAmount" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].ExternalColumns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveTo" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[PK_WorkAreaID]"
+                      dataType="i4"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[PK_WorkAreaID]"
+                      name="PK_WorkAreaID" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[WorkAreaName]"
+                      name="WorkAreaName" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[FK_RateCard]"
+                      dataType="i4"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[FK_RateCard]"
+                      name="FK_RateCard" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[PayAmount]"
+                      dataType="r8"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[PayAmount]"
+                      name="PayAmount" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[EffectiveFrom]"
+                      name="EffectiveFrom" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[EffectiveTo]"
+                      name="EffectiveTo" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LKP Rate Cards\LKP Work Areas"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="LKP Work Areas"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_WorkAreas]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=17.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LKP Rate Cards\LKP Work Areas.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].Columns[PK_WorkAreaID]"
+                      cachedDataType="i4"
+                      cachedName="PK_WorkAreaID"
+                      externalMetadataColumnId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[PK_WorkAreaID]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[PK_WorkAreaID]" />
+                    <inputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].Columns[WorkAreaName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="WorkAreaName"
+                      externalMetadataColumnId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[WorkAreaName]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[WorkAreaName]" />
+                    <inputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].Columns[FK_RateCard]"
+                      cachedDataType="i4"
+                      cachedName="FK_RateCard"
+                      externalMetadataColumnId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[FK_RateCard]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[FK_RateCard]" />
+                    <inputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].Columns[EffectiveFrom]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="EffectiveFrom"
+                      externalMetadataColumnId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveFrom]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[EffectiveFrom]" />
+                    <inputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].Columns[EffectiveTo]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="EffectiveTo"
+                      externalMetadataColumnId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveTo]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[EffectiveTo]" />
+                    <inputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].Columns[PayAmount]"
+                      cachedDataType="r8"
+                      cachedName="PayAmount"
+                      externalMetadataColumnId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[PayRate]"
+                      lineageId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output].Columns[PayAmount]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[PK_WorkAreaID]"
+                      dataType="i4"
+                      name="PK_WorkAreaID" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[WorkAreaName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="WorkAreaName" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[FK_LocationCode]"
+                      dataType="i4"
+                      name="FK_LocationCode" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[FK_CostCentre]"
+                      dataType="i4"
+                      name="FK_CostCentre" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[FK_ProductCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="FK_ProductCode" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[FK_QualityCheck]"
+                      dataType="i4"
+                      name="FK_QualityCheck" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[FK_RateCard]"
+                      dataType="i4"
+                      name="FK_RateCard" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[ChangeApprover]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="ChangeApprover" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[ChangeRef]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="ChangeRef" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[PayRate]"
+                      dataType="numeric"
+                      name="PayRate"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[PrecedaPayCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="2"
+                      name="PrecedaPayCode" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[EffectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="EffectiveTo" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input].ExternalColumns[MD_ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_ModifiedDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LKP Rate Cards\LKP Work Areas.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LKP Rate Cards\LKP Work Areas.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LKP Rate Cards\LKP Work Areas.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LKP Rate Cards\LKP Work Areas.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\LKP Rate Cards.Paths[OLE DB Source Output]"
+              endId="Package\LKP Rate Cards\LKP Work Areas.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\LKP Rate Cards\EDA Rate Card.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate LKP"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{46634010-3430-4DA7-B19B-768903D8684E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate LKP"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE lookup.DEP_BRANCHPH;&#xA;TRUNCATE TABLE lookup.DEP_DEPOTBRANCH;&#xA;TRUNCATE TABLE lookup.DEP_WorkAreas;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{2FA78A1C-3B85-4836-B7F6-ED743D48D912}"
+      DTS:From="Package\Truncate LKP"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\LKP Branch PH" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{37E9CAA3-ED31-4269-828B-3771BC09410E}"
+      DTS:From="Package\Truncate LKP"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\LKP Depot Branch" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{6E77F9E3-4043-4246-9607-ADD16EA40CC2}"
+      DTS:From="Package\Truncate LKP"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\LKP Rate Cards" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="149,42"
+          Id="Package\LKP Branch PH"
+          TopLeft="125,159" />
+        <NodeLayout
+          Size="164,42"
+          Id="Package\LKP Depot Branch"
+          TopLeft="302,160" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\LKP Rate Cards"
+          TopLeft="512,159" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Truncate LKP"
+          TopLeft="165,59" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="213.333333333333,101">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13.8333333333333,58"
+              Start="0,0"
+              End="-13.8333333333333,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.5904628330996" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.5904628330996"
+                    Point2="0,23.5904628330996"
+                    Point3="-4,23.5904628330996" />
+                  <mssgle:LineSegment
+                    End="-9.83333333333331,23.5904628330996" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9.83333333333331,23.5904628330996"
+                    Point2="-13.8333333333333,23.5904628330996"
+                    Point3="-13.8333333333333,27.5904628330996" />
+                  <mssgle:LineSegment
+                    End="-13.8333333333333,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="257.666666666667,101">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="126.333333333333,59"
+              Start="0,0"
+              End="126.333333333333,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.9971949509117" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.9971949509117"
+                    Point2="0,23.9971949509117"
+                    Point3="4,23.9971949509117" />
+                  <mssgle:LineSegment
+                    End="122.333333333333,23.9971949509117" />
+                  <mssgle:CubicBezierSegment
+                    Point1="122.333333333333,23.9971949509117"
+                    Point2="126.333333333333,23.9971949509117"
+                    Point3="126.333333333333,27.9971949509117" />
+                  <mssgle:LineSegment
+                    End="126.333333333333,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="268.75,101">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="318.75,58"
+              Start="0,0"
+              End="318.75,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.0510440835267" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.0510440835267"
+                    Point2="0,20.0510440835267"
+                    Point3="4,20.0510440835267" />
+                  <mssgle:LineSegment
+                    End="314.75,20.0510440835267" />
+                  <mssgle:CubicBezierSegment
+                    Point1="314.75,20.0510440835267"
+                    Point2="318.75,20.0510440835267"
+                    Point3="318.75,24.0510440835267" />
+                  <mssgle:LineSegment
+                    End="318.75,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\LKP Branch PH">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="149,42"
+          Id="Package\LKP Branch PH\LKP Branch PH"
+          TopLeft="66,229" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\LKP Branch PH\CSV Branch PH"
+          TopLeft="83,112" />
+        <EdgeLayout
+          Id="Package\LKP Branch PH.Paths[Flat File Source Output]"
+          TopLeft="158,154">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-17.5,75"
+              Start="0,0"
+              End="-17.5,67.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33.5"
+                    Point2="0,37.5"
+                    Point3="-4,37.5" />
+                  <mssgle:LineSegment
+                    End="-13.5,37.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-13.5,37.5"
+                    Point2="-17.5,37.5"
+                    Point3="-17.5,41.5" />
+                  <mssgle:LineSegment
+                    End="-17.5,67.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\LKP Branch PH\LKP Branch PH">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\LKP Depot Branch">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\LKP Depot Branch\OLE DB Destination"
+          TopLeft="138,167" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\LKP Depot Branch\Flat File Source"
+          TopLeft="140,54" />
+        <EdgeLayout
+          Id="Package\LKP Depot Branch.Paths[Flat File Source Output]"
+          TopLeft="215.5,96">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="8,71"
+              Start="0,0"
+              End="8,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.5"
+                    Point2="0,35.5"
+                    Point3="4,35.5" />
+                  <mssgle:LineSegment
+                    End="4,35.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="4,35.5"
+                    Point2="8,35.5"
+                    Point3="8,39.5" />
+                  <mssgle:LineSegment
+                    End="8,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\LKP Depot Branch\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\LKP Rate Cards">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="148,42"
+          Id="Package\LKP Rate Cards\EDA Rate Card"
+          TopLeft="162,76" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\LKP Rate Cards\LKP Work Areas"
+          TopLeft="160,176" />
+        <EdgeLayout
+          Id="Package\LKP Rate Cards.Paths[OLE DB Source Output]"
+          TopLeft="236.5,118">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,58"
+              Start="0,0"
+              End="0,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\LKP Rate Cards\EDA Rate Card">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\LKP Rate Cards\LKP Work Areas">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,445 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/24/2025 4:00:38 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{570FF06F-EC32-4763-9F31-2EF1429350E9}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="3 Deputy Dimensions"
+  DTS:PackageType="5"
+  DTS:VersionBuild="16"
+  DTS:VersionGUID="{F9A5D3F5-ABAC-4693-A8E8-EA2B25130376}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DIM_AREA"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{AA1024CA-89EB-464F-B429-377BACBE9285}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_AREA"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun bigint = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@runDate datetime = SYSDATETIME();&#xA;&#xA;WITH qry AS (&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;a.Id AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.Name AreaName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.Active AreaActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN CHARINDEX('|',a.PayrollExportName) != 0 THEN REVERSE(PARSENAME(REPLACE(REVERSE(a.PayrollExportName), '|', '.'), 1))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE a.PayrollExportName&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CostCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN CHARINDEX('|',a.PayrollExportName) != 0 THEN REVERSE(PARSENAME(REPLACE(REVERSE(a.PayrollExportName), '|', '.'), 2))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END ProductCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.Modified&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_AREA a&#xA;)&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;qry.*,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.SK_DIM_CLIENTLOCATION,0) FK_DIM_CLIENTLOCATION,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;la.PayRate SiteRate&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;qry&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON qry.LocationId = l.PK_SystemId AND l.PK_SourceSystem = 'Deputy'&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;lookup.DEP_WorkAreas la ON qry.AreaId = la.PK_WorkAreaID AND la.EffectiveFrom &lt;= @runDate AND isnull(la.EffectiveTo, @runDate) &gt;= @runDate&#xA;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;dw.DIM_AREA t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.AreaId = t.PK_DeputyId&#xA;&#xA;WHEN MATCHED AND (&#x9;&#x9;isnull(t.FK_Location,0) != isnull(s.FK_DIM_CLIENTLOCATION,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaLocationId,0) != isnull(s.LocationId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaName,'') != isnull(s.AreaName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaActive,0) != isnull(s.AreaActive,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaCostCentre,'') != isnull(s.CostCentre,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaProduct,'') != isnull(s.ProductCode,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AreaSiteRate,0) != isnull(s.SiteRate,0))&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.FK_Location = s.FK_DIM_CLIENTLOCATION,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaLocationId = s.LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaName = s.AreaName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaActive = s.AreaActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaCostCentre = s.CostCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaProduct = s.ProductCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AreaSiteRate = s.SiteRate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRun = @ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser = s.Creator&#xA;&#xA;WHEN NOT MATCHED&#xA;THEN INSERT (&#x9;&#x9;&#x9;PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_Location,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AreaLocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AreaName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AreaActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AreaCostCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AreaProduct,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AreaSiteRate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;s.AreaId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_CLIENTLOCATION,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.AreaName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.AreaActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.CostCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.ProductCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.SiteRate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Creator);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_EXECUTION_ID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_CLIENTLOCATION"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{8B05E896-E2B2-47F9-BA83-C9873E550309}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_CLIENTLOCATION"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;&#xA;WITH qry AS (&#xA;SELECT&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Id &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Code &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Code &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.CompanyNumber LocationDebtor,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.isWorkplace,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.isPayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.Active LocationActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyName&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_Location l&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location b ON l.ParentId = b.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location r ON b.ParentId = r.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location c ON r.ParentId = c.Id&#xA;)&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationDebtor,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(d.SK_DIM_DEPOT,0) FK_DIM_DEPOT&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;qry&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_DEPOT d ON qry.BranchId = d.PK_SourceId AND d.PK_SourceSystem = 'Deputy'&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationId is not null&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.CompanyId = 1&#xA;ORDER BY&#x9;&#x9;&#x9;&#x9;qry.isPayroll DESC,  qry.CompanyName, qry.RegionName, qry.BranchName, qry.LocationName;&#xA;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.PK_SystemId = s.LocationId AND t.PK_SourceSystem = 'Deputy'&#xA;&#xA;WHEN MATCHED AND (&#x9;&#x9;isnull(t.FK_DIM_DEPOT,0) != isnull(s.FK_DIM_DEPOT,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LocDepotId,0) != isnull(s.BranchId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LocCode,'') != isnull(s.LocationCode,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LocName,'') != isnull(s.LocationName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LocDebtorCode,'') != isnull(s.LocationDebtor,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LocActive,0) != isnull(s.LocationActive,0))&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.FK_DIM_DEPOT = s.FK_DIM_DEPOT,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LocDepotId = s.BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LocCode = s.LocationCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LocName = s.LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LocDebtorCode = s.LocationDebtor,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LocActive = s.LocationActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser = s.Creator&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;INSERT (&#x9;&#x9;&#x9;&#x9;PK_SourceSystem,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;PK_SystemId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_DEPOT,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LocDepotId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LocCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LocName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LocDebtorCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LocActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;'Deputy',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_DEPOT,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LocationCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LocationDebtor,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LocationActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Creator)&#xA;&#xA;WHEN NOT MATCHED BY SOURCE&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.LocActive = 0,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = SYSDATETIME(),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_DEPOT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{026F05D7-3754-432F-9C3F-05958D3FF7B2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_DEPOT"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;&#xA;&#xA;WITH qry AS (&#xA;SELECT&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Id &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Code &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Code &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.CompanyNumber LocationDebtor,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.isWorkplace,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.isPayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;b.Active BranchActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;b.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;b.Modified&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_Location l&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location b ON l.ParentId = b.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location r ON b.ParentId = r.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location c ON r.ParentId = c.Id&#xA;)&#xA;SELECT&#x9;DISTINCT&#x9;&#x9;qry.BranchId, qry.BranchName, qry.RegionName, qry.CompanyName, qry.isPayroll,isnull(db.SKDIM_Branch,0) FK_DIM_Branch, &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(db.SKDIM_Region,0) FK_DIM_Region, qry.BranchActive, md.Creator, md.Modified&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;qry&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;lookup.DEP_DEPOTBRANCH db ON qry.BranchId = db.DepBranchId&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;(SELECT Id, Creator, Modified FROM staging.DEP_Location) md ON qry.BranchId = md.Id&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;qry.BranchId is NOT NULL&#xA;ORDER BY&#x9;&#x9;&#x9;&#x9;qry.isPayroll DESC,  qry.CompanyName, qry.RegionName, qry.BranchName;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;dw.DIM_DEPOT t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.PK_SourceId = s.BranchId AND t.PK_SourceSystem = 'Deputy'&#xA;&#xA;WHEN MATCHED AND (&#x9;&#x9;isnull(t.FK_DIM_BRANCH,0) != isnull(s.FK_DIM_Branch,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.FK_DIM_Region,0) != isnull(s.FK_DIM_Region,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.DepotRegion,'') != isnull(s.RegionName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.DepotCompany,'') != isnull(s.CompanyName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.DepotActive,0) != isnull(s.BranchActive,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.DepotName,'') != isnull(s.BranchName,''))&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.FK_DIM_BRANCH = s.FK_DIM_Branch,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.FK_DIM_Region = s.FK_DIM_Region,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DepotRegion = s.RegionName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DepotCompany = s.CompanyName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DepotActive = s.BranchActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DepotName = s.BranchName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser = s.Creator&#xA;&#xA;WHEN NOT MATCHED&#xA;THEN INSERT (&#x9;&#x9;&#x9;PK_SourceSystem,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;PK_SourceId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_BRANCH,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_REGION,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DepotRegion,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DepotCompany,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DepotActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DepotName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;'Deputy',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_Branch,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_Region,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.RegionName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.CompanyName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.BranchActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.BranchName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Creator);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_GUARDAGREEHISTORY"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{FD77B3C9-32CB-4285-8BD2-42A042707714}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_GUARDAGREEHISTORY"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;a.*,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;DATEADD(SECOND,-1, Lead(a.CreateDate) OVER  (PARTITION BY AgreementId ORDER BY AgreementId, CreateDate)) EndDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;e.SK_DIM_EMPLOYEE FK_DIM_EMPLOYEE&#xA;INTO&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;staging.DEP_AGREEHISTORY a&#xA;LEFT JOIN&#x9;&#x9;&#x9;dw.DIM_EMPLOYEE e ON a.PayrollId = e.PK_PR_ID_Number&#xA;ORDER BY&#x9;&#x9;&#x9;AgreementId, CreateDate;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEHIST t&#xA;USING&#x9;&#x9;&#x9;&#x9;#sourceBuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;t.PK_DeputyId = s.AgreeHistId&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;INSERT (&#x9;&#x9;&#x9;PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_GUARDAGREEMENT,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_EMPLOYEE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AgreePayrollId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeDateFrom,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeDateTo,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser)&#xA;VALUES (&#x9;&#x9;&#x9;s.AgreeHistId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.AgreementId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_EMPLOYEE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.PayrollId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.Active,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.StartDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.EndDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;s.CreatedUser);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_GUARDAGREEMENT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{314FE491-319E-4051-9A74-918EF602D157}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_GUARDAGREEMENT"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun bigint = ?;&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;a.agreementId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(g.SK_DIM_SECURITYGUARD,0) FK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.SK_DIM_EMPLOYEE FK_DIM_EMPLOYEE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.employeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.startDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;pc.Name PayCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.contractName, 'No Contract') ContractName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE a.employeeBasis&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 1 THEN 'Employee'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 2 THEN 'Labour Hire'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Unknown'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END EmpBasis,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE a.employeeCategory&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 1 THEN 'Permanent'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 2 THEN 'Temporary'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Unknown'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END EmpCat,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE a.employeeStatus&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 1 THEN 'Full Time'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 2 THEN 'Part Time'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 3 THEN 'Casual'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 4 THEN 'Contractor'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Unknown'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END EmpStatus,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Cast(a.employeeCondition as varchar(100)) EmpCond,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.isActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.modifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.createdDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.payrollId&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_EmployeeAgreement a&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_SECURITYGUARD g ON a.employeeId = g.PK_SourceId AND g.PK_SourceSystem = 'Deputy'&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location pc ON a.payCentreId = pc.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_EMPLOYEE e ON a.payrollId = e.PK_PR_ID_Number AND e.PK_DW_Source_System = 'Preceda'&#xA;ORDER BY&#x9;&#x9;&#x9;&#x9;a.employeeId, a.agreementId&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEMENT t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;#sourcebuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.PK_DeputyId = s.agreementId&#xA;&#xA;WHEN MATCHED AND (&#x9;&#x9;isnull(t.FK_DIM_SECURITYGUARD,0) != isnull(s.FK_DIM_SECURITYGUARD,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.FK_DIM_EMPLOYEE,0) != isnull(s.FK_DIM_EMPLOYEE,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeGuardId,0) != isnull(s.employeeId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeStartDate,'1900-01-01') != isnull(s.startDate,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreePayCentre,'') != isnull(s.PayCentre,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeContract,'') != isnull(s.ContractName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeEmpBasis,'') != isnull(s.EmpBasis,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeEmpCategory,'') != isnull(s.EmpCat,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeEmpStatus,0) != isnull(s.EmpStatus,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeEmpCondition,'') != isnull(s.EmpCond,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreeActive,0) != isnull(s.isActive,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.AgreePayrollId,'') != isnull(s.PayrollId,''))&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.FK_DIM_SECURITyGUARD = s.FK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.FK_DIM_EMPLOYEE = s.FK_DIM_EMPLOYEE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeGuardId = s.employeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeStartDate = s.startDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreePayCentre = s.PayCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeContract = s.ContractName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeEmpBasis = s.EmpBasis,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeEmpCategory = s.EmpCat,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeEmpStatus = s.EmpStatus,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeEmpCondition = s.EmpCond,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreeActive = s.isActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = s.modifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRun = @ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser = s.creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.AgreePayrollId = s.PayrollId&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;INSERT (&#x9;&#x9;&#x9;&#x9;PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_EMPLOYEE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeGuardId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeStartDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreePayCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeContract,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeEmpBasis,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeEmpCategory,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeEmpStatus,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeEmpCondition,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreeActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AgreePayrollId)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;s.agreementId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_EMPLOYEE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.employeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.startDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.PayCentre,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.ContractName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.EmpBasis,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.EmpCat,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.EmpStatus,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.EmpCond,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.isActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.createdDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.modifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.PayrollId);&#xA;&#xA;&#xA;-- Duplicate Agreement Handler otherwise FACTS will duplicate&#xA;UPDATE&#x9;&#x9;&#x9;&#x9;&#x9;a&#xA;SET&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.AgreeActive = 0&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEMENT a&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_SECURITYGUARD g ON a.FK_DIM_SECURITYGUARD = g.SK_DIM_SECURITYGUARD&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;a.AgreePayCentre Not Like '%Timesheet%'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.AgreeActive = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.GuardActive = 1;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_EXECUTION_ID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_LEAVETYPE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4A7149B4-235E-49ED-A3D1-11BC787EEEC4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_LEAVETYPE"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun bigint = ?;&#xA;&#xA;WITH qry AS (&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;r.Id,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.Name LeaveName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CAST(CASE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN CHARINDEX('|',r.PayrollCategory) != 0 THEN REVERSE(PARSENAME(REPLACE(REVERSE(r.PayrollCategory), '|', '.'), 1))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.PayrollCategory&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END as varchar(50)) LeavePayCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CAST(CASE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN CHARINDEX('|',r.PayrollCategory) != 0 THEN REVERSE(PARSENAME(REPLACE(REVERSE(r.PayrollCategory), '|', '.'), 2))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END as varchar(50)) LeaveActivtyCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.PaidLeave LeavePayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.Visible LeaveVisible,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE r.UnitType&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 0 THEN 'Hours'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN 1 THEN 'Days'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Unknown'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LeaveUnit,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.Created,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.Modified&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_LeaveRules r)&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;qry.*,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(c.SK_DIM_Paycode,0) FK_DIM_PAYCODE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.SK_DIM_Cost_Activity,0) FK_DIM_COST_ACTIVITY&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;qry&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_PAYCODE c ON qry.LeavePayCode = c.PK_PR_Code AND c.PK_DW_Source_System = 'Preceda'&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_COST_ACTIVITY a ON qry.LeaveActivtyCode = a.P_Code&#xA;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;dw.DIM_LEAVETYPE t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Id = t.PK_SourceId AND t.PK_SourceSystem = 'Deputy'&#xA;&#xA;WHEN MATCHED AND (&#x9;&#x9;isnull(t.FK_DIM_PAYCODE,0) != isnull(s.FK_DIM_PAYCODE,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.FK_DIM_COST_ACTIVITY,0) != isnull(s.FK_DIM_COST_ACTIVITY,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeaveName,'') != isnull(s.LeaveName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeaveActivityCode,'') != isnull(s.LeaveActivtyCode,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeavePayCode,'') != isnull(s.LeavePayCode,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeavePayroll,0)!= isnull(s.LeavePayroll,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeaveVisible,0) != isnull(s.LeaveVisible,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LeaveUnit,0) != isnull(s.LeaveUnit,0))&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.FK_DIM_PAYCODE = s.FK_DIM_PAYCODE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.FK_DIM_COST_ACTIVITY = s.FK_DIM_COST_ACTIVITY,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveName = s.LeaveName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveActivityCode = s.LeaveActivtyCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeavePayCode = s.LeavePayCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeavePayroll = s.LeavePayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveVisible = s.LeaveVisible,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveActive = 1,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LeaveUnit = s.LeaveUnit,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_CreateDate = s.Created,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRun = @ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser = s.Creator&#xA;&#xA;WHEN NOT MATCHED&#xA;THEN INSERT (&#x9;&#x9;&#x9;PK_SourceSystem,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;PK_SourceId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_PAYCODE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_DIM_COST_ACTIVITY,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveActivityCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeavePayCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeavePayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveVisible,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LeaveUnit,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;'Deputy',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Id,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_PAYCODE,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_COST_ACTIVITY,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeaveName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeaveActivtyCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeavePayCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeavePayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeaveVisible,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;1,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.LeaveUnit,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Created,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Creator);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_EXECUTION_ID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIM_SECURITYGUARD"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9A844EB4-FA16-4069-BBC1-16F9C20D942A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM_SECURITYGUARD"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode int = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun bigint = ?; &#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;e.employeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.Company locationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.login,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.coa,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.firstName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.lastName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.startDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.terminationDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.dateOfBirth,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.employer,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.displayName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.sendInvite invited,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.isActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.Role,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.Created,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ebl.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;coalesce(d1.SK_DIM_DEPOT, d2.SK_DIM_DEPOT, 0) FK_DIM_DEPOT&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_Employee e&#xA;INNER JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_EmployeeBranchLocation ebl on e.employeeId = ebl.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_DEPOT d1 ON ebl.Company = d1.PK_SourceId AND d1.PK_SourceSystem = 'Deputy'&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON ebl.Company = l.PK_SystemId AND l.PK_SourceSystem = 'Deputy'&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_DEPOT d2 ON l.FK_DIM_DEPOT = d2.SK_DIM_DEPOT AND l.PK_SourceSystem = 'Deputy' AND d2.PK_SourceSystem = 'Deputy'&#xA;&#xA;&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;dw.DIM_SECURITYGUARD t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;#sourceBuild s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.PK_SourceId = s.employeeId and t.PK_SourceSystem = 'Deputy'&#xA;&#xA;WHEN MATCHED AND (&#x9;&#x9;isnull(t.FK_Depot,0) != isnull(s.FK_DIM_DEPOT,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.GuardLocationId,0) != isnull(s.locationId,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LoginId,'') != isnull(s.login,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.COA,'') != isnull(s.coa,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.FirstName,'') != isnull(s.firstName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.LastName,'') != isnull(s.lastName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.HireDate,'1900-01-01') != isnull(s.startDate,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TerminationDate,'1900-01-01') != isnull(s.terminationDate,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.BirthDate,'1900-01-01') != isnull(s.dateOfBirth,'1900-01-01')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Employer,'') != isnull(s.employer,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.DisplayName,'') != isnull(s.displayName,'')&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.Invited,0) != isnull(s.invited,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.GuardActive,0) != isnull(s.isActive,0)&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.GuardRole,'') != isnull(s.Role,''))&#xA;THEN UPDATE SET&#x9;&#x9;&#x9;t.FK_Depot = s.FK_DIM_DEPOT,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.GuardLocationId = s.locationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LoginId = s.login,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.COA = s.coa,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.FirstName = s.firstName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.LastName = s.lastName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.HireDate = s.startDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.TerminationDate = s.terminationDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.BirthDate = s.dateOfBirth,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.Employer = s.employer,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DisplayName = s.displayName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.Invited = s.invited,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.GuardActive = s.isActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.GuardRole = s.Role,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedDate = s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLJobCode = @ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRunCode = @ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ETLRun = @ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser = s.Creator&#xA;&#xA;WHEN NOT MATCHED&#xA;THEN INSERT (&#x9;&#x9;&#x9;PK_SourceId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;PK_SourceSystem,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FK_Depot,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;GuardLocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LoginId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;COA,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FirstName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;LastName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;HireDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;TerminationDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;BirthDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Employer,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DisplayName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Invited,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;GuardActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;GuardRole,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_CreateDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MD_ModifiedUser)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;s.employeeId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Deputy',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.FK_DIM_DEPOT,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.locationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.login,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.coa,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.firstName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.lastName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.startDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.terminationDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.dateOfBirth,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.employer,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.displayName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.invited,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.isActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Role,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Created,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLJobCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRunCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@ETLRun,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.Creator);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_JOB_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_CODE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_EXECUTION_ID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C028B1B0-D3CB-429B-9B2D-7AADD9739969}"
+      DTS:From="Package\DIM_DEPOT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\DIM_CLIENTLOCATION" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{B94D43A5-C741-4373-85E5-6C95FBA4E713}"
+      DTS:From="Package\DIM_CLIENTLOCATION"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\DIM_AREA" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{4BC76B9A-BB2B-4AA7-A943-30210E255080}"
+      DTS:From="Package\DIM_SECURITYGUARD"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\DIM_GUARDAGREEMENT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{0F4636E9-DCA5-44FE-B634-D512CD297931}"
+      DTS:From="Package\DIM_GUARDAGREEMENT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\DIM_GUARDAGREEHISTORY" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{93EB23A3-5901-488D-B85E-8A9136DED0B9}"
+      DTS:From="Package\DIM_CLIENTLOCATION"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\DIM_SECURITYGUARD" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="130,42"
+          Id="Package\DIM_AREA"
+          TopLeft="44,195" />
+        <NodeLayout
+          Size="190,42"
+          Id="Package\DIM_CLIENTLOCATION"
+          TopLeft="18,108" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\DIM_DEPOT"
+          TopLeft="49,25" />
+        <NodeLayout
+          Size="214,42"
+          Id="Package\DIM_GUARDAGREEHISTORY"
+          TopLeft="254,280" />
+        <NodeLayout
+          Size="198,42"
+          Id="Package\DIM_GUARDAGREEMENT"
+          TopLeft="259,195.764705893078" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\DIM_LEAVETYPE"
+          TopLeft="565,42" />
+        <NodeLayout
+          Size="187,42"
+          Id="Package\DIM_SECURITYGUARD"
+          TopLeft="270,113" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="115.25,67">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41"
+              Start="0,0"
+              End="0,33.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="111,150">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45"
+              Start="0,0"
+              End="0,37.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="360.9,154.6">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41.1647058930776"
+              Start="0,0"
+              End="0,33.6647058930776">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.6647058930776" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="359.7,237.364705893078">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.6352941069224"
+              Start="0,0"
+              End="0,35.1352941069224">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.1352941069224" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="208,131.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="62,0"
+              Start="0,0"
+              End="54.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="54.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

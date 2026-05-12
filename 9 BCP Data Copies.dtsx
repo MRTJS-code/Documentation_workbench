@@ -1,0 +1,1625 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/22/2025 5:14:28 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{233B2F94-AE1C-4E3F-9E81-7EA17E25971C}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{179084B4-2037-4557-8B5F-5A0BDEDD225A}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\AKL Truncate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D4764B04-E986-4FDE-BD05-71B1EB7FEC35}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="AKL Truncate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{A331CE8C-D075-4D0F-84EF-435B3E6896C1}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE lookup.DEP_LeaveRosterTracker;&#xA;--TRUNCATE TABLE lookup.DEP_LeaveRosterHistory;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DIDB Truncate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{605C8988-9AE3-4A8E-BA4B-A0D0187D2C5E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIDB Truncate"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE eda.LKP_DEP_LeaveRosterTracker;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Leave Lookup Table"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{3D003F99-2927-4EA5-8CFE-D8CBE6803462}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Leave Lookup Table"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Leave Lookup Table\DIDB LeaveRoster"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DIDB LeaveRoster"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_DEP_LeaveRosterTracker]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Leave Lookup Table\DIDB LeaveRoster.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[RosterId]"
+                      cachedDataType="i4"
+                      cachedName="RosterId"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[RosterDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RosterDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[LeaveLineId]"
+                      cachedDataType="i4"
+                      cachedName="LeaveLineId"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[LeaveLineId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_CreateDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_CreateDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_PublishDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_PublishDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_PublishDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_RemovedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_RemovedDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_RemovedDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_DeleteDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_DeleteDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_DeleteDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      dataType="i4"
+                      name="RosterId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      dataType="dbDate"
+                      name="RosterDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[LeaveLineId]"
+                      dataType="i4"
+                      name="LeaveLineId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_PublishDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_RemovedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_DeleteDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Leave Lookup Table\DWH LeaveRoster"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DWH LeaveRoster"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_LeaveRosterTracker]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Leave Lookup Table\DWH LeaveRoster.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]"
+                      name="EmployeeId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]"
+                      name="RosterId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[AreaId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]"
+                      name="AreaId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]"
+                      name="RosterDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[LeaveLineId]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]"
+                      name="LeaveLineId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_CreateDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]"
+                      name="MD_CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_PublishDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]"
+                      name="MD_PublishDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_RemovedDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]"
+                      name="MD_RemovedDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_DeleteDate]"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]"
+                      name="MD_DeleteDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterId]"
+                      dataType="i4"
+                      name="RosterId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterDate]"
+                      dataType="dbDate"
+                      name="RosterDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[LeaveLineId]"
+                      dataType="i4"
+                      name="LeaveLineId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_PublishDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_RemovedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_DeleteDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[EmployeeId]"
+                      name="EmployeeId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterId]"
+                      name="RosterId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[AreaId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[AreaId]"
+                      name="AreaId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterDate]"
+                      name="RosterDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[LeaveLineId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[LeaveLineId]"
+                      name="LeaveLineId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_CreateDate]"
+                      name="MD_CreateDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_PublishDate]"
+                      name="MD_PublishDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_RemovedDate]"
+                      name="MD_RemovedDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_DeleteDate]"
+                      name="MD_DeleteDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Leave Lookup Table\Multicast"
+              componentClassID="Microsoft.Multicast"
+              contactInfo="Multicast;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Distributes every input row to every row in one or more outputs. For example, branch your data flow to make a copy of data so that some values can be masked before sharing with external partners."
+              name="Multicast">
+              <inputs>
+                <input
+                  refId="Package\Leave Lookup Table\Multicast.Inputs[Multicast Input 1]"
+                  name="Multicast Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table\Multicast.Outputs[Multicast Output 1]"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 1"
+                  synchronousInputId="Package\Leave Lookup Table\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Leave Lookup Table\Multicast.Outputs[Multicast Output 3]"
+                  dangling="true"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 3"
+                  synchronousInputId="Package\Leave Lookup Table\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Leave Lookup Table.Paths[Multicast Output 1]"
+              endId="Package\Leave Lookup Table\DIDB LeaveRoster.Inputs[OLE DB Destination Input]"
+              name="Multicast Output 1"
+              startId="Package\Leave Lookup Table\Multicast.Outputs[Multicast Output 1]" />
+            <path
+              refId="Package\Leave Lookup Table.Paths[OLE DB Source Output]"
+              endId="Package\Leave Lookup Table\Multicast.Inputs[Multicast Input 1]"
+              name="OLE DB Source Output"
+              startId="Package\Leave Lookup Table\DWH LeaveRoster.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Leave Lookup Table Org"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{87f4964f-cbd0-4518-a01c-23b1fd988fc9}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Leave Lookup Table Org"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Leave Lookup Table Org\AKL LeaveRoster"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="AKL LeaveRoster"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_LeaveRosterTracker]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Connections[OleDbConnection]"
+                  connectionManagerID="{A331CE8C-D075-4D0F-84EF-435B3E6896C1}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 AKL ODS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[RosterId]"
+                      cachedDataType="i4"
+                      cachedName="RosterId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[RosterDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RosterDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[LeaveLineId]"
+                      cachedDataType="i4"
+                      cachedName="LeaveLineId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[LeaveLineId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_CreateDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_CreateDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_PublishDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_PublishDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_PublishDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_RemovedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_RemovedDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_RemovedDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_DeleteDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_DeleteDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_DeleteDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      dataType="i4"
+                      name="RosterId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      dataType="dbDate"
+                      name="RosterDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[LeaveLineId]"
+                      dataType="i4"
+                      name="LeaveLineId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_PublishDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_RemovedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_DeleteDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\AKL LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\AKL LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\AKL LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Leave Lookup Table Org\DIDB LeaveRoster"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DIDB LeaveRoster"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[eda].[LKP_DEP_LeaveRosterTracker]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Connections[OleDbConnection]"
+                  connectionManagerID="{8D5FC3E1-EC64-4803-A0C3-D8A6A2D7D5E8}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DI DB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[EmployeeId]"
+                      cachedDataType="i4"
+                      cachedName="EmployeeId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[RosterId]"
+                      cachedDataType="i4"
+                      cachedName="RosterId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[AreaId]"
+                      cachedDataType="i4"
+                      cachedName="AreaId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[RosterDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RosterDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[LeaveLineId]"
+                      cachedDataType="i4"
+                      cachedName="LeaveLineId"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[LeaveLineId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_CreateDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_CreateDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_PublishDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_PublishDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_PublishDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_RemovedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_RemovedDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_RemovedDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]" />
+                    <inputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].Columns[MD_DeleteDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="MD_DeleteDate"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_DeleteDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterId]"
+                      dataType="i4"
+                      name="RosterId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[RosterDate]"
+                      dataType="dbDate"
+                      name="RosterDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[LeaveLineId]"
+                      dataType="i4"
+                      name="LeaveLineId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_PublishDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_RemovedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input].ExternalColumns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_DeleteDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Leave Lookup Table Org\DWH LeaveRoster"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DWH LeaveRoster"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[lookup].[DEP_LeaveRosterTracker]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Connections[OleDbConnection]"
+                  connectionManagerID="{34FC873D-0671-4069-BE95-2B61D00A6202}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[0 DW FSGS]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[EmployeeId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[EmployeeId]"
+                      name="EmployeeId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterId]"
+                      name="RosterId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[AreaId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[AreaId]"
+                      name="AreaId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[RosterDate]"
+                      name="RosterDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[LeaveLineId]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[LeaveLineId]"
+                      name="LeaveLineId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_CreateDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_CreateDate]"
+                      name="MD_CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_PublishDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_PublishDate]"
+                      name="MD_PublishDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_RemovedDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_RemovedDate]"
+                      name="MD_RemovedDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_DeleteDate]"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].Columns[MD_DeleteDate]"
+                      name="MD_DeleteDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[EmployeeId]"
+                      dataType="i4"
+                      name="EmployeeId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterId]"
+                      dataType="i4"
+                      name="RosterId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[AreaId]"
+                      dataType="i4"
+                      name="AreaId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[RosterDate]"
+                      dataType="dbDate"
+                      name="RosterDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[LeaveLineId]"
+                      dataType="i4"
+                      name="LeaveLineId" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_PublishDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_RemovedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output].ExternalColumns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      name="MD_DeleteDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[EmployeeId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[EmployeeId]"
+                      name="EmployeeId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterId]"
+                      name="RosterId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[AreaId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[AreaId]"
+                      name="AreaId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[RosterDate]"
+                      name="RosterDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[LeaveLineId]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[LeaveLineId]"
+                      name="LeaveLineId" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_CreateDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_CreateDate]"
+                      name="MD_CreateDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_PublishDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_PublishDate]"
+                      name="MD_PublishDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_RemovedDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_RemovedDate]"
+                      name="MD_RemovedDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_DeleteDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[MD_DeleteDate]"
+                      name="MD_DeleteDate" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Leave Lookup Table Org\Multicast"
+              componentClassID="Microsoft.Multicast"
+              contactInfo="Multicast;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Distributes every input row to every row in one or more outputs. For example, branch your data flow to make a copy of data so that some values can be masked before sharing with external partners."
+              name="Multicast">
+              <inputs>
+                <input
+                  refId="Package\Leave Lookup Table Org\Multicast.Inputs[Multicast Input 1]"
+                  name="Multicast Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Leave Lookup Table Org\Multicast.Outputs[Multicast Output 1]"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 1"
+                  synchronousInputId="Package\Leave Lookup Table Org\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Leave Lookup Table Org\Multicast.Outputs[Multicast Output 2]"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 2"
+                  synchronousInputId="Package\Leave Lookup Table Org\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Leave Lookup Table Org\Multicast.Outputs[Multicast Output 3]"
+                  dangling="true"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 3"
+                  synchronousInputId="Package\Leave Lookup Table Org\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Leave Lookup Table Org.Paths[Multicast Output 1]"
+              endId="Package\Leave Lookup Table Org\DIDB LeaveRoster.Inputs[OLE DB Destination Input]"
+              name="Multicast Output 1"
+              startId="Package\Leave Lookup Table Org\Multicast.Outputs[Multicast Output 1]" />
+            <path
+              refId="Package\Leave Lookup Table Org.Paths[Multicast Output 2]"
+              endId="Package\Leave Lookup Table Org\AKL LeaveRoster.Inputs[OLE DB Destination Input]"
+              name="Multicast Output 2"
+              startId="Package\Leave Lookup Table Org\Multicast.Outputs[Multicast Output 2]" />
+            <path
+              refId="Package\Leave Lookup Table Org.Paths[OLE DB Source Output]"
+              endId="Package\Leave Lookup Table Org\Multicast.Inputs[Multicast Input 1]"
+              name="OLE DB Source Output"
+              startId="Package\Leave Lookup Table Org\DWH LeaveRoster.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{0B078F1D-F59E-4AD9-8338-E46C34DB1F49}"
+      DTS:From="Package\DIDB Truncate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Leave Lookup Table Org" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{A6F21A38-7963-490A-BD93-8523E192EA1D}"
+      DTS:From="Package\AKL Truncate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Leave Lookup Table Org" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="142,42"
+          Id="Package\AKL Truncate"
+          TopLeft="310,23" />
+        <NodeLayout
+          Size="149,42"
+          Id="Package\DIDB Truncate"
+          TopLeft="109,19" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\Leave Lookup Table"
+          TopLeft="105,123" />
+        <NodeLayout
+          Size="194,42"
+          Id="Package\Leave Lookup Table Org"
+          TopLeft="325,128" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="183.5,61">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="238.5,67"
+              Start="0,0"
+              End="238.5,59.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.5"
+                    Point2="0,33.5"
+                    Point3="4,33.5" />
+                  <mssgle:LineSegment
+                    End="234.5,33.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="234.5,33.5"
+                    Point2="238.5,33.5"
+                    Point3="238.5,37.5" />
+                  <mssgle:LineSegment
+                    End="238.5,59.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="381,65">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="72,63"
+              Start="0,0"
+              End="72,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.4907975460123" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33.4907975460123"
+                    Point2="0,37.4907975460123"
+                    Point3="4,37.4907975460123" />
+                  <mssgle:LineSegment
+                    End="68,37.4907975460123" />
+                  <mssgle:CubicBezierSegment
+                    Point1="68,37.4907975460123"
+                    Point2="72,37.4907975460123"
+                    Point3="72,41.4907975460123" />
+                  <mssgle:LineSegment
+                    End="72,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Leave Lookup Table">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="164,42"
+          Id="Package\Leave Lookup Table\DWH LeaveRoster"
+          TopLeft="368,41" />
+        <NodeLayout
+          Size="120,42"
+          Id="Package\Leave Lookup Table\Multicast"
+          TopLeft="379,143" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Leave Lookup Table\DIDB LeaveRoster"
+          TopLeft="183,231" />
+        <EdgeLayout
+          Id="Package\Leave Lookup Table.Paths[Multicast Output 1]"
+          TopLeft="439,185">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-173.5,46"
+              Start="0,0"
+              End="-173.5,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19"
+                    Point2="0,23"
+                    Point3="-4,23" />
+                  <mssgle:LineSegment
+                    End="-169.5,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-169.5,23"
+                    Point2="-173.5,23"
+                    Point3="-173.5,27" />
+                  <mssgle:LineSegment
+                    End="-173.5,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Leave Lookup Table.Paths[OLE DB Source Output]"
+          TopLeft="450,83">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-11,60"
+              Start="0,0"
+              End="-11,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-7,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-7,30"
+                    Point2="-11,30"
+                    Point3="-11,34" />
+                  <mssgle:LineSegment
+                    End="-11,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Leave Lookup Table\DWH LeaveRoster">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Leave Lookup Table\DIDB LeaveRoster">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Leave Lookup Table Org">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="120,42"
+          Id="Package\Leave Lookup Table Org\Multicast"
+          TopLeft="379,143" />
+        <NodeLayout
+          Size="164,42"
+          Id="Package\Leave Lookup Table Org\DWH LeaveRoster"
+          TopLeft="368,41" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Leave Lookup Table Org\DIDB LeaveRoster"
+          TopLeft="183,231" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Leave Lookup Table Org\AKL LeaveRoster"
+          TopLeft="510,233" />
+        <EdgeLayout
+          Id="Package\Leave Lookup Table Org.Paths[OLE DB Source Output]"
+          TopLeft="450,83">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-11,60"
+              Start="0,0"
+              End="-11,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-7,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-7,30"
+                    Point2="-11,30"
+                    Point3="-11,34" />
+                  <mssgle:LineSegment
+                    End="-11,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Leave Lookup Table Org.Paths[Multicast Output 2]"
+          TopLeft="457.666666666667,185">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="131.333333333333,48"
+              Start="0,0"
+              End="131.333333333333,40.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5789473684211" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.5789473684211"
+                    Point2="0,19.5789473684211"
+                    Point3="4,19.5789473684211" />
+                  <mssgle:LineSegment
+                    End="127.333333333333,19.5789473684211" />
+                  <mssgle:CubicBezierSegment
+                    Point1="127.333333333333,19.5789473684211"
+                    Point2="131.333333333333,19.5789473684211"
+                    Point3="131.333333333333,23.5789473684211" />
+                  <mssgle:LineSegment
+                    End="131.333333333333,40.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Leave Lookup Table Org.Paths[Multicast Output 1]"
+          TopLeft="439,185">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-173.5,46"
+              Start="0,0"
+              End="-173.5,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19"
+                    Point2="0,23"
+                    Point3="-4,23" />
+                  <mssgle:LineSegment
+                    End="-169.5,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-169.5,23"
+                    Point2="-173.5,23"
+                    Point3="-173.5,27" />
+                  <mssgle:LineSegment
+                    End="-173.5,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

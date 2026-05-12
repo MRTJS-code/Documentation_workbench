@@ -1,0 +1,50 @@
+﻿CREATE TABLE [ods].[_WS_GT_DESPATCH_INVOICE] (
+    [DespatchId]                       INT             NOT NULL,
+    [ClientIDCode]                     NVARCHAR (128)  NULL,
+    [ClientRef]                        INT             NULL,
+    [Site]                             NTEXT           NULL,
+    [Address1]                         NVARCHAR (128)  NULL,
+    [BureauNo]                         INT             NULL,
+    [Name]                             NTEXT           NULL,
+    [cDebtor]                          NVARCHAR (64)   NULL,
+    [bDebtor]                          NVARCHAR (64)   NULL,
+    [Description]                      NVARCHAR (128)  NULL,
+    [MonitoringStationAdvisedDateTime] DATETIME        NULL,
+    [DespatchDateTime]                 DATETIME        NULL,
+    [OnSiteDateTime]                   DATETIME        NULL,
+    [OffSiteDateTime]                  DATETIME        NULL,
+    [JobText]                          NTEXT           NULL,
+    [Comments]                         NTEXT           NULL,
+    [MonitoringStationDespatcherName]  NVARCHAR (128)  NULL,
+    [DespatchZone1Id]                  INT             NULL,
+    [DespatchZone2Id]                  INT             NULL,
+    [PurchaseOrderNo]                  NVARCHAR (128)  NULL,
+    [BaseAmount]                       DECIMAL (10, 2) NULL,
+    [AdditionalAmount]                 DECIMAL (10, 2) NULL,
+    [DaySurcharge]                     DECIMAL (10, 2) NULL,
+    [ChargeTotalExGST]                 DECIMAL (10, 2) NULL,
+    [TimeToRespondInMinutes]           INT             NULL,
+    [TimeOnSiteInMinutes]              INT             NULL,
+    [ExtraTimeOnSiteInMinutes]         INT             NULL,
+    [OverResponseTimeInMinutes]        INT             NULL,
+    [OnsiteDistanceFromSite]           NVARCHAR (64)   NULL,
+    [OnsiteVehicleStoppedDateTime]     DATETIME        NULL,
+    [OnsiteLat]                        NVARCHAR (64)   NULL,
+    [OnsiteLong]                       NVARCHAR (64)   NULL,
+    [AllowedTimeOnSite]                INT             NULL,
+    [MissedReason]                     NVARCHAR (128)  NULL,
+    [toReview]                         SMALLINT        NULL,
+    [invExtract]                       SMALLINT        NULL,
+    [noCharge]                         SMALLINT        NULL,
+    [invNumber]                        NVARCHAR (255)  NULL,
+    [BilledBy]                         NVARCHAR (255)  NULL,
+    [Query]                            NVARCHAR (255)  NULL,
+    [TranType]                         NVARCHAR (10)   NULL,
+    PRIMARY KEY CLUSTERED ([DespatchId] ASC)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20191227-094335]
+    ON [ods].[_WS_GT_DESPATCH_INVOICE]([BilledBy] ASC, [TranType] ASC);
+

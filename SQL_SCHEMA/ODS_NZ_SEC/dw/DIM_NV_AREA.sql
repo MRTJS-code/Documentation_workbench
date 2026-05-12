@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dw].[DIM_NV_AREA] (
+    [SK_DIM_AREA]         INT           IDENTITY (1, 1) NOT NULL,
+    [PK_AREACODE]         VARCHAR (50)  NULL,
+    [P_AREANAME]          VARCHAR (100) NULL,
+    [MD_DATELASTMODIFIED] DATETIME      NULL,
+    [MD_ETLJOB]           BIGINT        NULL,
+    [MD_ETLEXECUTION]     BIGINT        NULL,
+    [MD_ETLRUN]           BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([SK_DIM_AREA] ASC)
+);
+

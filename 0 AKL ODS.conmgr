@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="0 AKL ODS"
+  DTS:DTSID="{A331CE8C-D075-4D0F-84EF-435B3E6896C1}"
+  DTS:CreationName="OLEDB">
+  <DTS:PropertyExpression
+    DTS:Name="InitialCatalog">@[$Project::ENV_CONNECTION_0_AKL_ODS_SEC_CATALOG]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="Password">@[$Project::ENV_CONNECTION_0_AKL_ODS_SEC_PASSWORD]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="ServerName">@[$Project::ENV_CONNECTION_0_AKL_ODS_SEC_SERVER]</DTS:PropertyExpression>
+  <DTS:PropertyExpression
+    DTS:Name="UserName">@[$Project::ENV_CONNECTION_0_AKL_ODS_SEC_USERNAME]</DTS:PropertyExpression>
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=AKL1SECSQL2;User ID=system.OperationalDataStore;Initial Catalog=ODS_SEC;Provider=SQLNCLI11.1;Application Name=SSIS-{A331CE8C-D075-4D0F-84EF-435B3E6896C1}0 AKL ODS;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

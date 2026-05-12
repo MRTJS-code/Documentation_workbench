@@ -1,0 +1,516 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="12/23/2025 12:36:57 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="AUS-IT-DEV-002"
+  DTS:CreatorName="WILSON\tony.smith"
+  DTS:DTSID="{A4FE3E48-25ED-45E2-B6D6-D1F0E60F4AE6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="5 Quality Assurance Builds"
+  DTS:PackageType="5"
+  DTS:VersionBuild="17"
+  DTS:VersionGUID="{06460601-CE95-43FE-868B-52F007EBBDFC}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\1 LOCATION invalid debtor code"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{B87998F2-A71F-481D-B4EE-86D510B1A784}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="1 LOCATION invalid debtor code"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time&#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 1 --1 = Invalid Debtor Code.  Note this string pattern matching only, no check back to D365&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_CLIENTLOCATION';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'SK_DIM_CLIENTLOCATION';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#location/{0}';&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;DISTINCT&#x9;&#x9;l.SK_DIM_CLIENTLOCATION,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.LocDebtorCode is NULL THEN 'No Debtor Code'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Debtor Code Invalid'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON l.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;INNER JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_AREA a ON l.SK_DIM_CLIENTLOCATION = a.FK_Location AND (a.AreaProduct like 'SGP%' OR a.AreaProduct like 'SGC%' OR a.AreaProduct like 'RBSGP%' OR a.AreaProduct like 'RBSGC%')&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.LocDebtorCode,'') NOT Like 'N003-C[0-9][0-9][0-9][0-9][0-9][0-9]'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.PK_SourceSystem = 'Deputy'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.LocActive,0) = 1&#xA;&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\10 GUARD Payroll Id not in Preceda"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{ECA863CE-709C-450A-86F1-E077EC357B62}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="10 GUARD Payroll Id not in Preceda"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 10 --Deputy guard config issue&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_SECURITYGUARD';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'SK_DIM_SECURITYGUARD';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#/team/{0}';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@dwhErrorType varchar(50) = 'Missing from Dwh';&#xA;&#xA;--No Preceda Match&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;g.SK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN a.AgreePayrollId is null THEN 'Guard has no Payroll Id'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE a.AgreePayrollId +  ' not found in Preceda'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_SECURITYGUARD g&#xA;LEFT JOIN (&#xA;&#x9;SELECT&#x9;&#x9;&#x9;&#x9;a.FK_DIM_EMPLOYEE, a.FK_DIM_SECURITYGUARD, a.AgreePayCentre, a.AgreePayrollId, a.AgreeActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ROW_NUMBER() OVER (PARTITION BY a.FK_DIM_SECURITYGUARD ORDER BY a.FK_DIM_SECURITYGUARD, a.PK_DeputyId) rowNum&#xA;&#x9;FROM&#x9;&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEMENT a&#xA;&#x9;WHERE&#x9;&#x9;&#x9;&#x9;a.AgreePayCentre like '%Timesheets'&#xA;&#x9;AND&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.AgreeActive,0) = 1&#xA;&#x9;) a&#x9;&#x9;&#x9;&#x9;&#x9;ON g.SK_DIM_SECURITYGUARD = a.FK_DIM_SECURITYGUARD AND a.rowNum = 1&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON g.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_EMPLOYEE e ON a.FK_DIM_EMPLOYEE = e.SK_DIM_EMPLOYEE AND e.PK_DW_Source_System = 'Preceda'&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;g.PK_SourceSystem = 'Deputy'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(g.GuardActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.AgreePayCentre IN ('Agency Timesheets','Employee Timesheets')&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;e.SK_DIM_EMPLOYEE is null&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\11 GUARD Duplicate Agreements Paycentres"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6DD6CD7D-FDE1-476D-840F-FD4598B470A3}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="11 GUARD Duplicate Agreements Paycentres"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 11 --Multiple Active Paycentres&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_SECURITYGUARD';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'SK_DIM_SECURITYGUARD';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#/team/{0}';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@dwhErrorType varchar(50) = 'Missing from Dwh';&#xA;&#xA;--Paycentre count check&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;g.SK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Issue',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Guard has multiple paycentres' Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_SECURITYGUARD g&#xA;LEFT JOIN (&#xA;&#x9;SELECT&#x9;&#x9;&#x9;&#x9;a.FK_DIM_SECURITYGUARD, count(1) agreecount&#xA;&#x9;FROM&#x9;&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEMENT a&#xA;&#x9;--WHERE&#x9;&#x9;&#x9;&#x9;a.AgreePayCentre like '%Timesheets'&#xA;&#x9;WHERE&#x9;&#x9;&#x9;&#x9;isnull(a.AgreeActive,0) = 1&#xA;&#x9;GROUP BY&#x9;&#x9;&#x9;a.FK_DIM_SECURITYGUARD&#xA;&#x9;) a&#x9;&#x9;&#x9;&#x9;&#x9;ON g.SK_DIM_SECURITYGUARD = a.FK_DIM_SECURITYGUARD&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON g.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;g.PK_SourceSystem = 'Deputy'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(g.GuardActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.agreecount &gt; 1&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\2 TIMESHEET not approved"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{44FF8886-62FE-4E14-9549-E8568A9FC8AA}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="2 TIMESHEET not approved"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time&#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 2 --2 = Timesheet not approved&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.FACT_TIMESHEET';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'PK_DeputyId';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#approve/0/record/{0}';&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;l.PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Timesheet Approval Outstanding' Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.FACT_TIMESHEET l&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON l.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;l.TMDateFrom &gt;= @qaStart&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.TMTimeApproved,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.TMDiscarded,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.TMFinal,0) = 0;&#xA;&#xA;--Dynamic severity update - timesheet approval is outstanding for &gt; 1 day&#xA;UPDATE&#x9;&#x9;&#x9;&#x9;&#x9;t&#xA;SET&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Severity = 'Issue',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Summary = 'Timesheet Approval Overdue'&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;@qaCapture t&#xA;INNER JOIN&#x9;&#x9;&#x9;&#x9;dw.FACT_TIMESHEET s on t.RecordId = s.PK_DeputyId&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;DATEDIFF(day,isnull(s.TMDateTo,@runDate),@runDate) &gt; 1&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\3 TIMESHEET not pay approved"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4815F0CE-450E-414F-BC9B-3D108123E1E2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="3 TIMESHEET not pay approved"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 3 --3 = Timesheet not extract ready&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.FACT_TIMESHEET';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'PK_DeputyId';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#approve/0/record/{0}';&#xA;&#xA;----QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;t.PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Issue',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN pcCount.agreecount &gt; 1 THEN 'Guard has multiple agreements / paycentres'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN (isnull(a.FK_Location,0) = 0 OR isnull(l.FK_DIM_DEPOT,0) = 0) AND isnull(t.FK_LEAVE_TYPE,0) = 0 THEN 'Timesheet Location setup invalid'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN (a.AreaSiteRate is null AND isnull(t.FK_LEAVE_TYPE,0) = 0) THEN 'Timesheet Area missing Rate Card'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Else 'Timesheet pay approval issue' &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.FACT_TIMESHEET t&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON t.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_AREA a ON t.FK_DIM_AREA = a.PK_DeputyId&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON a.FK_Location = l.SK_DIM_CLIENTLOCATION AND l.PK_SourceSystem = @sourceSys&#xA;LEFT JOIN (&#xA;&#x9;SELECT&#x9;&#x9;&#x9;&#x9;a.FK_DIM_SECURITYGUARD, count(1) agreecount&#xA;&#x9;FROM&#x9;&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEMENT a&#xA;&#x9;WHERE&#x9;&#x9;&#x9;&#x9;isnull(a.AgreeActive,0) = 1&#xA;&#x9;GROUP BY&#x9;&#x9;&#x9;a.FK_DIM_SECURITYGUARD&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;) pcCount ON t.FK_DIM_SECURITYGUARD = pcCount.FK_DIM_SECURITYGUARD&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;t.TMDateFrom &gt;= @qaStart&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TMTimeApproved,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TMDiscarded,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TMFinal,0) = 0&#xA;AND&#x9;(&#x9;&#x9;&#x9;&#x9;&#x9;isnull(t.TMPayApproved,0) = 0 -- Deputy system has config issue that prevents front end extract of timesheets&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;((isnull(a.FK_Location,0) = 0 OR isnull(l.FK_DIM_DEPOT,0) = 0) AND isnull(t.FK_LEAVE_TYPE,0) = 0) -- Deputy location hierarchy is incorrect and may potentailly impact pay rate&#x9;&#x9;&#xA;OR&#x9;&#x9;&#x9;&#x9;&#x9;(a.AreaSiteRate is null AND isnull(t.FK_LEAVE_TYPE,0) = 0) -- checking for missing area records&#xA;&#x9;);&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\4 TIMESHEET paid not approved"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{06006F9C-BB4E-43EA-9B96-B4BA0DB28855}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="4 TIMESHEET paid not approved"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time&#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 4 --Timesheet paid but not pay approved&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.FACT_TIMESHEET';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'PK_DeputyId';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#approve/0/record/{0}';&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;l.PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Issue',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Timesheet paid but pay approval missing' Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.FACT_TIMESHEET l&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON l.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;l.TMDateFrom &gt;= @qaStart&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.TMPayApproved,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.TMDiscarded,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.TMFinal,0) = 1;&#xA;&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\5 ROSTER timeshet not submitted"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{57EE1F9F-BC0B-4AEA-A499-7C59A4FCDE7B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="5 ROSTER timeshet not submitted"
+      DTS:ThreadHint="3">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time&#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 5 --Timesheet not submitted&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.FACT_ROSTER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'SK_FACT_ROSTER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = null;&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;r.SK_FACT_ROSTER,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Timesheet submission outstanding' Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.FACT_ROSTER r&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON r.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_AREA a ON r.FK_DIM_AREA = a.PK_DeputyId&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON a.FK_Location = l.SK_DIM_CLIENTLOCATION&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_DEPOT d ON l.FK_DIM_DEPOT = d.SK_DIM_DEPOT&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;r.RosterFrom &gt;= @qaStart&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.RosterTo &lt; @runDate&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;r.PK_SourceSystem = @sourceSys&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(r.FK_FACT_TIMESHEET,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(r.MD_LogicalDelete,0) = 0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(r.FK_DIM_SECURITYGUARD,0) !=0&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;d.PK_SourceId != 59 -- Deputy WFP Branch&#xA;&#xA;--Dynamic severity update - timesheet approval is outstanding for &gt; 1 day&#xA;UPDATE&#x9;&#x9;&#x9;&#x9;&#x9;t&#xA;SET&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Severity = 'Issue',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Summary = 'Timesheet Submission Overdue'&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;@qaCapture t&#xA;INNER JOIN&#x9;&#x9;&#x9;&#x9;dw.FACT_ROSTER s on t.RecordId = s.SK_FACT_ROSTER&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;DATEDIFF(day,isnull(s.RosterTo,@runDate),@runDate) &gt; 1&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\6 LOCATION incorrect hierarchy"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A96B3533-68B2-4FB7-A53A-C46B9C70B362}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="6 LOCATION incorrect hierarchy"
+      DTS:ThreadHint="3">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 6 --Location Hierarchy is correct.  Inculdes DWH Error handling as this issue can drop data from the data warehouse&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_CLIENTLOCATION';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'SK_DIM_CLIENTLOCATION';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#location/{0}';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@dwhErrorType varchar(50) = 'Missing from Dwh';&#xA;&#xA;--Staging table review&#xA;WITH qry AS (&#xA;SELECT&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Id &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Code &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Code &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Code&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyCode,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.CompanyNumber LocationDebtor,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.isWorkplace,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.isPayroll,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.Active LocationActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE l.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE b.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END BranchName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 THEN NULL&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 THEN l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 THEN b.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE r.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END RegionName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.ParentId = 0 then l.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN b.ParentId = 0 then b.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN r.ParentId = 0 then r.Name&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE c.Name &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END CompanyName&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;staging.DEP_Location l&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location b ON l.ParentId = b.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location r ON b.ParentId = r.Id&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;staging.DEP_Location c ON r.ParentId = c.Id&#xA;)&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.BranchId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.BranchName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.RegionId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.RegionName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.CompanyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.CompanyName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.Modified,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.Creator,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.SK_DIM_CLIENTLOCATION&#xA;INTO&#x9;&#x9;&#x9;&#x9;&#x9;#stagingReview&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;qry&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON (qry.LocationId = l.PK_SystemId&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;OR (qry.LocationId is null AND qry.BranchId = l.PK_SystemId)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;OR (qry.LocationId is null AND qry.BranchId is null AND qry.RegionId = l.PK_SystemId)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;OR (qry.LocationId is null AND qry.BranchId is null AND qry.RegionId is null AND qry.CompanyId = l.PK_SystemId)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;) AND l.PK_SourceSystem = @sourceSys&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;isnull(qry.CompanyId,0) NOT IN(1,11)&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qry.LocationActive = 1;&#xA;&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;s.*&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;#stagingReview s&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;s.SK_DIM_CLIENTLOCATION is NULL&#xA;&#xA;&#xA;--DWH Error Table&#xA;MERGE INTO&#x9;&#x9;&#x9;&#x9;qa.QualityDwhError t&#xA;USING&#x9;&#x9;&#x9;&#x9;&#x9;(SELECT * FROM #stagingReview WHERE SK_DIM_CLIENTLOCATION is null) s&#xA;ON&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.SourceSystem = @SourceSys&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.SourcePK = coalesce(s.LocationId, s.BranchId, s.RegionId, s.CompanyId)&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DwhTable = @SourceTbl&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;t.DwhErrorType = @dwhErrorType&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;INSERT (&#x9;&#x9;&#x9;&#x9;SourceSystem,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DwhTable,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;SourcePK,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;SourceRecordName,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DwhErrorType,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DateFound,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;QACode)&#xA;VALUES (&#x9;&#x9;&#x9;&#x9;@sourceSys,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@sourceTbl,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;coalesce(s.LocationId, s.BranchId, s.RegionId, s.CompanyId),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;coalesce(s.LocationName, s.BranchName, s.RegionName, s.CompanyName),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@dwhErrorType,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@runDate,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;@qaCode)&#xA;&#xA;WHEN NOT MATCHED BY SOURCE THEN&#xA;UPDATE SET&#x9;&#x9;&#x9;t.DateResolved = @runDate;&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;DISTINCT&#x9;&#x9;l.SK_DIM_CLIENTLOCATION,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;l.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN l.LocDebtorCode is NULL THEN 'No Debtor Code'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Debtor Code Invalid'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;#stagingReview s&#xA;INNER JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON s.SK_DIM_CLIENTLOCATION = l.SK_DIM_CLIENTLOCATION&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON l.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;l.PK_SourceSystem = 'Deputy'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.LocActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.SK_DIM_CLIENTLOCATION is not null;&#xA;&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM #stagingReview&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode&#xA;--SELECT * FROM qa.QualityDwhError WHERE QACode = @qaCode&#xA;&#xA;--DROP TABLE #stagingReview&#xA;----TRUNCATE TABLE qa.QualityDwhError&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\7 AREA invalid cost centre"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{26419BED-39DC-45AA-B580-65BEF431121E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="7 AREA invalid cost centre"
+      DTS:ThreadHint="4">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 7 --Cost Centre is missing or invalid from Area&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_AREA';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'PK_DeputyId';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = null;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@dwhErrorType varchar(50) = 'Missing from Dwh';&#xA;&#xA;&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;DISTINCT&#x9;&#x9;a.PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN a.AreaCostCentre is NULL THEN 'No Cost Centre'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Cost Centre Invalid'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_AREA a&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON a.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON a.FK_Location = l.SK_DIM_CLIENTLOCATION AND l.PK_SourceSystem = 'Deputy'&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.AreaActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.LocActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.AreaCostCentre,'') NOT like '[3][0-9][0-9][3,8][0-8][0-9][0-9][0-9][0-9]'&#xA;AND (TRY_CAST(SUBSTRING(a.AreaCostCentre,4,2) as int) NOT BETWEEN 30 AND 36 AND TRY_CAST(SUBSTRING(a.AreaCostCentre,4,2) as int) NOT BETWEEN 80 AND 88)&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode&#xA;&#xA;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\8 AREA no rate card"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{120592E0-BA31-42F2-8D24-3F8D3BCD767B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="8 AREA no rate card"
+      DTS:ThreadHint="4">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 8 --Area Site Rate Card missing &#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_AREA';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'PK_DeputyId';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = null;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@dwhErrorType varchar(50) = 'Missing from Dwh';&#xA;&#xA;&#xA;&#xA;--QA Issue Table Build&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;DISTINCT&#x9;&#x9;a.PK_DeputyId,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Site Rate Card missing from Work Area' Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_AREA a&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON a.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;dw.DIM_CLIENTLOCATION l ON a.FK_Location = l.SK_DIM_CLIENTLOCATION AND l.PK_SourceSystem = 'Deputy'&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.AreaActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(l.LocActive,0) = 1&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a.AreaSiteRate is null&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode&#xA;&#xA;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\9 GUARD Payroll Id Invalid"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C4CEBD57-2FDD-4651-A635-098F807205B7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="9 GUARD Payroll Id Invalid"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{34FC873D-0671-4069-BE95-2B61D00A6202}"
+          SQLTask:SqlStatementSource="/** QA Process &#xA; ** Build a QualityIssueCapture Table from the source table + any existing quality detail records.  Designed to manage on qaCode type at a time.&#xA; ** Where the error is source system based and it creates a Dwh issue, add a record of what's impacted to qa.QualityDwhError.  &#xA; ** Set Declare variables correctly to ensure the relevant QA records are updated&#xA; ** Execupte a call to qa.ProcessQualityIssues procedure that handles the standard QA updates and returns a list of QualityDetail Ids for further processing&#xA; ** Complete further processing for populating Detail QA issues, historic pay/bill adjustments, loading autofix and notification events and retry processing&#xA; **&#xA; ** Dwh Error table use&#xA; ** 1. Populate staged data that is dropped incorrectly from Dwh due to an issue in the source system&#xA;**/&#xA;&#xA;--Variables&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCapture qa.QualityIssueCapture;&#xA;--DECLARE&#x9;&#x9;&#x9;&#x9;@qaDetail TABLE (RecordId int);&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaCode int = 9 --Deputy guard config issue&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@runDate datetime = ?;&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@qaStart date = '2025-12-01'&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceSys varchar(50) = 'Deputy';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@sourceTbl sysname = 'dw.DIM_SECURITYGUARD';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@pkCol sysname = 'SK_DIM_SECURITYGUARD';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@fkQAHeaderCol sysname = 'FK_QA_QUALITYHEADER';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@urlTemplate varchar(200) = 'https://fsgs.au.deputy.com/#/team/{0}';&#xA;DECLARE&#x9;&#x9;&#x9;&#x9;@dwhErrorType varchar(50) = 'Missing from Dwh';&#xA;&#xA;--Payroll Id Validation&#xA;INSERT INTO&#x9;&#x9;&#x9;&#x9;@qaCapture&#xA;SELECT&#x9;&#x9;&#x9;&#x9;&#x9;g.SK_DIM_SECURITYGUARD,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.Id fkQualityDetail,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.FK_QA_QUALITYHEADER fkQualityHeader,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;g.MD_ModifiedUser,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;qd.dateResolved,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Warning',&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;'Payroll Id is Invalid' Summary,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryValue,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;0 retryMax&#xA;FROM&#x9;&#x9;&#x9;&#x9;&#x9;dw.DIM_SECURITYGUARD g&#xA;LEFT JOIN (&#xA;&#x9;SELECT&#x9;&#x9;&#x9;&#x9;a.FK_DIM_EMPLOYEE, a.FK_DIM_SECURITYGUARD, a.AgreePayCentre, a.AgreePayrollId, a.AgreeActive,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ROW_NUMBER() OVER (PARTITION BY a.FK_DIM_SECURITYGUARD ORDER BY a.FK_DIM_SECURITYGUARD, a.PK_DeputyId) rowNum&#xA;&#x9;FROM&#x9;&#x9;&#x9;&#x9;dw.DIM_GUARDAGREEMENT a&#xA;&#x9;WHERE&#x9;&#x9;&#x9;&#x9;a.AgreePayCentre like '%Timesheets'&#xA;&#x9;AND&#x9;&#x9;&#x9;&#x9;&#x9;isnull(a.AgreeActive,0) = 1&#xA;&#x9;) a&#x9;&#x9;&#x9;&#x9;&#x9;ON g.SK_DIM_SECURITYGUARD = a.FK_DIM_SECURITYGUARD AND a.rowNum = 1&#xA;LEFT JOIN&#x9;&#x9;&#x9;&#x9;qa.QualityDetail qd ON g.FK_QA_QUALITYHEADER = qd.FK_Header AND qd.qaCode = @qaCode&#xA;WHERE&#x9;&#x9;&#x9;&#x9;&#x9;g.PK_SourceSystem = 'Deputy'&#xA;AND&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;isnull(g.GuardActive,0) = 1&#xA;AND&#x9;(&#x9;&#x9;&#x9;&#x9;&#x9;(a.AgreePayCentre IN ('Agency Timesheets','Employee Timesheets') AND left(a.AgreePayrollId,6) not like '5[0-9][0-9][0-9][0-9][0-9]')&#xA;&#x9;OR&#x9;&#x9;&#x9;&#x9;&#x9;(a.AgreePayCentre IN ('Contractor Timesheets') AND left(a.AgreePayrollId,7) not like 'I[0-9][0-9][0-9][0-9][0-9][0-9]')&#xA;)&#xA;&#xA;-- Stored Procedure Call to update QA Tables&#xA;--INSERT INTO @qaDetail&#xA;EXEC qa.ProcessQualityIssues @qaCode, @sourceSys, @sourceTbl, @urlTemplate, @runDate, @pkCol, @fkQAHeaderCol, @qaCapture&#xA;&#xA;--/** Temporary tidy up code to remove **/&#xA;--SELECT * FROM @qaDetail&#xA;--SELECT * FROM qa.QualityDetail WHERE qaCode = @qaCode&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="$Project::ETL_VAR_RUN_DATE"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{F57B9597-3419-4E77-8561-451DF696EB38}"
+      DTS:From="Package\1 LOCATION invalid debtor code"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\2 TIMESHEET not approved" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{AC3E30FE-9E07-4BEC-8222-D4DBB849440A}"
+      DTS:From="Package\3 TIMESHEET not pay approved"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\4 TIMESHEET paid not approved" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{58D04372-7111-4D38-A3BA-9BDB1E4A7951}"
+      DTS:From="Package\5 ROSTER timeshet not submitted"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\6 LOCATION incorrect hierarchy" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{063A3E7E-B852-40C3-9C18-0BBAD1D97770}"
+      DTS:From="Package\7 AREA invalid cost centre"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\8 AREA no rate card" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{7FC04576-F6D2-4D54-A7FB-2172521C9658}"
+      DTS:From="Package\9 GUARD Payroll Id Invalid"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\10 GUARD Payroll Id not in Preceda" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{1875FD19-768A-48BF-A610-22CE5EA0CF85}"
+      DTS:From="Package\10 GUARD Payroll Id not in Preceda"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\11 GUARD Duplicate Agreements Paycentres" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="232,42"
+          Id="Package\1 LOCATION invalid debtor code"
+          TopLeft="58.5,50.5" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\2 TIMESHEET not approved"
+          TopLeft="381,52" />
+        <NodeLayout
+          Size="230,42"
+          Id="Package\3 TIMESHEET not pay approved"
+          TopLeft="57,145" />
+        <NodeLayout
+          Size="233,42"
+          Id="Package\4 TIMESHEET paid not approved"
+          TopLeft="371,144" />
+        <NodeLayout
+          Size="240,42"
+          Id="Package\5 ROSTER timeshet not submitted"
+          TopLeft="61,227" />
+        <NodeLayout
+          Size="230,42"
+          Id="Package\6 LOCATION incorrect hierarchy"
+          TopLeft="376,227" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="290.5,72.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="90.5,0"
+              Start="0,0"
+              End="83,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="83,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="287,165.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="84,0"
+              Start="0,0"
+              End="76.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="76.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="301,248">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="75,0"
+              Start="0,0"
+              End="67.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="67.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="202,42"
+          Id="Package\7 AREA invalid cost centre"
+          TopLeft="71,318" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\8 AREA no rate card"
+          TopLeft="375,317" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="273,338.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="102,0"
+              Start="0,0"
+              End="94.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="94.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="205,42"
+          Id="Package\9 GUARD Payroll Id Invalid"
+          TopLeft="67,397" />
+        <NodeLayout
+          Size="247,42"
+          Id="Package\10 GUARD Payroll Id not in Preceda"
+          TopLeft="380,393" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="272,416">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="108,0"
+              Start="0,0"
+              End="100.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="100.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="289,42"
+          Id="Package\11 GUARD Duplicate Agreements Paycentres"
+          TopLeft="743,393" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="627,414">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="116,0"
+              Start="0,0"
+              End="108.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="108.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

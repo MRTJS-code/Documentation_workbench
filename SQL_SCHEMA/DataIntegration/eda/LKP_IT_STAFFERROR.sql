@@ -1,0 +1,7 @@
+﻿CREATE TABLE [eda].[LKP_IT_STAFFERROR] (
+    [id]      INT           IDENTITY (1, 1) NOT NULL,
+    [IT_ID]   VARCHAR (50)  NULL,
+    [COMMENT] VARCHAR (250) NULL,
+    PRIMARY KEY CLUSTERED ([id] ASC)
+);
+

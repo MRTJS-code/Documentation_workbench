@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dw].[FACT_LH_AUDIT] (
+    [SK_FACT_AUDIT]       BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_AUDIT_ID]         VARCHAR (255) NULL,
+    [FK_SK_AREA]          BIGINT        NULL,
+    [FK_SK_AREA_LOCATION] BIGINT        NULL,
+    [FK_SK_ROLE]          BIGINT        NULL,
+    [FK_SK_USER]          BIGINT        NULL,
+    [FK_SK_CREATED_AT]    BIGINT        NULL,
+    [FK_SK_UPDATED_AT]    BIGINT        NULL,
+    [P_AREA_NAME]         VARCHAR (255) NULL,
+    [P_SCORE_ACTUAL]      FLOAT (53)    NULL,
+    [P_SCORE_MAX]         FLOAT (53)    NULL,
+    [P_SCORE_RESULT]      FLOAT (53)    NULL,
+    [P_TEMPLATE_ID]       VARCHAR (255) NULL,
+    [P_TEMPLATE_TITLE]    VARCHAR (255) NULL,
+    [P_TITLE]             VARCHAR (255) NULL,
+    [P_REVISION_NUMBER]   BIGINT        NULL,
+    [MD_FILENAME]         VARCHAR (255) NULL,
+    [MD_DATELASTMODIFIED] DATETIME      NULL,
+    [MD_ETLJOB]           BIGINT        NULL,
+    [MD_ETLEXECUTION]     BIGINT        NULL,
+    [MD_ETLRUN]           BIGINT        NULL,
+    PRIMARY KEY CLUSTERED ([SK_FACT_AUDIT] ASC)
+);
+

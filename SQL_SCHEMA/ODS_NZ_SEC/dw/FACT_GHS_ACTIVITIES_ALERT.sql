@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dw].[FACT_GHS_ACTIVITIES_ALERT] (
+    [SK_ALERT]                        BIGINT        IDENTITY (1, 1) NOT NULL,
+    [PK_ALERT_ID]                     BIGINT        NULL,
+    [FK_SK_FACT_ACTIVITIES]           BIGINT        NULL,
+    [P_TYPE]                          VARCHAR (256) NULL,
+    [P_CREATED_AT]                    DATETIME      NULL,
+    [P_CLASSIFICATION]                VARCHAR (256) NULL,
+    [P_FOLLOWED_UP_AT]                DATETIME      NULL,
+    [P_FOLLOWED_UP_BY]                VARCHAR (256) NULL,
+    [P_FOLLOWED_UP_BY_ROLE]           VARCHAR (256) NULL,
+    [P_FOLLOWED_UP_COMPLETED_AT]      DATETIME      NULL,
+    [P_FOLLOWED_UP_COMPLETED_BY]      VARCHAR (256) NULL,
+    [P_FOLLOWED_UP_COMPLETED_DETAILS] VARCHAR (MAX) NULL,
+    [P_ALERT_TO_FOLLOWUP_SECONDS]     BIGINT        NULL,
+    [P_FOLLOWUP_TO_COMPLETED_SECONDS] BIGINT        NULL,
+    [P_CALLS_COUNT]                   BIGINT        NULL,
+    [P_NOTES_COUNT]                   BIGINT        NULL,
+    [MD_DATE_CREATED]                 DATETIME      NULL,
+    [MD_DATE_MODIFIED]                DATETIME      NULL,
+    [MD_JOB_CODE]                     INT           NULL,
+    [MD_RUN_CODE]                     BIGINT        NULL,
+    [MD_PACK_NAME]                    VARCHAR (70)  NULL,
+    [MD_MODIFIED_USER]                VARCHAR (100) NULL,
+    [MD_LOGICAL_DELETE]               SMALLINT      NULL,
+    PRIMARY KEY CLUSTERED ([SK_ALERT] ASC),
+    CONSTRAINT [FK_FACT_GHS_ACTIVITIES_ALERT_FACT_GHS_ACTIVITIES] FOREIGN KEY ([FK_SK_FACT_ACTIVITIES]) REFERENCES [dw].[FACT_GHS_ACTIVITIES] ([SK_FACT_ACTIVITIES])
+);
+
