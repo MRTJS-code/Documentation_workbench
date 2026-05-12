@@ -1,4 +1,5 @@
 ## Approach (“Recipe”)
+- Copy the project directory into the root of the repo.  Include any subdirectories that are relevant (eg SQL_Schema)
 - Locate SSIS metadata first (`.dtproj`, `Project.params`, connection managers) to anchor environment/configuration.
 - Identify the orchestrator (`0 Job Plan.dtsx`) and trace variables, result-set loader, ForEach mappings, precedence constraints, status updates, and event handlers.
 - For each routed package, sample `SqlStatementSource` tasks to capture table/proc touchpoints; rely on `/SQL_SCHEMA` definitions for authoritative schemas.
